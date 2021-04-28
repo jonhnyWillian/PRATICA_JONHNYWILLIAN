@@ -1,0 +1,52 @@
+﻿@model SistemaBarbearia.ViewModels.Paises.EstadoVM
+
+<div>
+    <h4>EstadoVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nmEstado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nmEstado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dsUF)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dsUF)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idPais)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idPais)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtCadastro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtCadastro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtUltAlteracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtUltAlteracao)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

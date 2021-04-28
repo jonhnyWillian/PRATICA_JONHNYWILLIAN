@@ -1,0 +1,50 @@
+﻿@model SistemaBarbearia.ViewModels.Servico.ServicoVM
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ServicoVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.dsServico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dsServico)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vlServico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vlServico)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtCadastro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtCadastro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtUltAlteracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtUltAlteracao)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

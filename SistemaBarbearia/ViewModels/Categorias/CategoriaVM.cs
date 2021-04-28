@@ -4,23 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace SistemaBarbearia.ViewModels.Paises
+namespace SistemaBarbearia.ViewModels.Categorias
 {
-    public class PaisVM
+    public class CategoriaVM
     {
         [Display(Name = "ID")]
         public int Id { get; set; }
 
-        [Display(Name = "Pais")]
+        [Display(Name = "Categoria")]
         [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Pais não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nmPais { get; set; }
-
-        [Display(Name = "Sigla")]
-        [StringLength(4, MinimumLength = 2)]
-        [Required(ErrorMessage = "Campo Sigla não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsSigla { get; set; }
-
+        [Required(ErrorMessage = "Campo Categoria não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public string dsCategoria { get; set; }
+       
         [Display(Name = "Data de Cadastro")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
@@ -29,6 +24,6 @@ namespace SistemaBarbearia.ViewModels.Paises
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtUltAlteracao { get; set; }
 
-      
+       
     }
 }

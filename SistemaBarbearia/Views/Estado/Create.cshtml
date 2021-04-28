@@ -1,0 +1,60 @@
+﻿@model SistemaBarbearia.ViewModels.Paises.EstadoVM
+
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <h4>Cadastro de Estado</h4>
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.nmEstado, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-10">
+                    @Html.EditorFor(model => model.nmEstado, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.nmEstado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dsUF, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-sm-10">
+                    @Html.EditorFor(model => model.dsUF, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dsUF, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.idPais, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.idPais, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.idPais, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <select class="mdb-select md-form" searchable="Search here..">
+                    <option value="" disabled selected>Choose your country</option>
+                    <option value="1">USA</option>
+                    <option value="2">Germany</option>
+                    <option value="3">France</option>
+                    <option value="3">Poland</option>
+                    <option value="3">Japan</option>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvar" class="btn btn-success" />
+                    @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger", @role = "button" })
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    
+}

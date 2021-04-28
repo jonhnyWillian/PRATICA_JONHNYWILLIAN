@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
+    <title>BARBEARIA</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -32,7 +32,17 @@
                                 <li>@Html.ActionLink("Estado", "Index", "Estado")</li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Estado", "Index", "Estado")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Categoria", "Index", "Categoria")
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Servico", "Index", "Servico")
+                        </li>
                     </ul>
+
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

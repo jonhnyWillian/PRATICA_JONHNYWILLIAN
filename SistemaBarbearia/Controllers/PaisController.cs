@@ -10,19 +10,6 @@ namespace SistemaBarbearia.Controllers
 {
     public class PaisController : Controller
     {
-        [HttpGet]
-        public ActionResult Pesquisa()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Pesquisa(string texto)
-        {
-            var paisDAO = new PaisDAO();
-            return View(paisDAO.filtraPais(texto));
-            //return View(db.Pessoas.Where(x => x.Nome.Contains(texto)).OrderBy(x => x.Nome));/
-        }
-
         // GET: Pais
         public ActionResult Index()
         {
@@ -34,11 +21,8 @@ namespace SistemaBarbearia.Controllers
         // GET: Pais/Details/5
         public ActionResult Details(int id)
         {
-
             var paisDAO = new PaisDAO();
             return View(paisDAO.GetPais(id));
-
-
         }
 
         // GET: Pais/Create
@@ -67,6 +51,7 @@ namespace SistemaBarbearia.Controllers
 
                     if (paisDAO.AdicionarPais(pais))
                     {
+                        
                         ViewBag.Message = "Pais criado com sucesso!";
                     }
                 }

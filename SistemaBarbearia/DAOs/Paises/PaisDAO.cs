@@ -1,4 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
+using SistemaBarbearia.Models.Paises;
+using SistemaBarbearia.ViewModels.Paises;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +13,7 @@ namespace SistemaBarbearia.DAOs.Paises
     public class PaisDAO : DataAccess
     {
 
-        public bool AdicionarPais(Models.Paises.Pais pais)
+        public bool AdicionarPais(Pais pais)
         {
 
             try
@@ -30,6 +32,7 @@ namespace SistemaBarbearia.DAOs.Paises
                 if (i >= 1)
                 {
                     return true;
+                   
                 }
                 else
                 {
@@ -46,7 +49,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public IEnumerable<Models.Paises.Pais> SelecionarPais()
+        public IEnumerable<Pais> SelecionarPais()
         {
             try
             {
@@ -64,7 +67,7 @@ namespace SistemaBarbearia.DAOs.Paises
                         nmPais = Convert.ToString(Dr["nmPais"]),
                         dsSigla = Convert.ToString(Dr["dsSigla"]),
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                       // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(pais);
                 }
@@ -80,12 +83,12 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public ViewModels.Paises.PaisVM GetPais(int? Id)
+        public PaisVM GetPais(int? Id)
         {
             try
             {
                 Open();
-                var paisVM = new ViewModels.Paises.PaisVM();
+                var paisVM = new PaisVM();
                 string selectEditPais = @"SELECT* FROM Pais WHERE id =" + Id;
                 SQL = new SqlCommand(selectEditPais, sqlconnection);
 
@@ -97,7 +100,7 @@ namespace SistemaBarbearia.DAOs.Paises
                     paisVM.nmPais = Dr["nmPais"].ToString();
                     paisVM.dsSigla = Dr["dsSigla"].ToString();
                     paisVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                   // paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
                 return paisVM;
             }
@@ -111,12 +114,12 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public ViewModels.Paises.PaisVM filtraPais(string nmpais)
+        public PaisVM filtraPais(string nmpais)
         {
             try
             {
                 Open();
-                var paisVM = new ViewModels.Paises.PaisVM();
+                var paisVM = new PaisVM();
                 string selectEditPais = @"SELECT* FROM Pais WHERE nmPais =" + nmpais;
                 SQL = new SqlCommand(selectEditPais, sqlconnection);
 
@@ -142,7 +145,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public bool UpdatePais(Models.Paises.Pais pais)
+        public bool UpdatePais(Pais pais)
         {
             try
             {
