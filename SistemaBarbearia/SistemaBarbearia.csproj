@@ -135,6 +135,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CondPagamento\CondPagamentoParcela.cs" />
+    <Compile Include="Models\CondPagamento\FormaPagamento.cs" />
+    <Compile Include="Models\Fornecedor\Fornecedor.cs" />
     <Compile Include="Models\Paises\Cidade.cs" />
     <Compile Include="Models\Paises\Estado.cs" />
     <Compile Include="Models\Paises\Pais.cs" />
@@ -143,6 +146,7 @@
     <Compile Include="Models\Pessoa\Funcionario.cs" />
     <Compile Include="Models\Servicos\Servico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Fornecedor\FornecedorVM.cs" />
     <Compile Include="ViewModels\Paises\CidadeVM.cs" />
     <Compile Include="ViewModels\Paises\EstadoVM.cs" />
     <Compile Include="ViewModels\Paises\PaisVM.cs" />
@@ -161,6 +165,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Compile Include="Models\CondPagamento\CondPagamento.cs" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
