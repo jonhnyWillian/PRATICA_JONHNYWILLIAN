@@ -1,58 +1,57 @@
 ﻿@model SistemaBarbearia.ViewModels.Servico.ServicoVM
 
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ServicoVM</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dsServico, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dsServico, "", new { @class = "text-danger" })
+<form class="form-horizontal">
+    @using (Html.BeginForm())
+    {
+    <div class="container">
+        <div><h4>Cadastro Servico</h4></div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label col-md-8" })
+                    @Html.EditorFor(model => model.dsServico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dsServico, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.vlServico, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.EditorFor(model => model.vlServico, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dtCadastro, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.dtCadastro, new { htmlAttributes = new { @class = "form-control col-md-6", @style = "text-transform:uppercase", @placeholder = "Data - Cadastro", @disabled = "disabled", } })
+                    @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.dtUltAlteracao, new { htmlAttributes = new { @class = "form-control col-md-6", @style = "text-transform:uppercase", @placeholder = "Data Ult. Alteração", @disabled = "disabled", } })
+                    @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dtUltAlteracao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        <fieldset>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+        </fieldset>
     </div>
-}
+    }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</form>

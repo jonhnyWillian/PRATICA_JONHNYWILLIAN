@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 
 namespace SistemaBarbearia.DataBase
@@ -19,7 +16,6 @@ namespace SistemaBarbearia.DataBase
         {
             try
             {
-                //Con = new SqlConnection("Data Source=PCGLAUCIA\\SQLSERVER14;Initial Catalog=master;Integrated Security=True");
                 //Outra maneira de criar uma connection string (usando o Web.Config
                 sqlconnection = new SqlConnection(WebConfigurationManager.ConnectionStrings["ConString"].ConnectionString);
                 sqlconnection.Open();

@@ -8,15 +8,15 @@ namespace SistemaBarbearia.ViewModels.Servico
 {
     public class ServicoVM
     {
-        [Display(Name = "ID")]
+        [Display(Name = "Codigo")]
         public int Id { get; set; }
 
         [Display(Name = "Serviço")]
-        [Required(ErrorMessage = "Informe o nome do Serviço. Nome do Serviço não pode ser em branco")]
+        [Required(ErrorMessage = "Campo nome do Serviço não pode ser em branco")]
         public string dsServico { get; set; }
 
         [Display(Name = "Valor Serviço")]
-        [Required(ErrorMessage = "Informe o a Valor Serviço . Valor Serviço não pode ser em branco")]
+        [Required(ErrorMessage = "Campo de Valor Serviço não pode ser em branco")]
         public decimal? vlServico { get; set; }
 
         [Display(Name = "Data de Cadastro")]

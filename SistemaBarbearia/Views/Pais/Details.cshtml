@@ -1,55 +1,58 @@
 ﻿@model SistemaBarbearia.ViewModels.Paises.PaisVM
 
-<div>
-    <h4>Detalhes do Pais</h4>
-    <hr />
-    <div class="dl-horizontal">
-        <div class="form-control">
-            <table class="table ">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Pais</th>
-                        <th>Sigla</th>
-                        <th>Data Cadastro</th>
-                        <th></th>
-                    </tr>
+<form class="form-horizontal">
+    <div class="container">
+        <h4>Detalhes do Pais</h4>
+        <div class="form-group">
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
 
-                </thead>
-            </table>
-            <td>
-                @Html.DisplayNameFor(model => model.nmPais)
-            </td>
+                <dd>
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.nmPais)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.nmPais)
+                </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.dsSigla)
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.nmPais)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.dsSigla)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.dsSigla)
+                </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.dtCadastro)
-            </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.dsSigla)
+                </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.dtCadastro)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.dtUltAlteracao)
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.dtUltAlteracao)
-            </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.dtCadastro)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.dtCadastro)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.dtUltAlteracao)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.dtUltAlteracao)
+                </dd>
+
+            </dl>
         </div>
     </div>
-    <div class="form-group">
-        @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-success", @role = "button" })
-    </div>
-</div>
+    <fieldset>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-primary me-md-2", @role = "button" })
+        </div>
+    </fieldset>
+</form>

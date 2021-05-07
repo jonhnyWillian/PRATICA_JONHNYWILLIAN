@@ -11,7 +11,7 @@ namespace SistemaBarbearia.DAOs.Categorias
 {
     public class CategoriaDAO : DataAccess
     {
-        public bool AdicionarCategoria(Categoria servicos)
+        public bool AdicionarCategoria(Categoria categoria)
         {
 
             try
@@ -21,8 +21,8 @@ namespace SistemaBarbearia.DAOs.Categorias
                 SQL = new SqlCommand(insertCategoria, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@dsCategoria", servicos.dsCategoria.ToUpper());
-                SQL.Parameters.AddWithValue("@dtCadastro", servicos.dtCadastro = DateTime.Now);
+                SQL.Parameters.AddWithValue("@dsCategoria", categoria.dsCategoria.ToUpper());
+                SQL.Parameters.AddWithValue("@dtCadastro", categoria.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
 

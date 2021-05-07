@@ -1,42 +1,49 @@
 ﻿@model SistemaBarbearia.ViewModels.Categorias.CategoriaVM
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>CategoriaVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.dsCategoria)
-        </dt>
+<form class="form-horizontal">
+    <div class="container">
+        <div><h4>Excluir Categoria ?</h4></div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dsCategoria)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.dsCategoria)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dtCadastro)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.dsCategoria)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.dtCadastro)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dtCadastro)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.dtCadastro)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dtUltAlteracao)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.dtUltAlteracao)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dtUltAlteracao)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.dtUltAlteracao)
+            </dd>
 
-    </dl>
+        </dl>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
-</div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-primary me-md-2", @role = "button" })
+            </div>
+        }
+    </div>
+</form>

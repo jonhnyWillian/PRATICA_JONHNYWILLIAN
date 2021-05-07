@@ -24,7 +24,7 @@ namespace SistemaBarbearia.DAOs.Paises
 
                 SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                SQL.Parameters.AddWithValue("idPais", estado.pais.Id);
+                //SQL.Parameters.AddWithValue("idPais", estado.Pais.Id);
                 SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -101,7 +101,7 @@ namespace SistemaBarbearia.DAOs.Paises
                     estadoVM.Id = Convert.ToInt32(Dr["id"]);
                     estadoVM.nmEstado = Dr["nmEstado"].ToString();
                     estadoVM.dsUF = Dr["dsUFa"].ToString();
-                    estadoVM.idPais = Convert.ToInt32(Dr["idPais"]);
+                    //estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
                     estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
                     estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
@@ -133,7 +133,7 @@ namespace SistemaBarbearia.DAOs.Paises
                     estadoVM.Id = Convert.ToInt32(Dr["id"]);
                     estadoVM.nmEstado = Dr["nmEstado"].ToString();
                     estadoVM.dsUF = Dr["dsUF"].ToString();
-                    estadoVM.idPais = Convert.ToInt32(Dr["idPais"]);
+                    //estadoVM.idPais = Convert.ToInt32(Dr["idPais"]);
                     estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
                     estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }

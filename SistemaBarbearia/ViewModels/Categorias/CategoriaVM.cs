@@ -8,7 +8,7 @@ namespace SistemaBarbearia.ViewModels.Categorias
 {
     public class CategoriaVM
     {
-        [Display(Name = "ID")]
+        [Display(Name = "Codigo")]
         public int Id { get; set; }
 
         [Display(Name = "Categoria")]

@@ -100,7 +100,10 @@ namespace SistemaBarbearia.DAOs.Paises
                     paisVM.nmPais = Dr["nmPais"].ToString();
                     paisVM.dsSigla = Dr["dsSigla"].ToString();
                     paisVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                   // paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    
+                    paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                   
+                    
                 }
                 return paisVM;
             }
@@ -157,6 +160,7 @@ namespace SistemaBarbearia.DAOs.Paises
                 sql.Parameters.AddWithValue("@id", pais.Id);
                 sql.Parameters.AddWithValue("@nmPais", pais.nmPais.ToUpper());
                 sql.Parameters.AddWithValue("@dsSigla", pais.dsSigla.ToUpper());
+                sql.Parameters.AddWithValue("@dtCadastro", pais.dtCadastro);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", pais.dtUltAlteracao = DateTime.Now);
 
 

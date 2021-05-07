@@ -1,36 +1,49 @@
 ﻿@model SistemaBarbearia.ViewModels.Categorias.CategoriaVM
 
-<div>
-    <h4>CategoriaVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.dsCategoria)
-        </dt>
+<form class="form-horizontal">
+    <div class="container">
+        <h4>Detalhes da Categoria</h4>
+        <div class="form-group">
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dsCategoria)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dtCadastro)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.dsCategoria)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dtCadastro)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.dsCategoria)
+                </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dtUltAlteracao)
-        </dt>
+                <dt>
+                    @Html.DisplayNameFor(model => model.dtCadastro)
+                </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.dtUltAlteracao)
-        </dd>
+                <dd>
+                    @Html.DisplayFor(model => model.dtCadastro)
+                </dd>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                <dt>
+                    @Html.DisplayNameFor(model => model.dtUltAlteracao)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.dtUltAlteracao)
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+    <fieldset>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-primary me-md-2", @role = "button" })
+        </div>
+    </fieldset>
+</form>

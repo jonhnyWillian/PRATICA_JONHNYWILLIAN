@@ -17,7 +17,8 @@ namespace SistemaBarbearia.Models.Paises
         [Required]
         public int idPais { get; set; }
 
-        public Pais pais { get; set; }
+        public ICollection<Pais> Pais { get; set; }
+       
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
