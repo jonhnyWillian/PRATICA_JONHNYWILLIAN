@@ -122,12 +122,17 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CidadeController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
+    <Compile Include="Controllers\FornecedorController.cs" />
+    <Compile Include="Controllers\FuncionarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\ServicoController.cs" />
-    <Compile Include="DAOs\Paises\EstadoDAO.cs" />
+    <Compile Include="DAOs\Clientes\ClienteDAO.cs" />
+    <Compile Include="DAOs\Estados\EstadoDAO.cs" />
     <Compile Include="DAOs\Paises\PaisDAO.cs" />
     <Compile Include="DAOs\Categorias\CategoriaDAO.cs" />
     <Compile Include="DAOs\Servicos\ServicoDAO.cs" />
@@ -138,12 +143,12 @@
     <Compile Include="Models\CondPagamento\CondPagamentoParcela.cs" />
     <Compile Include="Models\CondPagamento\FormaPagamento.cs" />
     <Compile Include="Models\Fornecedor\Fornecedor.cs" />
-    <Compile Include="Models\Paises\Cidade.cs" />
-    <Compile Include="Models\Paises\Estado.cs" />
+    <Compile Include="Models\Cidades\Cidade.cs" />
+    <Compile Include="Models\Estados\Estado.cs" />
     <Compile Include="Models\Paises\Pais.cs" />
     <Compile Include="Models\Categorias\Categoria.cs" />
-    <Compile Include="Models\Pessoa\Cliente.cs" />
-    <Compile Include="Models\Pessoa\Funcionario.cs" />
+    <Compile Include="Models\Clientes\Cliente.cs" />
+    <Compile Include="Models\Funcionario\Funcionario.cs" />
     <Compile Include="Models\Servicos\Servico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Fornecedor\FornecedorVM.cs" />
@@ -151,9 +156,10 @@
     <Compile Include="ViewModels\Paises\EstadoVM.cs" />
     <Compile Include="ViewModels\Paises\PaisVM.cs" />
     <Compile Include="ViewModels\Categorias\CategoriaVM.cs" />
-    <Compile Include="ViewModels\Pessoa\ClienteVM.cs" />
-    <Compile Include="ViewModels\Pessoa\FuncionarioVM.cs" />
+    <Compile Include="ViewModels\Clientes\ClienteVM.cs" />
+    <Compile Include="ViewModels\Funcionario\FuncionarioVM.cs" />
     <Compile Include="ViewModels\Servico\ServicoVM.cs" />
+    <Compile Include="Views\Shared\SharedTemplate\Util\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -162,6 +168,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dataTables.bootstrap4.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -170,6 +178,8 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -285,6 +295,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -406,6 +418,24 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Funcionario\Index.cshtml" />
+    <Content Include="Views\Funcionario\Create.cshtml" />
+    <Content Include="Views\Funcionario\Edit.cshtml" />
+    <Content Include="Views\Funcionario\Details.cshtml" />
+    <Content Include="Views\Funcionario\Delete.cshtml" />
+    <Content Include="Views\Fornecedor\Index.cshtml" />
+    <Content Include="Views\Fornecedor\Delete.cshtml" />
+    <Content Include="Views\Fornecedor\Create.cshtml" />
+    <Content Include="Views\Fornecedor\Edit.cshtml" />
+    <Content Include="Views\Fornecedor\Details.cshtml" />
+    <Content Include="Views\Cidade\Create.cshtml" />
+    <Content Include="Views\Cidade\Edit.cshtml" />
+    <Content Include="Views\Cidade\Delete.cshtml" />
+    <Content Include="Views\Cidade\Details.cshtml" />
+    <Content Include="Views\Cidade\Index.cshtml" />
+    <Content Include="Views\Cliente\Create.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Shared\SharedTemplate\Pais\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

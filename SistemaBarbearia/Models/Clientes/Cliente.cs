@@ -1,24 +1,25 @@
-﻿using SistemaBarbearia.Models.Paises;
+﻿using SistemaBarbearia.Models.Cidades;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace SistemaBarbearia.Models.Pessoa
+namespace SistemaBarbearia.Models.Clientes
 {
-    public class Funcionario
+    public class Cliente
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string nmFuncionario { get; set; }
+        public string nmCliente { get; set; }
 
         [Required]
         public string nmApelido { get; set; }
 
         [Required]
+        public string flTipoPessoa { get; set; }
+
+        [Required]
         public string flSexo { get; set; }
+
 
         [Required]
         public string nrTelefone { get; set; }
@@ -48,6 +49,9 @@ namespace SistemaBarbearia.Models.Pessoa
         public string nrRG { get; set; }
 
         [Required]
+        public string nrCNPJ { get; set; }
+
+        [Required]
         public string nrInscEstadual { get; set; }
 
         [Required]
@@ -68,5 +72,6 @@ namespace SistemaBarbearia.Models.Pessoa
         public DateTime? dtCadastro { get; set; }
 
         public DateTime? dtUltAlteracao { get; set; }
+
     }
 }

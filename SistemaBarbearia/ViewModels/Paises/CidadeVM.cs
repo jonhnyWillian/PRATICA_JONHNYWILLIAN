@@ -1,4 +1,4 @@
-﻿using SistemaBarbearia.Models.Paises;
+﻿using SistemaBarbearia.Models.Estados;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

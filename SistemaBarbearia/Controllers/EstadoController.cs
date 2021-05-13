@@ -1,4 +1,5 @@
-﻿using SistemaBarbearia.DAOs.Paises;
+﻿using SistemaBarbearia.DAOs.Estados;
+using SistemaBarbearia.Models.Estados;
 using SistemaBarbearia.Models.Paises;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,8 @@ namespace SistemaBarbearia.Controllers
         // GET: Estado/Details/5
         public ActionResult Details(int id)
         {
-
             var estadoDAO = new EstadoDAO();
             return View(estadoDAO.GetEstado(id));
-
-
         }
 
         // GET: Estado/Create

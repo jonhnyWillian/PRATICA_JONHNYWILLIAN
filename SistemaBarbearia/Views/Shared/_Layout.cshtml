@@ -21,23 +21,39 @@
                         Localidades
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" @Html.ActionLink("Pais", "Index", "Pais")</a>
+                        <a class="dropdown-item" @Html.ActionLink("Paises", "Index", "Pais")</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" @Html.ActionLink("Estado", "Index", "Estado")</a>
+                        <a class="dropdown-item" @Html.ActionLink("Estados", "Index", "Estado")</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" @Html.ActionLink("Cidade", "Index", "Cidade")</a>
+                        <a class="dropdown-item" @Html.ActionLink("Cidades", "Index", "Cidade")</a>
                         <div class="dropdown-divider"></div>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" @Html.ActionLink("Servico", "Index", "Servico")</a>
+                    <a class="nav-link" @Html.ActionLink("Serviços", "Index", "Servico")</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" @Html.ActionLink("Categoria", "Index", "Categoria")</a>
+                    <a class="nav-link" @Html.ActionLink("Categorias", "Index", "Categoria")</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Pessoa
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" @Html.ActionLink("Cliente", "Index", "Cliente")</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" @Html.ActionLink("Fornecedor", "Index", "Fornecedor")</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" @Html.ActionLink("Funcionario", "Index", "Funcionario")</a>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                   
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>*@
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>*@
             </ul>
         </div>
     </nav>

@@ -1,21 +1,21 @@
-﻿using SistemaBarbearia.Models.Paises;
+﻿using SistemaBarbearia.Models.Cidades;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
-namespace SistemaBarbearia.Models.Pessoa
+namespace SistemaBarbearia.Models.Funcionario
 {
-    public class Cliente
+    public class Funcionario
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string nmCliente { get; set; }
+        public string nmFuncionario { get; set; }
 
         [Required]
         public string nmApelido { get; set; }
-
-        [Required]
-        public string flTipoPessoa { get; set; }
 
         [Required]
         public string flSexo { get; set; }
@@ -48,9 +48,6 @@ namespace SistemaBarbearia.Models.Pessoa
         public string nrRG { get; set; }
 
         [Required]
-        public string nrCNPJ { get; set; }
-
-        [Required]
         public string nrInscEstadual { get; set; }
 
         [Required]
@@ -58,7 +55,7 @@ namespace SistemaBarbearia.Models.Pessoa
 
         public int? idCidade { get; set; }
 
-        public Cidade cidade { get; set; }
+        public Cidade Cidade { get; set; }
 
         [Required]
         public string nmLogin { get; set; }
@@ -66,16 +63,14 @@ namespace SistemaBarbearia.Models.Pessoa
         [Required]
         public string dsSenha { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? dtAdimissao { get; set; }
+
+        public DateTime? dtDemissao { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
 
         public DateTime? dtUltAlteracao { get; set; }
-
-
-
-
-
-
     }
 }

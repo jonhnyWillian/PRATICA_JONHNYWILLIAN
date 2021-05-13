@@ -1,1 +1,10 @@
 ﻿
+
+
+
+
+
+$("flTipoPessoa").on("change", function () {
+
+   
+});

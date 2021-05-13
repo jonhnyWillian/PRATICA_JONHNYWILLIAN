@@ -1,11 +1,10 @@
-﻿@model IEnumerable<SistemaBarbearia.Models.Servicos.Servico>
+﻿@model IEnumerable<SistemaBarbearia.Models.Cidades.Cidade>
 
 <head>
-
 </head>
 <body>
     <div class="container ">
-        <h2 class="container-fluid">Consultar Servico</h2>
+        <h2 class="container-fluid">Consultar Cidade</h2>
         <br />
         <div class="row">
             <div class="col-md-6">
@@ -29,8 +28,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Servico</th>
-                    <th>Valor Servico</th>
+                    <th>Cidade</th>
                     <th>Data Cadastro</th>
                     <th>Opções</th>
                 </tr>
@@ -43,13 +41,10 @@
                             @Html.DisplayFor(modelItem => item.Id)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.nmPais)
+                            @Html.DisplayFor(modelItem => item.nmEstado)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.dsSigla)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.dtCadastro, "{0:dd-MM-yyyy}")
+                            @Html.DisplayFor(modelItem => item.dtCadastro)
                         </td>
                         <td>
                             @Html.ActionLink("Alterar", "Edit", new { id = item.Id }) |
@@ -59,7 +54,7 @@
                     </tr>
                 }
             </tbody>*@
-        </table>
-        
+        </table>       
     </div>
 </body>
+

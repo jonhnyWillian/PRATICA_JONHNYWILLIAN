@@ -1,11 +1,11 @@
-﻿@model IEnumerable<SistemaBarbearia.Models.Servicos.Servico>
+﻿@model IEnumerable<SistemaBarbearia.Models.Fornecedor.Fornecedor>
 
 <head>
 
 </head>
 <body>
     <div class="container ">
-        <h2 class="container-fluid">Consultar Servico</h2>
+        <h2 class="container-fluid">Consultar Fornecedor</h2>
         <br />
         <div class="row">
             <div class="col-md-6">
@@ -25,13 +25,13 @@
                 </div>
             </div>
         </div>
+
         <table id="example" class="table table-sm table-dark table-striped table-bordered dt-responsive nowrap">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Servico</th>
-                    <th>Valor Servico</th>
-                    <th>Data Cadastro</th>
+                    <th>COdigo</th>
+                    <th>Nome Fantasia</th>
+                    <th>Telefone</th>
                     <th>Opções</th>
                 </tr>
             </thead>
@@ -59,7 +59,6 @@
                     </tr>
                 }
             </tbody>*@
-        </table>
-        
+        </table>       
     </div>
 </body>

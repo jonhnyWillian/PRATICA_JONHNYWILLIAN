@@ -1,0 +1,36 @@
+﻿@model SistemaBarbearia.ViewModels.Paises.CidadeVM
+
+<div>
+    <h4>CidadeVM</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nmCidade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nmCidade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtCadastro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtCadastro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dtUltAlteracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dtUltAlteracao)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

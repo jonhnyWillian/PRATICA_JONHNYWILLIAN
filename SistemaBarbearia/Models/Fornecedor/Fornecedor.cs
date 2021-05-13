@@ -1,4 +1,4 @@
-﻿using SistemaBarbearia.Models.Paises;
+﻿using SistemaBarbearia.Models.Cidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +11,7 @@ namespace SistemaBarbearia.Models.Fornecedor
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public string nmRazaoSocial { get; set; }
 
@@ -18,7 +19,10 @@ namespace SistemaBarbearia.Models.Fornecedor
         public string nmFantasia { get; set; }
 
         [Required]
-        public string flTipoPessoa { get; set; }
+        public string nmFornecedor { get; set; }
+
+        [Required]
+        public string nmApelido { get; set; }
 
         [Required]
         public string nrContato { get; set; }
@@ -28,6 +32,9 @@ namespace SistemaBarbearia.Models.Fornecedor
 
         [Required]
         public string nrCelular { get; set; }
+
+        [Required]
+        public string nrCEP { get; set; }
 
         [Required]
         public string dsLougradouro { get; set; }
@@ -44,7 +51,6 @@ namespace SistemaBarbearia.Models.Fornecedor
         [Required]
         public string dsEmail { get; set; }
 
-
         [Required]
         public string nrCNPJ { get; set; }
 
@@ -52,7 +58,12 @@ namespace SistemaBarbearia.Models.Fornecedor
         public string nrInscEstadual { get; set; }
 
         [Required]
-        public DateTime? dataNasc { get; set; }
+        public string nrCPF{ get; set; }
+
+        [Required]
+        public string nrRG { get; set; }
+
+       
 
         public int? idCidade { get; set; }
 

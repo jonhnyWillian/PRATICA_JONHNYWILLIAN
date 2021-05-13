@@ -1,6 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
-using SistemaBarbearia.Models.Paises;
-using SistemaBarbearia.ViewModels.Paises;
+using SistemaBarbearia.Models.Clientes;
+using SistemaBarbearia.ViewModels.Clientes;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,11 +8,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace SistemaBarbearia.DAOs.Paises
+namespace SistemaBarbearia.DAOs.Clientes
 {
-    public class EstadoDAO : DataAccess
+    public class ClienteDAO : DataAccess
     {
-        public bool AdicionarEstado(Estado estado)
+        public bool AdicionarCliente(Cliente cliente)
         {
 
             try
@@ -22,10 +22,10 @@ namespace SistemaBarbearia.DAOs.Paises
                 SQL = new SqlCommand(insertEstado, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
-                SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
+                //SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
+                //SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
                 //SQL.Parameters.AddWithValue("idPais", estado.Pais.Id);
-                SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
+                //SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
 
@@ -48,7 +48,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public IEnumerable<Estado> SelecionarEstado()
+        public IEnumerable<Cliente> SelecionarCliente()
         {
             try
             {
@@ -57,21 +57,21 @@ namespace SistemaBarbearia.DAOs.Paises
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
-                var lista = new List<Models.Paises.Estado>();
+                var lista = new List<Cliente>();
                 while (Dr.Read())
                 {
-                    var estado = new Models.Paises.Estado()
+                    var cliente = new Cliente()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
-                        nmEstado = Convert.ToString(Dr["nmEstado"]),
-                        dsUF = Convert.ToString(Dr["dsUF"]),
-                        idPais = Convert.ToInt32(Dr["idPais"]),
+                        //Id = Convert.ToInt32(Dr["Id"]),
+                        //nmEstado = Convert.ToString(Dr["nmEstado"]),
+                        //dsUF = Convert.ToString(Dr["dsUF"]),
+                        //idPais = Convert.ToInt32(Dr["idPais"]),
 
 
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
                         //dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
-                    lista.Add(estado);
+                    lista.Add(cliente);
                 }
                 return lista;
             }
@@ -85,27 +85,27 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public EstadoVM GetEstado(int? Id)
+        public ClienteVM GetCliente(int? Id)
         {
             try
             {
                 Open();
-                var estadoVM = new EstadoVM();
-                string selectEditPais = @"SELECT* FROM ESTADO WHERE id =" + Id;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
+                var clienteVM = new ClienteVM();
+                string selectEditCliente = @"SELECT* FROM ESTADO WHERE id =" + Id;
+                SQL = new SqlCommand(selectEditCliente, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    estadoVM.Id = Convert.ToInt32(Dr["id"]);
-                    estadoVM.nmEstado = Dr["nmEstado"].ToString();
-                    estadoVM.dsUF = Dr["dsUFa"].ToString();
-                    //estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
-                    estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    //estadoVM.Id = Convert.ToInt32(Dr["id"]);
+                    //estadoVM.nmEstado = Dr["nmEstado"].ToString();
+                    //estadoVM.dsUF = Dr["dsUFa"].ToString();
+                    ////estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
+                    //estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
+                    //estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
-                return estadoVM;
+                return clienteVM;
             }
             catch (Exception e)
             {
@@ -117,39 +117,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public EstadoVM filtraEstado(string nmEstado)
-        {
-            try
-            {
-                Open();
-                var estadoVM = new EstadoVM();
-                string selectEditPais = @"SELECT* FROM ESTADO WHERE nmEstado =" + nmEstado;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
-                Dr = SQL.ExecuteReader();
-                while (Dr.Read())
-                {
-                    estadoVM.Id = Convert.ToInt32(Dr["id"]);
-                    estadoVM.nmEstado = Dr["nmEstado"].ToString();
-                    estadoVM.dsUF = Dr["dsUF"].ToString();
-                    //estadoVM.idPais = Convert.ToInt32(Dr["idPais"]);
-                    estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
-                }
-                return estadoVM;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao selecionar o Pais: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool UpdateEstado(Estado estado)
+        public bool UpdateCliente(Cliente cliente)
         {
             try
             {
@@ -158,11 +126,11 @@ namespace SistemaBarbearia.DAOs.Paises
                 SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", estado.Id);
-                sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
-                sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                sql.Parameters.AddWithValue("@idPais", estado.idPais);
-                sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
+                //sql.Parameters.AddWithValue("@id", estado.Id);
+                //sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
+                //sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
+                //sql.Parameters.AddWithValue("@idPais", estado.idPais);
+                //sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -185,7 +153,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public bool ExcluirEstado(int Id)
+        public bool ExcluirCliente(int Id)
         {
             try
             {

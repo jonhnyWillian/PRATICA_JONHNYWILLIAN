@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SistemaBarbearia.Models.Cidades;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
-namespace SistemaBarbearia.ViewModels.Pessoa
+namespace SistemaBarbearia.ViewModels.Clientes
 {
     public class ClienteVM
     {
@@ -23,9 +25,36 @@ namespace SistemaBarbearia.ViewModels.Pessoa
         [Required(ErrorMessage = "Campo Tipo Pessoa não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string flTipoPessoa { get; set; }
 
+        public static SelectListItem[] TipoPessoa
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Text = "Juridica", Value = "J" },
+                     new SelectListItem { Text = "Fisica", Value = "F" },
+                     new SelectListItem { Text = "Estrageira", Value = "E" }
+                };
+            }
+        }
+
+
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string flSexo { get; set; }
+
+        public static SelectListItem[] Sexo
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Text = "Feminino", Value = "F" },
+                     new SelectListItem { Text = "Masculino", Value = "M" }
+                };
+            }
+        }
+
 
         [Display(Name = "Telefone")]
         [StringLength(10, MinimumLength = 3)]
@@ -37,10 +66,20 @@ namespace SistemaBarbearia.ViewModels.Pessoa
         [Required(ErrorMessage = "Campo Celular não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrCelular { get; set; }
 
+        [Display(Name = "CEP")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo CEP não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public string nrCEP { get; set; }
+
         [Display(Name = "Complemento")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Complemento não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsComplemento { get; set; }
+
+        [Display(Name = "Bairro")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Bairro não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public string dsBairro { get; set; }
 
         [Display(Name = "Lougradouro")]
         [StringLength(50, MinimumLength = 3)]
@@ -51,6 +90,11 @@ namespace SistemaBarbearia.ViewModels.Pessoa
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrResidencial { get; set; }
+
+        [Display(Name = "Cidade")]
+        [StringLength(10, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public Cidade cidade { get; set; }
 
         [Display(Name = "E-mail")]
         [StringLength(50, MinimumLength = 3)]
@@ -78,14 +122,17 @@ namespace SistemaBarbearia.ViewModels.Pessoa
         public string nrInscEstadual { get; set; }
 
         [Display(Name = "Data de Nascimento")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataNasc { get; set; }
 
         [Display(Name = "Data de Cadastro")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
 
         [Display(Name = "Data de Ult. Alteracao")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtUltAlteracao { get; set; }
     }

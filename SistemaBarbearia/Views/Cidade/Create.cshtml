@@ -1,30 +1,31 @@
-﻿@model SistemaBarbearia.ViewModels.Servico.ServicoVM
+﻿@model SistemaBarbearia.ViewModels.Paises.CidadeVM
 
 <form class="form-horizontal">
-    @using (Html.BeginForm())
-    {
+@using (Html.BeginForm())
+{
     <div class="container">
-        <div><h4>Cadastro Servico</h4></div>
+        <div><h2>Cadastro de Cidade</h2></div>
         <div class="row">
             <div class="col-md-12">
                 @Html.AntiForgeryToken()
                 <div class="form-group">
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.dsServico, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.dsServico, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.nmCidade, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.nmCidade, new { htmlAttributes = new { @class = "form-control col-md-8" } })
+                    @Html.ValidationMessageFor(model => model.nmCidade, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
+     
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.vlServico, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.estado, htmlAttributes: new { @class = "control-label" })
+
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -47,11 +48,13 @@
                 @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
             </div>
         </fieldset>
+
     </div>
-    }
+}
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+}
+
 </form>
