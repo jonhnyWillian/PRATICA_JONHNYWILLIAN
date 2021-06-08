@@ -1,60 +1,29 @@
-﻿@model SistemaBarbearia.ViewModels.Paises.EstadoVM
+﻿@model SistemaBarbearia.ViewModels.Estados.EstadoVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Editar registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = false;
 
 
+}
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>EstadoVM</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.nmEstado, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.nmEstado, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.nmEstado, "", new { @class = "text-danger" })
+    <div class="container">
+        <div class="pull-right col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="breadcrumb breadcrumb-arrow">
+                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                <li class="active">Alterar Estado</li>
+            </ul>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dsUF, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dsUF, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dsUF, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dtCadastro, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dtUltAlteracao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Salvar</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"><i class="fa fa-arrow-left"></i>Voltar</a>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
 }

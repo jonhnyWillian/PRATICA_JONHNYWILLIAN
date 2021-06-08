@@ -1,64 +1,67 @@
-﻿@model IEnumerable<SistemaBarbearia.Models.Fornecedor.Fornecedor>
+﻿@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Fornecedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    var _controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+}
+<div class="container">
+    <h1 class="container">Consultar Funcionario</h1>
+    <br />
+    <div class="form-group">
+        <a class="btn btn-primary " href="@Url.Action("Create", "Fornecedor")"><i class="bi bi-plus-circle">Adicionar</i></a>
+    </div>
 
-<head>
-
-</head>
-<body>
-    <div class="container ">
-        <h2 class="container-fluid">Consultar Fornecedor</h2>
-        <br />
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.TextBox("filter", null, new { @class = "form-control col-md-12", maxlength = "100", @placeholder = "Pesquisar...", @autofocus = "autofocus" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-4">
-                    @Html.ActionLink("Buscar", "", routeValues: null, htmlAttributes: new { @class = "btn btn-success ", @role = "button" })
-
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-4">
-                    @Html.ActionLink("Novo", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", @role = "button" })
-                </div>
+    <table id="lista" class="@Helper.Table" style="width:100%" data-url="@Url.Action("JsQuery", _controller)">
+        <thead>
+            <tr>
+                <th export="true" style="width:10%">Codigo</th>
+                <th export="true" style="width:70%">Fornecedor</th>
+                <th export="true" style="width:20%">Contato</th>
+                <th export="true" style="width:20%">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script type="text/x-tmpl" id="lista-actions">
+        <div class="visible-md visible-lg hidden-sm hidden-xs" style="width:100px">
+            <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = "{%=o.Id%}" }))"><i class="glyphicon glyphicon-eye-open"></i></a>
+            <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = "{%=o.Id%}" }))"><i class="glyphicon glyphicon-edit"></i></a>
+            <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = "{%=o.Id%}" }))"><i class="glyphicon glyphicon-trash"></i></a>
+        </div>
+        <div class="visible-xs visible-sm hidden-md hidden-lg">
+            <div class="btn-group">
+                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm">
+                    <i class="fa fa-cog"></i> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-dark" role="menu">
+                    <li>
+                        <a href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = "{%=o.Id%}" }))" tabindex="-1" role="menuitem">
+                            <i class="glyphicon glyphicon-eye-open"></i> Visualizar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = "{%=o.Id%}" }))" tabindex="-1" role="menuitem">
+                            <i class="glyphicon glyphicon-edit"></i> Editar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = "{%=o.Id%}" }))" tabindex="-1" role="menuitem">
+                            <i class="glyphicon glyphicon-trash"></i> Excluir
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </script>
+</div>
 
-        <table id="example" class="table table-sm table-dark table-striped table-bordered dt-responsive nowrap">
-            <thead>
-                <tr>
-                    <th>COdigo</th>
-                    <th>Nome Fantasia</th>
-                    <th>Telefone</th>
-                    <th>Opções</th>
-                </tr>
-            </thead>
-            @*<tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.nmPais)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.dsSigla)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.dtCadastro, "{0:dd-MM-yyyy}")
-                        </td>
-                        <td>
-                            @Html.ActionLink("Alterar", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Visualizar", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
-                        </td>
-                    </tr>
-                }
-            </tbody>*@
-        </table>       
-    </div>
-</body>
+@section Scripts {
+    @Scripts.Render("~/Scripts/Views/Fornecedores/Fornecedor.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
+    @Styles.Render("~/Content/bootstrap.css")
+
+}

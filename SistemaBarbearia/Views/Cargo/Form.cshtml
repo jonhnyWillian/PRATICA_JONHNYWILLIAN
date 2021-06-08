@@ -1,0 +1,51 @@
+﻿@model SistemaBarbearia.ViewModels.Cargos.CargoVM
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+}
+@if (action != "create")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                    @Html.LabelFor(e => e.Id, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Id, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.dsCargo, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.dsCargo, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Cargo" })
+            @Html.ValidationMessageFor(model => model.dsCargo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

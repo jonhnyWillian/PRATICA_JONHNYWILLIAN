@@ -22,10 +22,12 @@ namespace SistemaBarbearia.ViewModels.Paises
         public string dsSigla { get; set; }
 
         [Display(Name = "Data de Cadastro")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
 
         [Display(Name = "Data de Ult. Alteracao")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtUltAlteracao { get; set; }
 

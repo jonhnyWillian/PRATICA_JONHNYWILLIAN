@@ -1,0 +1,59 @@
+﻿@model SistemaBarbearia.ViewModels.Servicos.ServicoVM
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+}
+@if (action != "create")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                    @Html.LabelFor(e => e.Id, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Id, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.dsServico, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Servico" })
+            @Html.ValidationMessageFor(model => model.dsServico, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <span class="input-group-text">$</span>
+            @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control col-md-4", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor do Serviço" })
+            @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

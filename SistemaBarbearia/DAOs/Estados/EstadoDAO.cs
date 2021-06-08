@@ -1,6 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Estados;
-using SistemaBarbearia.ViewModels.Paises;
+using SistemaBarbearia.ViewModels.Estados;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +11,9 @@ namespace SistemaBarbearia.DAOs.Estados
 {
     public class EstadoDAO : DataAccess
     {
-        public bool AdicionarEstado(Estado estado)
+
+        #region INSERT UPDATE DELETE
+        public bool InsertEstado(Estado estado)
         {
 
             try
@@ -47,6 +49,76 @@ namespace SistemaBarbearia.DAOs.Estados
             }
         }
 
+        public bool UpdateEstado(Estado estado)
+        {
+            try
+            {
+                Open();
+                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@id", estado.Id);
+                sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
+                sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
+                sql.Parameters.AddWithValue("@idPais", estado.idPais);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Estado: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public bool DeleteEstado(int Id)
+        {
+            try
+            {
+                Open();
+                string deleteEstado = "DELETE FROM Estado WHERE Id = @Id";
+                SqlCommand sql = new SqlCommand(deleteEstado, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@Id", Id);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao excluir Estado: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        #endregion
+
         public IEnumerable<Estado> SelecionarEstado()
         {
             try
@@ -68,7 +140,7 @@ namespace SistemaBarbearia.DAOs.Estados
 
 
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        //dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(estado);
                 }
@@ -99,10 +171,10 @@ namespace SistemaBarbearia.DAOs.Estados
                 {
                     estadoVM.Id = Convert.ToInt32(Dr["id"]);
                     estadoVM.nmEstado = Dr["nmEstado"].ToString();
-                    estadoVM.dsUF = Dr["dsUFa"].ToString();
+                    estadoVM.dsUF = Dr["dsUF"].ToString();
                     //estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
                     estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    estadoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
                 return estadoVM;
             }
@@ -140,7 +212,7 @@ namespace SistemaBarbearia.DAOs.Estados
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao selecionar o Pais: " + e.Message);
+                throw new Exception("Erro ao selecionar o Estado: " + e.Message);
             }
             finally
             {
@@ -148,72 +220,6 @@ namespace SistemaBarbearia.DAOs.Estados
             }
         }
 
-        public bool UpdateEstado(Estado estado)
-        {
-            try
-            {
-                Open();
-                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
-                SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@id", estado.Id);
-                sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
-                sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                sql.Parameters.AddWithValue("@idPais", estado.idPais);
-                sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao Atualizar Esatdo: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool ExcluirEstado(int Id)
-        {
-            try
-            {
-                Open();
-                string deleteEstado = "DELETE FROM Estado WHERE Id = @Id";
-                SqlCommand sql = new SqlCommand(deleteEstado, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@Id", Id);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao excluir Esatdo: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
+       
     }
 }

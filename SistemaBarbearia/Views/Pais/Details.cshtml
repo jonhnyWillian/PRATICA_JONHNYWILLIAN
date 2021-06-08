@@ -1,58 +1,30 @@
 ﻿@model SistemaBarbearia.ViewModels.Paises.PaisVM
+@using SistemaBarbearia.Helper;
 
-<form class="form-horizontal">
+@{
+    ViewBag.Title = "Detalhes do Pais";
+    Layout = "~/Views/Shared/_Layout.cshtml";  
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = true;
+
+
+}
+<div class="container-fluid">
+    @using (Html.BeginForm())
+    {
     <div class="container">
-        <h4>Detalhes do Pais</h4>
-        <div class="form-group">
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Id)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.Id)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.nmPais)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.nmPais)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.dsSigla)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.dsSigla)
-                </dd>
-
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.dtCadastro)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.dtCadastro)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.dtUltAlteracao)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.dtUltAlteracao)
-                </dd>
-
-            </dl>
+        <ul class="breadcrumb breadcrumb-arrow">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+            <li class="active">Detalhes do Pais</li>
+        </ul>
+        <div class="form-horizontal">
+            @Html.Partial("Form", Model)
         </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">           
+           <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+        </div>
+       
     </div>
-    <fieldset>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-primary me-md-2", @role = "button" })
-        </div>
-    </fieldset>
-</form>
+    }
+</div>

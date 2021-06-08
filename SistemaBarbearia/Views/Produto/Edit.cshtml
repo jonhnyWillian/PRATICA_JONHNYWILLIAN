@@ -1,0 +1,31 @@
+﻿@model SistemaBarbearia.ViewModels.Produtos.ProdutoVW
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Editar registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = false;
+
+
+}
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="pull-right col-lg-10 col-md-10 col-sm-12 col-xs-12">
+            <ul class="breadcrumb breadcrumb-arrow">
+                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                <li class="active">Alterar Produto</li>
+            </ul>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
+            </div>
+        </div>
+    </div>
+}

@@ -3,25 +3,23 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
+/* Defina o preenchimento para evitar que o conteúdo atinja as bordas */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Substituir o comportamento de bootstrap padrão onde listas de descrição horizontal
+   irá truncar termos que são muito longos para caber na coluna da esquerda 
 */
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+/* Defina a largura dos elementos de entrada do formulário, pois eles são 100% largos por padrão */
 input,
 select,
 textarea {
     max-width: 280px;
 }
-fieldset {
-    background-color: cadetblue;
-}
+

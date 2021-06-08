@@ -1,0 +1,30 @@
+﻿@model SistemaBarbearia.ViewModels.Clientes.ClienteVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Remover registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = true;
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm())
+    {
+    <div class="container">
+        <ul class="breadcrumb breadcrumb-arrow">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+            <li class="active">Excluir Cliente</li>
+        </ul>
+        <div class="form-horizontal">
+            @Html.Partial("Form", Model)
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o"></i> Excluir</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+
+        </div>
+    </div>
+       
+    }
+</div>

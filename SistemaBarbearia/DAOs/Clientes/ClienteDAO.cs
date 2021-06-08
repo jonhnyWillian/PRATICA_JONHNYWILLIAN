@@ -12,13 +12,14 @@ namespace SistemaBarbearia.DAOs.Clientes
 {
     public class ClienteDAO : DataAccess
     {
-        public bool AdicionarCliente(Cliente cliente)
+        #region INSERT UPDATE DELETE
+        public bool InsertCliente(Cliente cliente)
         {
 
             try
             {
                 Open();
-                string insertEstado = @"INSERT INTO ESTADO (nmEstado, dsUF, dtCadastro, idPais) VALUES(@nmEstado, @dsUF, @dtCadastro, @idPais)";
+                string insertEstado = @"INSERT INTO ";
                 SQL = new SqlCommand(insertEstado, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
@@ -40,7 +41,7 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao Adicionar Novo Estado: " + e.Message);
+                throw new Exception("Erro ao Adicionar Novo Clinte: " + e.Message);
             }
             finally
             {
@@ -48,12 +49,81 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
+        public bool UpdateCliente(Cliente cliente)
+        {
+            try
+            {
+                Open();
+                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                //sql.Parameters.AddWithValue("@id", estado.Id);
+                //sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
+                //sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
+                //sql.Parameters.AddWithValue("@idPais", estado.idPais);
+                //sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Esatdo: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public bool DeleteCliente(int Id)
+        {
+            try
+            {
+                Open();
+                string deleteEstado = "DELETE FROM Estado WHERE Id = @Id";
+                SqlCommand sql = new SqlCommand(deleteEstado, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@Id", Id);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao excluir Esatdo: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+        #endregion
+
         public IEnumerable<Cliente> SelecionarCliente()
         {
             try
             {
                 Open();
-                SQL = new SqlCommand(@"SELECT * FROM ESTADO ", sqlconnection);
+                SQL = new SqlCommand(@"", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
@@ -62,14 +132,10 @@ namespace SistemaBarbearia.DAOs.Clientes
                 {
                     var cliente = new Cliente()
                     {
-                        //Id = Convert.ToInt32(Dr["Id"]),
-                        //nmEstado = Convert.ToString(Dr["nmEstado"]),
-                        //dsUF = Convert.ToString(Dr["dsUF"]),
-                        //idPais = Convert.ToInt32(Dr["idPais"]),
+                        
 
 
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        //dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                       
                     };
                     lista.Add(cliente);
                 }
@@ -117,72 +183,6 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public bool UpdateCliente(Cliente cliente)
-        {
-            try
-            {
-                Open();
-                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
-                SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                //sql.Parameters.AddWithValue("@id", estado.Id);
-                //sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
-                //sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                //sql.Parameters.AddWithValue("@idPais", estado.idPais);
-                //sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao Atualizar Esatdo: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool ExcluirCliente(int Id)
-        {
-            try
-            {
-                Open();
-                string deleteEstado = "DELETE FROM Estado WHERE Id = @Id";
-                SqlCommand sql = new SqlCommand(deleteEstado, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@Id", Id);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao excluir Esatdo: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
+       
     }
 }

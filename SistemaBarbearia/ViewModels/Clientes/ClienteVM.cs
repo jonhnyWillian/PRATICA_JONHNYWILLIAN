@@ -21,24 +21,6 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nmApelido { get; set; }
 
-        [Display(Name = "Tipo Pessoa")]
-        [Required(ErrorMessage = "Campo Tipo Pessoa não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string flTipoPessoa { get; set; }
-
-        public static SelectListItem[] TipoPessoa
-        {
-            get
-            {
-                return new[]
-                {
-                    new SelectListItem { Text = "Juridica", Value = "J" },
-                     new SelectListItem { Text = "Fisica", Value = "F" },
-                     new SelectListItem { Text = "Estrageira", Value = "E" }
-                };
-            }
-        }
-
-
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string flSexo { get; set; }
@@ -81,12 +63,12 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [Required(ErrorMessage = "Campo Bairro não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsBairro { get; set; }
 
-        [Display(Name = "Lougradouro")]
+        [Display(Name = "Endereço")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Lougradouro não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsLougradouro { get; set; }
 
-        [Display(Name = "Residencial")]
+        [Display(Name = "Nº Residencial")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrResidencial { get; set; }

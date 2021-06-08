@@ -1,6 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Servicos;
-using SistemaBarbearia.ViewModels.Servico;
+using SistemaBarbearia.ViewModels.Servicos;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +12,9 @@ namespace SistemaBarbearia.DAOs.Servicos
 {
     public class ServicoDAO : DataAccess
     {
-        public bool AdicionarServico(Servico servicos)
+
+        #region INSERT UPDATE DELETE 
+        public bool InsertServico(Servico servicos)
         {
 
             try
@@ -48,102 +50,6 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
         }
 
-        public IEnumerable<Servico> SelecionarServico()
-        {
-            try
-            {
-                Open();
-                SQL = new SqlCommand(@"SELECT * FROM Servico", sqlconnection);
-                SQL.CommandType = CommandType.Text;
-                Dr = SQL.ExecuteReader();
-                // Criando uma lista vazia
-                var lista = new List<Servico>();
-                while (Dr.Read())
-                {
-                    var servico = new Servico()
-                    {
-                        Id = Convert.ToInt32(Dr["Id"]),
-                        dsServico = Convert.ToString(Dr["nmPais"]),
-                        //vlServico = Convert.ToString(Dr["dsSigla"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
-                    };
-                    lista.Add(servico);
-                }
-                return lista;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao selecionar o Servico: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public ServicoVM GetServico(int? Id)
-        {
-            try
-            {
-                Open();
-                var servicoVM = new ServicoVM();
-                string selectEditServico = @"SELECT* FROM Servico WHERE id =" + Id;
-                SQL = new SqlCommand(selectEditServico, sqlconnection);
-
-
-                Dr = SQL.ExecuteReader();
-                while (Dr.Read())
-                {
-                    //servicoVM.Id = Convert.ToInt32(Dr["id"]);
-                    //servicoVM. = Dr["nmPais"].ToString();
-                    //servicoVM.dsSigla = Dr["dsSigla"].ToString();
-                    //servicoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    // paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
-                }
-                return servicoVM;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao selecionar o Servico: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public ServicoVM filtraPais(string nmpais)
-        {
-            try
-            {
-                Open();
-                var servicoVM = new ServicoVM();
-                string selectEditPais = @"SELECT* FROM SERVICO WHERE nmPais =" + nmpais;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
-                Dr = SQL.ExecuteReader();
-                while (Dr.Read())
-                {
-                    //paisVM.Id = Convert.ToInt32(Dr["id"]);
-                    //paisVM.nmPais = Dr["nmPais"].ToString();
-                    //paisVM.dsSigla = Dr["dsSigla"].ToString();
-                    //paisVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    //paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
-                }
-                return servicoVM;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao selecionar o Servico: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
         public bool UpdateServico(Servico servico)
         {
             try
@@ -172,7 +78,7 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao Atualizar Servico: " + e.Message);
+                throw new Exception("Erro ao Atualizar Serviço: " + e.Message);
             }
             finally
             {
@@ -180,7 +86,7 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
         }
 
-        public bool ExcluirServico(int Id)
+        public bool DeleteServico(int Id)
         {
             try
             {
@@ -204,12 +110,82 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao excluir Pais: " + e.Message);
+                throw new Exception("Erro ao excluir Serviço: " + e.Message);
             }
             finally
             {
                 Close();
             }
         }
+
+        #endregion
+
+        public IEnumerable<Servico> SelecionarServico()
+        {
+            try
+            {
+                Open();
+                SQL = new SqlCommand(@"SELECT * FROM Serviço", sqlconnection);
+                SQL.CommandType = CommandType.Text;
+                Dr = SQL.ExecuteReader();
+                // Criando uma lista vazia
+                var lista = new List<Servico>();
+                while (Dr.Read())
+                {
+                    var servico = new Servico()
+                    {
+                        Id = Convert.ToInt32(Dr["Id"]),
+                        dsServico = Convert.ToString(Dr["dsServico"]),
+                        vlServico = Convert.ToDecimal(Dr["vlServico"]),
+                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
+                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+                    lista.Add(servico);
+                }
+                return lista;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao selecionar o Serviço: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public ServicoVM GetServico(int? Id)
+        {
+            try
+            {
+                Open();
+                var servicoVM = new ServicoVM();
+                string selectEditServico = @"SELECT* FROM Servico WHERE id =" + Id;
+                SQL = new SqlCommand(selectEditServico, sqlconnection);
+
+
+                Dr = SQL.ExecuteReader();
+                while (Dr.Read())
+                {
+                    servicoVM.Id = Convert.ToInt32(Dr["id"]);
+                    servicoVM.dsServico = Dr["dsServico"].ToString();
+                    servicoVM.vlServico = Convert.ToDecimal(Dr["vlServico"]);
+                    servicoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
+                    servicoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
+
+                }
+                return servicoVM;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao selecionar o Serviço: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+       
     }
 }

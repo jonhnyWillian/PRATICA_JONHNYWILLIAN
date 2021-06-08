@@ -14,8 +14,6 @@ namespace SistemaBarbearia.Models.Clientes
         [Required]
         public string nmApelido { get; set; }
 
-        [Required]
-        public string flTipoPessoa { get; set; }
 
         [Required]
         public string flSexo { get; set; }
@@ -48,11 +46,6 @@ namespace SistemaBarbearia.Models.Clientes
         [Required]
         public string nrRG { get; set; }
 
-        [Required]
-        public string nrCNPJ { get; set; }
-
-        [Required]
-        public string nrInscEstadual { get; set; }
 
         [Required]
         public DateTime? dataNasc { get; set; }

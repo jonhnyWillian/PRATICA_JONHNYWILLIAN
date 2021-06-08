@@ -1,58 +1,30 @@
-﻿@model SistemaBarbearia.ViewModels.Paises.EstadoVM
+﻿@model SistemaBarbearia.ViewModels.Estados.EstadoVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Remover registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>EstadoVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nmEstado)
-        </dt>
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = true;
+}
+<div class="container-fluid">
 
-        <dd>
-            @Html.DisplayFor(model => model.nmEstado)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsUF)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsUF)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.idPais)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.idPais)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtCadastro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtCadastro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtUltAlteracao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtUltAlteracao)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+    @using (Html.BeginForm())
+    {
+    <div class="container">
+        <ul class="breadcrumb breadcrumb-arrow">
+            <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+            <li class="active">Excluir Estado</li>
+        </ul>
+        <div class="form-horizontal">
+            @Html.Partial("Form", Model)
         </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o"></i> Excluir</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+
+        </div>
+    </div>
+       
     }
 </div>

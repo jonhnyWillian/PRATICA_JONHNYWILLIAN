@@ -1,6 +1,7 @@
 ﻿using SistemaBarbearia.DAOs.Estados;
 using SistemaBarbearia.Models.Estados;
 using SistemaBarbearia.Models.Paises;
+using SistemaBarbearia.DataTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace SistemaBarbearia.Controllers
                 {
                     var paisDAO = new EstadoDAO();
 
-                    if (paisDAO.AdicionarEstado(estado))
+                    if (paisDAO.InsertEstado(estado))
                     {
                         ViewBag.Message = "Estado criado com sucesso!";
                     }
@@ -103,7 +104,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var estadoDAO = new EstadoDAO();
-                estadoDAO.ExcluirEstado(id);
+                estadoDAO.DeleteEstado(id);
                 return RedirectToAction("Index");
             }
             catch
@@ -112,6 +113,30 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
- 
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            try
+            {
+
+                var estadoDAO = new EstadoDAO();
+                var select = estadoDAO.SelecionarEstado().Select(u => new { Id = u.Id, nmEstado = u.nmEstado, dsUF = u.dsUF });
+
+                IQueryable<dynamic> query = select.AsQueryable();
+
+
+                var totalResult = query.Count();
+
+                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

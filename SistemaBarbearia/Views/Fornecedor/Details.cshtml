@@ -1,124 +1,31 @@
-﻿@model SistemaBarbearia.ViewModels.Fornecedor.FornecedorVM
+﻿@model SistemaBarbearia.ViewModels.Fornecedores.FornecedorVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Detalhes do Fornecedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-<div>
-    <h4>FornecedorVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nmRazaoSocial)
-        </dt>
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = true;
 
-        <dd>
-            @Html.DisplayFor(model => model.nmRazaoSocial)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.nmFantasia)
-        </dt>
+}
+<div class="container-fluid">
 
-        <dd>
-            @Html.DisplayFor(model => model.nmFantasia)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.flTipoPessoa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.flTipoPessoa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrContatos)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrContatos)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrTelefone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrTelefone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrCelular)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrCelular)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsComplemento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsComplemento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsLougradouro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsLougradouro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrResidencial)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrResidencial)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsEmail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrCNPJ)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrCNPJ)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrInscEstadual)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrInscEstadual)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtCadastro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtCadastro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtUltAlteracao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtUltAlteracao)
-        </dd>
-
-    </dl>
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <ul class="breadcrumb breadcrumb-arrow">
+                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                <li class="active">Detalhes do Fornecedor</li>
+            </ul>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
+            </div>
+            <div class="form-group">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
+                </div>
+            </div>
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

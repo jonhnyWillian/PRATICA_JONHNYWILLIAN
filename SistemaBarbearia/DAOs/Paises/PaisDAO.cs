@@ -12,8 +12,8 @@ namespace SistemaBarbearia.DAOs.Paises
 {
     public class PaisDAO : DataAccess
     {
-
-        public bool AdicionarPais(Pais pais)
+        #region INSERT, UPDATE, DELETE 
+        public bool InsertPais(Pais pais)
         {
 
             try
@@ -32,7 +32,7 @@ namespace SistemaBarbearia.DAOs.Paises
                 if (i >= 1)
                 {
                     return true;
-                   
+
                 }
                 else
                 {
@@ -49,6 +49,77 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
+        public bool UpdatePais(Pais pais)
+        {
+            try
+            {
+                Open();
+                string updatePais = @"UPDATE Pais SET nmPais = @nmPais, dsSigla = @dsSigla, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                SqlCommand sql = new SqlCommand(updatePais, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@id", pais.Id);
+                sql.Parameters.AddWithValue("@nmPais", pais.nmPais.ToUpper());
+                sql.Parameters.AddWithValue("@dsSigla", pais.dsSigla.ToUpper());
+
+                sql.Parameters.AddWithValue("@dtUltAlteracao", pais.dtUltAlteracao = DateTime.Now);
+
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Pais: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public bool DeletePais(int Id)
+        {
+            try
+            {
+                Open();
+                string deletePais = "DELETE FROM Pais WHERE Id = @Id";
+                SqlCommand sql = new SqlCommand(deletePais, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@Id", Id);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao excluir Pais: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        #endregion
+
         public IEnumerable<Pais> SelecionarPais()
         {
             try
@@ -58,7 +129,7 @@ namespace SistemaBarbearia.DAOs.Paises
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
-                var lista = new List<Models.Paises.Pais>();
+                var lista = new List<Pais>();
                 while (Dr.Read())
                 {
                     var pais = new Models.Paises.Pais()
@@ -67,7 +138,7 @@ namespace SistemaBarbearia.DAOs.Paises
                         nmPais = Convert.ToString(Dr["nmPais"]),
                         dsSigla = Convert.ToString(Dr["dsSigla"]),
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                       // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(pais);
                 }
@@ -100,10 +171,10 @@ namespace SistemaBarbearia.DAOs.Paises
                     paisVM.nmPais = Dr["nmPais"].ToString();
                     paisVM.dsSigla = Dr["dsSigla"].ToString();
                     paisVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    
-                    paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
-                   
-                    
+
+                    paisVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
+
+
                 }
                 return paisVM;
             }
@@ -117,99 +188,58 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        public PaisVM filtraPais(string nmpais)
+        protected string BuscarPais(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE Id = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR PAIS.nmPais LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM PAIS " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectPaisVM> SelectPais(int? id, string nmPais)
         {
             try
             {
+
+                var sqlSelectPais = this.BuscarPais(id, nmPais);
                 Open();
-                var paisVM = new PaisVM();
-                string selectEditPais = @"SELECT* FROM Pais WHERE nmPais =" + nmpais;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
+                SQL = new SqlCommand(sqlSelectPais, sqlconnection);
                 Dr = SQL.ExecuteReader();
+                var list = new List<SelectPaisVM>();
+
                 while (Dr.Read())
                 {
-                    paisVM.Id = Convert.ToInt32(Dr["id"]);
-                    paisVM.nmPais = Dr["nmPais"].ToString();
-                    paisVM.dsSigla = Dr["dsSigla"].ToString();
-                    paisVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    var pais = new SelectPaisVM
+                    {
+                        idPais = Convert.ToInt32(Dr["Id"]),
+                        nmPais = Convert.ToString(Dr["nmPais"]),                       
+                        dsSigla = Convert.ToString(Dr["dsSigla"]),
+                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+
+                    list.Add(pais);
                 }
-                return paisVM;
+
+                return list;
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw new Exception("Erro ao selecionar o Pais: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool UpdatePais(Pais pais)
-        {
-            try
-            {
-                Open();
-                string updatePais = @"UPDATE Pais SET nmPais = @nmPais, dsSigla = @dsSigla, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
-                SqlCommand sql = new SqlCommand(updatePais, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@id", pais.Id);
-                sql.Parameters.AddWithValue("@nmPais", pais.nmPais.ToUpper());
-                sql.Parameters.AddWithValue("@dsSigla", pais.dsSigla.ToUpper());
-                sql.Parameters.AddWithValue("@dtCadastro", pais.dtCadastro);
-                sql.Parameters.AddWithValue("@dtUltAlteracao", pais.dtUltAlteracao = DateTime.Now);
-
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao Atualizar Pais: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool ExcluirPais(int Id)
-        {
-            try
-            {
-                Open();
-                string deletePais = "DELETE FROM Pais WHERE Id = @Id";
-                SqlCommand sql = new SqlCommand(deletePais, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@Id", Id);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao excluir Pais: " + e.Message);
+                throw new Exception(error.Message);
             }
             finally
             {

@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DAOs.Categorias;
 using SistemaBarbearia.Models.Categorias;
+using SistemaBarbearia.DataTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace SistemaBarbearia.Controllers
                 {
                     var categoriaDAO = new CategoriaDAO();
 
-                    if (categoriaDAO.AdicionarCategoria(categoria))
+                    if (categoriaDAO.InsertCategoria(categoria))
                     {
                         ViewBag.Message = "Categoria criado com sucesso!";
                     }
@@ -62,7 +63,9 @@ namespace SistemaBarbearia.Controllers
         // GET: Categoria/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var categoriaDAO = new CategoriaDAO();
+
+            return View(categoriaDAO.GetCategoria(id));
         }
 
         // POST: Categoria/Edit/5
@@ -97,13 +100,38 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var categoriaDAO = new CategoriaDAO();
-                categoriaDAO.ExcluirCategoria(id);
+                categoriaDAO.DeleteCategoria(id);
 
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
+            }
+        }
+
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            try
+            {
+
+                var categoriaDAO = new CategoriaDAO();
+                var select = categoriaDAO.SelecionarCategoria().Select(u => new { Id = u.Id, dsCategoria = u.dsCategoria});
+
+                IQueryable<dynamic> query = select.AsQueryable();
+
+
+                var totalResult = query.Count();
+
+                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
         }
     }

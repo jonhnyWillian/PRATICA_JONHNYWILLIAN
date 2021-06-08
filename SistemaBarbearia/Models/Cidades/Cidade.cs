@@ -13,7 +13,10 @@ namespace SistemaBarbearia.Models.Cidades
         public int Id { get; set; }
         [Required]
         public string nmCidade { get; set; }
-        
+
+        [Required]
+        public string DDD { get; set; }
+
         [Required]
         public int idEstado { get; set; }
 

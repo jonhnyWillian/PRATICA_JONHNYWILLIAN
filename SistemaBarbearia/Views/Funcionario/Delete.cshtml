@@ -1,154 +1,32 @@
-﻿@model SistemaBarbearia.ViewModels.Funcionario.FuncionarioVM
+﻿@model SistemaBarbearia.ViewModels.Funcionarios.FuncionarioVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Remover registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>FuncionarioVM</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.nmFuncionario)
-        </dt>
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = true;
+}
+<div class="container-fluid">
 
-        <dd>
-            @Html.DisplayFor(model => model.nmFuncionario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nmApelido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nmApelido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.flSexo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.flSexo)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrTelefone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrTelefone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrCelular)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrCelular)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrCEP)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrCEP)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsComplemento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsComplemento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsBairro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsBairro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsLougradouro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsLougradouro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrResidencial)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrResidencial)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dsEmail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dsEmail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrCPF)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrCPF)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.nrRG)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.nrRG)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtAdimissao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtAdimissao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtDemissao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtDemissao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtCadastro)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtCadastro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dtUltAlteracao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dtUltAlteracao)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <ul class="breadcrumb breadcrumb-arrow">
+                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                <li class="active">Excluir Funcionario</li>
+            </ul>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <input type="submit" value="Excluir" class="btn btn-primary" />
+                    @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
+                </div>
+            </div>
         </div>
     }
 </div>

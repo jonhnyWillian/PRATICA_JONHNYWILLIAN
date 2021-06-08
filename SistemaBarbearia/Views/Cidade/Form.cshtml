@@ -1,0 +1,65 @@
+﻿@model SistemaBarbearia.ViewModels.Cidades.CidadeVM
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+}
+@if (action != "create")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                    @Html.LabelFor(e => e.Id, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Id, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.nmCidade, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.nmCidade, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Cidade" })
+            @Html.ValidationMessageFor(model => model.nmCidade, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.DDD, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.DDD, new { @class = "form-control col-md-2", @style = "text-transform:uppercase", @placeholder = "DDD", })
+            @Html.ValidationMessageFor(model => model.DDD, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.EditorFor(model => model.Estado, "Estados/Select", new { @disabled = readOnly })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

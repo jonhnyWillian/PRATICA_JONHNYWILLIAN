@@ -1,0 +1,29 @@
+﻿@model SistemaBarbearia.ViewModels.Cargos.CargoVM
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Editar registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    ViewBag.readOnly = false;
+
+
+}
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <div class="pull-right col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ul class="breadcrumb breadcrumb-arrow">
+                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                <li class="active">Alterar Cargo</li>
+            </ul>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Salvar</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"><i class="fa fa-arrow-left"></i>Voltar</a>
+            </div>
+        </div>
+    </div>
+}

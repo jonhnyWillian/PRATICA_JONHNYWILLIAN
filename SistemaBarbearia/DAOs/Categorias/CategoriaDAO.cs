@@ -11,7 +11,8 @@ namespace SistemaBarbearia.DAOs.Categorias
 {
     public class CategoriaDAO : DataAccess
     {
-        public bool AdicionarCategoria(Categoria categoria)
+        #region INSERT UPDATE DELETE
+        public bool InsertCategoria(Categoria categoria)
         {
 
             try
@@ -45,6 +46,74 @@ namespace SistemaBarbearia.DAOs.Categorias
                 Close();
             }
         }
+
+        public bool UpdateCategoria(Categoria servico)
+        {
+            try
+            {
+                Open();
+                string updateCategoria = @"UPDATE CATEGORIA SET dsCategoria = @dsCategoria, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                SqlCommand sql = new SqlCommand(updateCategoria, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@id", servico.Id);
+                sql.Parameters.AddWithValue("@dsCategoria", servico.dsCategoria.ToUpper());
+                sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
+
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Categoria: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public bool DeleteCategoria(int Id)
+        {
+            try
+            {
+                Open();
+                string deleteCategoria = "DELETE FROM CATEGORIA WHERE Id = @Id";
+                SqlCommand sql = new SqlCommand(deleteCategoria, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@Id", Id);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao excluir Categoria: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+        #endregion
 
         public IEnumerable<Categoria> SelecionarCategoria()
         {
@@ -110,71 +179,6 @@ namespace SistemaBarbearia.DAOs.Categorias
         }
 
 
-        public bool UpdateCategoria(Categoria servico)
-        {
-            try
-            {
-                Open();
-                string updateCategoria = @"UPDATE CATEGORIA SET dsCategoria = @dsCategoria, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
-                SqlCommand sql = new SqlCommand(updateCategoria, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@id", servico.Id);
-                sql.Parameters.AddWithValue("@dsCategoria", servico.dsCategoria.ToUpper());
-                sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
-
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao Atualizar Categoria: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
-
-        public bool ExcluirCategoria(int Id)
-        {
-            try
-            {
-                Open();
-                string deleteCategoria = "DELETE FROM CATEGORIA WHERE Id = @Id";
-                SqlCommand sql = new SqlCommand(deleteCategoria, sqlconnection);
-                sql.CommandType = CommandType.Text;
-
-                sql.Parameters.AddWithValue("@Id", Id);
-
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao excluir Categoria: " + e.Message);
-            }
-            finally
-            {
-                Close();
-            }
-        }
+       
     }
 }

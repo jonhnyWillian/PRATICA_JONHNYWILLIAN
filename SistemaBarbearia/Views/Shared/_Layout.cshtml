@@ -4,7 +4,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/css/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/select2.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css">
+    <script src="~/Scripts/sSelect.js"></script>
+    <script src="~/Scripts/Functions.js"></script>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
     <title>BARBEARIA</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -22,11 +32,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" @Html.ActionLink("Paises", "Index", "Pais")</a>
-                        <div class="dropdown-divider"></div>
+
+
                         <a class="dropdown-item" @Html.ActionLink("Estados", "Index", "Estado")</a>
-                        <div class="dropdown-divider"></div>
+
                         <a class="dropdown-item" @Html.ActionLink("Cidades", "Index", "Cidade")</a>
-                        <div class="dropdown-divider"></div>
+
                     </div>
                 </li>
                 <li class="nav-item">
@@ -35,21 +46,35 @@
                 <li class="nav-item">
                     <a class="nav-link" @Html.ActionLink("Categorias", "Index", "Categoria")</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" @Html.ActionLink("Produtos", "Index", "Produto")</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" @Html.ActionLink("Cargos", "Index", "Cargo")</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Pessoa
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" @Html.ActionLink("Cliente", "Index", "Cliente")</a>
-                        <div class="dropdown-divider"></div>
+
                         <a class="dropdown-item" @Html.ActionLink("Fornecedor", "Index", "Fornecedor")</a>
-                        <div class="dropdown-divider"></div>
+
                         <a class="dropdown-item" @Html.ActionLink("Funcionario", "Index", "Funcionario")</a>
-                        <div class="dropdown-divider"></div>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Pagamentos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" @Html.ActionLink("Forma de Pagamento", "Index", "FormaPagamento")</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                   
+
                 </li>
                 @*<li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -58,9 +83,13 @@
         </div>
     </nav>
 
+    <div class="container body-content">
         @RenderBody()
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    @Html.RenderScriptBlocks()
+    @RenderSection("scripts", required: false)
 </body>
 </html>

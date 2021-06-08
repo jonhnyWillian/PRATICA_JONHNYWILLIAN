@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DAOs.Clientes;
 using SistemaBarbearia.Models.Clientes;
+using SistemaBarbearia.DataTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace SistemaBarbearia.Controllers
                 {
                     var clienteDAO = new ClienteDAO();
 
-                    if (clienteDAO.AdicionarCliente(cliente))
+                    if (clienteDAO.InsertCliente(cliente))
                     {
                         ViewBag.Message = "Cliente criado com sucesso!";
                     }
@@ -96,7 +97,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var clienteDAO = new ClienteDAO();
-                clienteDAO.ExcluirCliente(id);
+                clienteDAO.DeleteCliente(id);
 
                 return RedirectToAction("Index");
             }
@@ -106,7 +107,30 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            try
+            {
 
+                var clienteDAO = new ClienteDAO();
+                var select = clienteDAO.SelecionarCliente().Select(u => new { Id = u.Id, nmCliente = u.nmCliente, nrTelefone = u.nrTelefone });
+
+                IQueryable<dynamic> query = select.AsQueryable();
+
+
+                var totalResult = query.Count();
+
+                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
 
