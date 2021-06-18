@@ -11,48 +11,43 @@ namespace SistemaBarbearia.Controllers
 {
     public class CategoriaController : Controller
     {
-        // GET: Categoria
+     
         public ActionResult Index()
         {
             var categoriaDAO = new CategoriaDAO();
             ModelState.Clear();
             return View(categoriaDAO.SelecionarCategoria());
         }
-
-        // GET: Categoria/Details/5
+      
         public ActionResult Details(int id)
         {
             var categoriaDAO = new CategoriaDAO();
             return View(categoriaDAO.GetCategoria(id));
         }
 
-        // GET: Categoria/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Categoria/Create
         [HttpPost]
         public ActionResult Create(Categoria categoria)
         {
-            if (categoria.dsCategoria == null)
+            if (string.IsNullOrWhiteSpace(categoria.dsCategoria))
             {
-                ModelState.AddModelError("categoria.dsCategoria", "Campo categoria não pode ser em braco");
-            }
+                ModelState.AddModelError("", "Nome do Categoria Nao pode ser em braco");
+            }           
             try
             {
-                if (ModelState.IsValid)                
+                if (ModelState.IsValid)
                 {
                     var categoriaDAO = new CategoriaDAO();
 
-                    if (categoriaDAO.InsertCategoria(categoria))
-                    {
-                        ViewBag.Message = "Categoria criado com sucesso!";
-                    }
-
-                }
+                    categoriaDAO.InsertCategoria(categoria);
                     return RedirectToAction("Index");
+                }
+
+                return View();
             }
             catch
             {
@@ -60,7 +55,6 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Categoria/Edit/5
         public ActionResult Edit(int id)
         {
             var categoriaDAO = new CategoriaDAO();
@@ -68,17 +62,24 @@ namespace SistemaBarbearia.Controllers
             return View(categoriaDAO.GetCategoria(id));
         }
 
-        // POST: Categoria/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Categoria categoria)
         {
+            if (string.IsNullOrWhiteSpace(categoria.dsCategoria))
+            {
+                ModelState.AddModelError("", "Nome do Categoria Nao pode ser em braco");
+            }
             try
             {
-                var categoriaDAO = new CategoriaDAO();
+                if (ModelState.IsValid)
+                {
+                    var categoriaDAO = new CategoriaDAO();
 
-                categoriaDAO.UpdateCategoria(categoria);
+                    categoriaDAO.UpdateCategoria(categoria);
+                    return RedirectToAction("Index");
+                }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -86,16 +87,14 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Categoria/Delete/5
         public ActionResult Delete(int id)
         {
             var categoriaDAO = new CategoriaDAO();
             return View(categoriaDAO.GetCategoria(id));
         }
 
-        // POST: Categoria/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Categoria categoria)
         {
             try
             {
@@ -116,7 +115,7 @@ namespace SistemaBarbearia.Controllers
             {
 
                 var categoriaDAO = new CategoriaDAO();
-                var select = categoriaDAO.SelecionarCategoria().Select(u => new { Id = u.Id, dsCategoria = u.dsCategoria});
+                var select = categoriaDAO.SelecionarCategoria().Select(u => new { IdCategoria = u.IdCategoria, dsCategoria = u.dsCategoria});
 
                 IQueryable<dynamic> query = select.AsQueryable();
 
@@ -133,6 +132,84 @@ namespace SistemaBarbearia.Controllers
                 Response.StatusCode = 500;
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var categoriaDAO = new CategoriaDAO();
+                IQueryable<dynamic> lista = categoriaDAO.SelecionarCategoria().Select(u => new { IdCategoria = u.IdCategoria, dsCategoria = u.dsCategoria }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public JsonResult JsInsert(Categoria categoria)
+        {
+            var categoriaDAO = new CategoriaDAO();
+            categoriaDAO.InsertCategoria(categoria);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = categoria
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Categoria categoria)
+        {
+            var categoriaDAO = new CategoriaDAO();
+            categoriaDAO.UpdateCategoria(categoria);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = categoria
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? id, string text)
+        {
+            try
+            {
+                var result = this.Find(id, text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var categoriaDAO = new CategoriaDAO();
+            var list = categoriaDAO.SelectCategoria(id, text);
+            var select = list.Select(u => new
+            {
+                id = u.id,
+                text = u.text,
+
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
+
+            }).OrderBy(u => u.text).ToList();
+            return select.AsQueryable();
         }
     }
 }

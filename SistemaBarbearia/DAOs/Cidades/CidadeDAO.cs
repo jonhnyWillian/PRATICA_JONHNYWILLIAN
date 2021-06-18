@@ -54,11 +54,11 @@ namespace SistemaBarbearia.DAOs.Cidades
             try
             {
                 Open();
-                string updateCidade = @"UPDATE CIDADE SET nmCidade = @nmCidade, ddd = @ddd, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updateCidade = @"UPDATE CIDADE SET nmCidade = @nmCidade, ddd = @ddd, dtUltAlteracao = @dtUltAlteracao  WHERE IdCidade = @id";
                 SqlCommand sql = new SqlCommand(updateCidade, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", cidade.Id);
+                sql.Parameters.AddWithValue("@IdCidade", cidade.IdCidade);
                 sql.Parameters.AddWithValue("@nmCidade", cidade.nmCidade.ToUpper());
                 sql.Parameters.AddWithValue("@ddd", cidade.DDD.ToUpper());
                 sql.Parameters.AddWithValue("@dtCadastro", cidade.dtCadastro);
@@ -91,11 +91,11 @@ namespace SistemaBarbearia.DAOs.Cidades
             try
             {
                 Open();
-                string deletePais = "DELETE FROM CIDADE WHERE Id = @Id";
+                string deletePais = "DELETE FROM CIDADE WHERE IdCidade = @Id";
                 SqlCommand sql = new SqlCommand(deletePais, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdCidade", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -110,7 +110,7 @@ namespace SistemaBarbearia.DAOs.Cidades
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao excluir Pais: " + e.Message);
+                throw new Exception("Erro ao excluir Cidade: " + e.Message);
             }
             finally
             {
@@ -133,11 +133,11 @@ namespace SistemaBarbearia.DAOs.Cidades
                 {
                     var cidade = new Cidade()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdCidade = Convert.ToInt32(Dr["IdCidade"]),
                         nmCidade = Convert.ToString(Dr["nmCidade"]),
                         DDD = Convert.ToString(Dr["ddd"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(cidade);
                 }
@@ -159,19 +159,19 @@ namespace SistemaBarbearia.DAOs.Cidades
             {
                 Open();
                 var cidadeVM = new CidadeVM();
-                string selectEditCidade = @"SELECT* FROM CIDADE WHERE id =" + Id;
+                string selectEditCidade = @"SELECT* FROM CIDADE WHERE IdCidade =" + Id;
                 SQL = new SqlCommand(selectEditCidade, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    cidadeVM.Id = Convert.ToInt32(Dr["id"]);
+                    cidadeVM.IdCidade = Convert.ToInt32(Dr["IdCidade"]);
                     cidadeVM.nmCidade = Dr["nmCidade"].ToString();
                     cidadeVM.DDD = Dr["ddd"].ToString();
-                    cidadeVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    
-                    cidadeVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    cidadeVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
+
+                    cidadeVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
 
                 }
@@ -187,6 +187,64 @@ namespace SistemaBarbearia.DAOs.Cidades
             }
         }
 
-       
+        protected string BuscarCidade(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdCidade = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR nmCidade LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM Cidade " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectCidadeVM> SelectCidade(int? id, string nmCidade)
+        {
+            try
+            {
+
+                var sqlSelectCidade = this.BuscarCidade(id, nmCidade);
+                Open();
+                SQL = new SqlCommand(sqlSelectCidade, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectCidadeVM>();
+
+                while (Dr.Read())
+                {
+                    var pais = new SelectCidadeVM
+                    {
+                        IdCidade = Convert.ToInt32(Dr["IdCidade"]),
+                        nmCidade = Convert.ToString(Dr["nmCidade"]),
+                        DDD = Convert.ToString(Dr["DDD"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+
+                    list.Add(pais);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
     }
 }

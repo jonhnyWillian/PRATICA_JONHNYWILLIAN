@@ -10,7 +10,7 @@ namespace SistemaBarbearia.Models.Servicos
     {
 
         [Key]
-        public int Id { get; set; }
+        public int IdServico { get; set; }
         [Required]
         public string dsServico { get; set; }
         [Required]

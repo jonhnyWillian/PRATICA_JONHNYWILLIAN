@@ -12,8 +12,6 @@ namespace SistemaBarbearia.Controllers
     public class ClienteController : Controller
     {
 
-
-        // GET: Cliente
         public ActionResult Index()
         {
             var clienteDAO = new ClienteDAO();
@@ -21,76 +19,88 @@ namespace SistemaBarbearia.Controllers
             return View(clienteDAO.SelecionarCliente());
         }
 
-        // GET: Cliente/Details/5
         public ActionResult Details(int id)
         {
             var clienteDAO = new ClienteDAO();
             return View(clienteDAO.GetCliente(id));
         }
 
-        // GET: Cliente/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Cliente/Create
         [HttpPost]
         public ActionResult Create(Cliente cliente)
         {
+            if (string.IsNullOrWhiteSpace(cliente.nmCliente))
+            {
+                ModelState.AddModelError("", "Nome do Cliente Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(cliente.nmApelido))
+            {
+                ModelState.AddModelError("", "Sigla do Apelido Nao pode ser em braco");
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     var clienteDAO = new ClienteDAO();
 
-                    if (clienteDAO.InsertCliente(cliente))
-                    {
-                        ViewBag.Message = "Cliente criado com sucesso!";
-                    }
+                    clienteDAO.InsertCliente(cliente);
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
                 return View();
             }
         }
-
-        // GET: Cliente/Edit/5
+      
         public ActionResult Edit(int id)
         {
             var clienteDAO = new ClienteDAO();
             return View(clienteDAO.GetCliente(id));
         }
 
-        // POST: Cliente/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Cliente cliente)
         {
+            if (string.IsNullOrWhiteSpace(cliente.nmCliente))
+            {
+                ModelState.AddModelError("", "Nome do Cliente Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(cliente.nmApelido))
+            {
+                ModelState.AddModelError("", "Sigla do Apelido Nao pode ser em braco");
+            }
             try
             {
-                var clienteDAO = new ClienteDAO();
+                if (ModelState.IsValid)
+                {
+                    var clienteDAO = new ClienteDAO();
 
-                clienteDAO.UpdateCliente(cliente);
+                    clienteDAO.UpdateCliente(cliente);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
                 return View();
             }
         }
-
-        // GET: Cliente/Delete/5
+       
         public ActionResult Delete(int id)
         {
             var clienteDAO = new ClienteDAO();
             return View(clienteDAO.GetCliente(id));
         }
-
-        // POST: Cliente/Delete/5
+       
         [HttpPost]
         public ActionResult Delete(int id, Cliente cliente)
         {
@@ -107,32 +117,26 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
-        {
-            try
-            {
+        //public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        //{
+        //    try
+        //    {
+        //        var select = this.Find(null, requestModel.Search.Value);
 
-                var clienteDAO = new ClienteDAO();
-                var select = clienteDAO.SelecionarCliente().Select(u => new { Id = u.Id, nmCliente = u.nmCliente, nrTelefone = u.nrTelefone });
+        //        var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
+        //        var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
-
-                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = 500;
-                return Json(ex.Message, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //        return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
 
 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.StatusCode = 500;
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
 
     }
 }

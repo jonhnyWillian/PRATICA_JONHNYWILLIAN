@@ -1,5 +1,4 @@
 ﻿@model SistemaBarbearia.ViewModels.Cargos.CargoVM
-@using SistemaBarbearia.Helper;
 @{
     ViewBag.Title = "Novo registro";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,21 +16,15 @@
                 <li class="active">Cadastro de Cargo</li>
             </ul>
             <div class="form-horizontal">
-
                 @Html.Partial("Form", Model)
-
             </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <input type="submit" value="Salvar" class="btn btn-primary" />
-                        @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
-                    </div>
-                </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
             </div>
         </div>
 
 
     }
-
 </div>
+

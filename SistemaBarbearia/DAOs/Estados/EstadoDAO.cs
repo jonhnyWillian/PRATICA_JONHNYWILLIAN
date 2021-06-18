@@ -25,7 +25,7 @@ namespace SistemaBarbearia.DAOs.Estados
 
                 SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                //SQL.Parameters.AddWithValue("idPais", estado.Pais.Id);
+                SQL.Parameters.AddWithValue("idPais", estado.idPais);
                 SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -54,11 +54,11 @@ namespace SistemaBarbearia.DAOs.Estados
             try
             {
                 Open();
-                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE IdEstado = @IdEstado";
                 SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", estado.Id);
+                sql.Parameters.AddWithValue("@IdEstado", estado.IdEstado);
                 sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
                 sql.Parameters.AddWithValue("@idPais", estado.idPais);
@@ -90,11 +90,11 @@ namespace SistemaBarbearia.DAOs.Estados
             try
             {
                 Open();
-                string deleteEstado = "DELETE FROM Estado WHERE Id = @Id";
+                string deleteEstado = "DELETE FROM Estado WHERE IdEstado = @IdEstado";
                 SqlCommand sql = new SqlCommand(deleteEstado, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdEstado", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -133,7 +133,7 @@ namespace SistemaBarbearia.DAOs.Estados
                 {
                     var estado = new Estado()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdEstado = Convert.ToInt32(Dr["IdEstado"]),
                         nmEstado = Convert.ToString(Dr["nmEstado"]),
                         dsUF = Convert.ToString(Dr["dsUF"]),
                         idPais = Convert.ToInt32(Dr["idPais"]),
@@ -162,14 +162,14 @@ namespace SistemaBarbearia.DAOs.Estados
             {
                 Open();
                 var estadoVM = new EstadoVM();
-                string selectEditPais = @"SELECT* FROM ESTADO WHERE id =" + Id;
+                string selectEditPais = @"SELECT* FROM ESTADO WHERE IdEstado =" + Id;
                 SQL = new SqlCommand(selectEditPais, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    estadoVM.Id = Convert.ToInt32(Dr["id"]);
+                    estadoVM.IdEstado = Convert.ToInt32(Dr["IdEstado"]);
                     estadoVM.nmEstado = Dr["nmEstado"].ToString();
                     estadoVM.dsUF = Dr["dsUF"].ToString();
                     //estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
@@ -188,31 +188,58 @@ namespace SistemaBarbearia.DAOs.Estados
             }
         }
 
-        public EstadoVM filtraEstado(string nmEstado)
+        protected string BuscarPais(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdEstado = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR nmEstado LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM Estado " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectEstadoVM> SelectEstado(int? id, string nmEstado)
         {
             try
             {
+
+                var sqlSelectEstado = this.BuscarPais(id, nmEstado);
                 Open();
-                var estadoVM = new EstadoVM();
-                string selectEditPais = @"SELECT* FROM ESTADO WHERE nmEstado =" + nmEstado;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
+                SQL = new SqlCommand(sqlSelectEstado, sqlconnection);
                 Dr = SQL.ExecuteReader();
+                var list = new List<SelectEstadoVM>();
+
                 while (Dr.Read())
                 {
-                    estadoVM.Id = Convert.ToInt32(Dr["id"]);
-                    estadoVM.nmEstado = Dr["nmEstado"].ToString();
-                    estadoVM.dsUF = Dr["dsUF"].ToString();
-                    //estadoVM.idPais = Convert.ToInt32(Dr["idPais"]);
-                    estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    estadoVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    var estado = new SelectEstadoVM
+                    {
+                        idEstado = Convert.ToInt32(Dr["idEstado"]),
+                        nmEstado = Convert.ToString(Dr["nmEstado"]),
+                        dsUF = Convert.ToString(Dr["dsUF"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+
+                    list.Add(estado);
                 }
-                return estadoVM;
+
+                return list;
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                throw new Exception("Erro ao selecionar o Estado: " + e.Message);
+                throw new Exception(error.Message);
             }
             finally
             {
@@ -220,6 +247,6 @@ namespace SistemaBarbearia.DAOs.Estados
             }
         }
 
-       
+
     }
 }

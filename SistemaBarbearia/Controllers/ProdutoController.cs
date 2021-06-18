@@ -11,7 +11,7 @@ namespace SistemaBarbearia.Controllers
 {
     public class ProdutoController : Controller
     {
-        // GET: Produto
+        
         public ActionResult Index()
         {
             var produtoDAO = new ProdutoDAO();
@@ -19,20 +19,17 @@ namespace SistemaBarbearia.Controllers
             return View(produtoDAO.SelecionarProduto());
         }
 
-        // GET: Produto/Details/5
         public ActionResult Details(int id)
         {
             var produtoDAO = new ProdutoDAO();
             return View(produtoDAO.GetProduto(id));
         }
 
-        // GET: Produto/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Produto/Create
         [HttpPost]
         public ActionResult Create(Produto produto)
         {
@@ -40,20 +37,21 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "Nome do Produto Nao pode ser em braco");
             }
-            
+            if (string.IsNullOrWhiteSpace(produto.codBarra))
+            {
+                ModelState.AddModelError("", "Codigo de Barra do Produto Nao pode ser em braco");
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     var produtoDAO = new ProdutoDAO();
 
-                    if (produtoDAO.InsertProduto(produto))
-                    {
-                        ViewBag.Message = "Produto criado com sucesso!";
-                    }
+                    produtoDAO.InsertProduto(produto);
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -61,24 +59,35 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Produto/Edit/5
         public ActionResult Edit(int id)
         {
             var produtoDAO = new ProdutoDAO();
             return View(produtoDAO.GetProduto(id));
         }
 
-        // POST: Produto/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Produto produto)
         {
+            if (string.IsNullOrWhiteSpace(produto.dsProduto))
+            {
+                ModelState.AddModelError("", "Nome do Produto Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(produto.codBarra))
+            {
+                ModelState.AddModelError("", "Codigo de Barra do Produto Nao pode ser em braco");
+            }
             try
             {
-                var produtoDAO = new ProdutoDAO();
+                if (ModelState.IsValid)
+                {
+                    var produtoDAO = new ProdutoDAO();
 
-                produtoDAO.UpdateProduto(produto);
+                    produtoDAO.UpdateProduto(produto);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
@@ -86,14 +95,12 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Produto/Delete/5
         public ActionResult Delete(int id)
         {
             var produtoDAO = new ProdutoDAO();
             return View(produtoDAO.GetProduto(id));
         }
 
-        // POST: Produto/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, Produto produto)
         {
@@ -113,18 +120,30 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var produtoDAO = new ProdutoDAO();
-                var select = produtoDAO.SelecionarProduto().Select(u => new { id = u.Id, text = u.dsProduto });
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var produtoDAO = new ProdutoDAO();
+                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { IdProduto = u.idCategoria, dsProduto = u.dsProduto }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -132,6 +151,66 @@ namespace SistemaBarbearia.Controllers
                 Response.StatusCode = 500;
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult JsInsert(Produto produto)
+        {
+            var produtoDAO = new ProdutoDAO();
+            produtoDAO.InsertProduto(produto);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = produto
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Produto produto)
+        {
+            var produtoDAO = new ProdutoDAO();
+            produtoDAO.UpdateProduto(produto);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = produto
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? id, string text)
+        {
+            try
+            {
+                var result = this.Find(id, text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var produtoDAO = new ProdutoDAO();
+            var list = produtoDAO.SelectCategoria(id, text);
+            var select = list.Select(u => new
+            {
+                id = u.id,
+                text = u.text,              
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
+
+            }).OrderBy(u => u.text).ToList();
+            return select.AsQueryable();
         }
     }
 }

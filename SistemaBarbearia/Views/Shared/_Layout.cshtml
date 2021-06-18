@@ -1,17 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@using SistemaBarbearia.Helper;
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="~/Content/css/select2-bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/css/select2.css" rel="stylesheet" type="text/css" />
+
+    @*<link href="~/Content/css/select2-bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/css/select2.css" rel="stylesheet" type="text/css" />*@
+
     <link rel="stylesheet" href="~/Content/font-awesome.min.css">
-    <script src="~/Scripts/sSelect.js"></script>
-    <script src="~/Scripts/Functions.js"></script>
-    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script src="~/Scripts/jquery.dataTables.js"></script>
-    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+
+    @*<script src="~/Scripts/sSelect.js"></script>
+        <script src="~/Scripts/Functions.js"></script>
+
+        <script src="~/Scripts/jquery-3.6.0.js"></script>
+        <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+        <script src="~/Scripts/jquery.dataTables.js"></script>
+
+        <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+        <script src="~/Scripts/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/jquery.dataTables.js"></script>*@
+
+
 
     <title>BARBEARIA</title>
 
@@ -77,8 +88,8 @@
 
                 </li>
                 @*<li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>*@
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>*@
             </ul>
         </div>
     </nav>
@@ -88,7 +99,7 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    
+
     @Html.RenderScriptBlocks()
     @RenderSection("scripts", required: false)
 </body>

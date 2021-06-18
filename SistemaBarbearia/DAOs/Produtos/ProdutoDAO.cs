@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Produtos;
+using SistemaBarbearia.ViewModels.Categorias;
 using SistemaBarbearia.ViewModels.Produtos;
 using System;
 using System.Collections.Generic;
@@ -27,15 +28,12 @@ namespace SistemaBarbearia.DAOs.Produtos
 
                 SQL.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
                 SQL.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade.ToUpper());
-
                 SQL.Parameters.AddWithValue("@nrQtd", produto.nrQtd);
                 SQL.Parameters.AddWithValue("@qtdEstoque", produto.qtdEstoque);
                 SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
                 SQL.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
-                SQL.Parameters.AddWithValue("@idCategoria", produto.categoria.Id);
-                SQL.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.Id);
-
+                SQL.Parameters.AddWithValue("@idCategoria", produto.categoria.IdCategoria);                
                 SQL.Parameters.AddWithValue("@dtCadastro", produto.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -67,13 +65,13 @@ namespace SistemaBarbearia.DAOs.Produtos
                 Open();
                 string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd, qtdEstoque = @qtdEstoque,
                                                             codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto,
-                                                            idCategoria = @idCategoria, idFornecedor = @idFornecedor, dtUltAlteracao = @dtUltAlteracao  
+                                                            idCategoria = @idCategoria, dtUltAlteracao = @dtUltAlteracao  
 
-                                                           WHERE id = @id";
+                                                           WHERE IdProduto = @IdProduto";
                 SqlCommand sql = new SqlCommand(updateProduto, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", produto.Id);
+                sql.Parameters.AddWithValue("@IdProduto", produto.IdProduto);
                 SQL.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
                 SQL.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade.ToUpper());
 
@@ -82,8 +80,8 @@ namespace SistemaBarbearia.DAOs.Produtos
                 SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
                 SQL.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
-                SQL.Parameters.AddWithValue("@idCategoria", produto.categoria.Id);
-                SQL.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.Id);
+                SQL.Parameters.AddWithValue("@idCategoria", produto.categoria.IdCategoria);
+                
 
                 SQL.Parameters.AddWithValue("@dtUltAlteracao", produto.dtUltAlteracao = DateTime.Now);
 
@@ -157,7 +155,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                 {
                     var Produto = new Models.Produtos.Produto()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdProduto = Convert.ToInt32(Dr["Id"]),
                         dsProduto = Convert.ToString(Dr["dsProduto"]),
                         nrUnidade = Convert.ToString(Dr["nrUnidade"]),
                         nrQtd = Convert.ToInt32(Dr["nrQtd"]),
@@ -166,8 +164,9 @@ namespace SistemaBarbearia.DAOs.Produtos
                         vlCompra = Convert.ToDecimal(Dr["vlCompra"]),
                         vlCusto = Convert.ToDecimal(Dr["vlCusto"]),
                         idCategoria = Convert.ToInt32(Dr["idCategoria"]),
-                        idFornecedor = Convert.ToInt32(Dr["idFornecedor"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
+                        
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
 
                     };
                     lista.Add(Produto);
@@ -190,14 +189,14 @@ namespace SistemaBarbearia.DAOs.Produtos
             {
                 Open();
                 var produtoVM = new ProdutoVW();
-                string selectEditPais = @"SELECT* FROM PRODUTO WHERE id =" + Id;
+                string selectEditPais = @"SELECT* FROM PRODUTO WHERE IdProduto =" + Id;
                 SQL = new SqlCommand(selectEditPais, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    produtoVM.Id = Convert.ToInt32(Dr["id"]);
+                    produtoVM.IdProduto = Convert.ToInt32(Dr["IdProduto"]);
                     produtoVM.dsProduto = Convert.ToString(Dr["dsProduto"]);
                     produtoVM.flUnidade = Convert.ToString(Dr["nrUnidade"]);
                     produtoVM.nrQtd = Convert.ToInt32(Dr["nrQtd"]);
@@ -205,9 +204,8 @@ namespace SistemaBarbearia.DAOs.Produtos
                     produtoVM.codBarra = Convert.ToString(Dr["codBarra"]);
                     produtoVM.vlCompra = Convert.ToDecimal(Dr["vlCompra"]);
                     produtoVM.vlCusto = Convert.ToDecimal(Dr["vlCusto"]);
-                    produtoVM.categoria.IdCategoria = Convert.ToInt32(Dr["idCategoria"]);
-                    produtoVM.fornecedor.Id = Convert.ToInt32(Dr["idFornecedor"]);
-                    produtoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
+                    produtoVM.categoria.id = Convert.ToInt32(Dr["idCategoria"]);                   
+                    produtoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     produtoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
 
@@ -217,6 +215,64 @@ namespace SistemaBarbearia.DAOs.Produtos
             catch (Exception e)
             {
                 throw new Exception("Erro ao selecionar o Produto: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        protected string BuscarCategoria(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdCategoria = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR Produto LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM CATEGORIA " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectCategoriaVM> SelectCategoria(int? id, string nmPais)
+        {
+            try
+            {
+
+                var sqlSelectPais = this.BuscarCategoria(id, nmPais);
+                Open();
+                SQL = new SqlCommand(sqlSelectPais, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectCategoriaVM>();
+
+                while (Dr.Read())
+                {
+                    var pais = new SelectCategoriaVM
+                    {
+                        id = Convert.ToInt32(Dr["id"]),
+                        text = Convert.ToString(Dr["text"]),                        
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+
+                    list.Add(pais);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
             }
             finally
             {

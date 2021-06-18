@@ -10,7 +10,7 @@ namespace SistemaBarbearia.Models.FormaPagamentos
     {
 
         [Key]
-        public int Id { get; set; }
+        public int IdFormaPag { get; set; }
 
         [Required]
         public string dsFormaPagamento { get; set; }

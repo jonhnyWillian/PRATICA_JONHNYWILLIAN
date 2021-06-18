@@ -11,7 +11,7 @@ namespace SistemaBarbearia.ViewModels.Estados
         public int idEstado { get; set; }
         public string nmEstado { get; set; }
 
-        public string DDD { get; set; }
+        public string dsUF { get; set; }
 
         public DateTime? dtCadastro { get; set; }
         public DateTime? dtUltAlteracao { get; set; }

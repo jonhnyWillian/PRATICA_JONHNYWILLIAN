@@ -9,7 +9,7 @@ namespace SistemaBarbearia.Models.Categorias
     public class Categoria
     {
         [Key]
-        public int Id { get; set; }
+        public int IdCategoria { get; set; }
         [Required]
         public string dsCategoria { get; set; }
        

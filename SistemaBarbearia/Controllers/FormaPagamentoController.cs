@@ -17,77 +17,82 @@ namespace SistemaBarbearia.Controllers
             ModelState.Clear();
             return View(formaPagamentoDAO.SelecionarFormaPagamento());
         }
-
-        // GET: FormaPagamento/Details/5
+        
         public ActionResult Details(int id)
         {
            var formaPagamentoDAO = new FormaPagamentoDAO();
             return View(formaPagamentoDAO.GetFormaPagamento(id));
         }
-
-        // GET: FormaPagamento/Create
+       
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: FormaPagamento/Create
+    
         [HttpPost]
         public ActionResult Create(FormaPagamento formaPagamento)
         {
 
+            if (string.IsNullOrWhiteSpace(formaPagamento.dsFormaPagamento))
+            {
+                ModelState.AddModelError("", "Nome do Forma Pagamento Nao pode ser em braco");
+            }           
             try
             {
                 if (ModelState.IsValid)
                 {
                     var formaPagamentoDAO = new FormaPagamentoDAO();
 
-                    if (formaPagamentoDAO.InsertFormaPagamento(formaPagamento))
-                    {
-                        ViewBag.Message = "Forma Pagamento criado com sucesso!";
-                    }
+                    formaPagamentoDAO.InsertFormaPagamento(formaPagamento);
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
                 return View();
             }
         }
-
-        // GET: FormaPagamento/Edit/5
+       
         public ActionResult Edit(int id)
         {
            var formaPagamentoDAO = new FormaPagamentoDAO();
             return View(formaPagamentoDAO.GetFormaPagamento(id));
         }
-
-        // POST: FormaPagamento/Edit/5
+       
         [HttpPost]
         public ActionResult Edit(int id, FormaPagamento formaPagamento)
         {
+            if (string.IsNullOrWhiteSpace(formaPagamento.dsFormaPagamento))
+            {
+                ModelState.AddModelError("", "Nome do Forma Pagamento Nao pode ser em braco");
+            }           
             try
             {
-                var formaPagamentoDAO = new FormaPagamentoDAO();
-                formaPagamentoDAO.UpdateFormaPagamento(formaPagamento);
+                if (ModelState.IsValid)
+                {
+                    var formaPagamentoDAO = new FormaPagamentoDAO();
 
-                return RedirectToAction("Index");
+                    formaPagamentoDAO.UpdateFormaPagamento(formaPagamento);
+
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
                 return View();
             }
         }
-
-        // GET: FormaPagamento/Delete/5
+       
         public ActionResult Delete(int id)
         {
            var formaPagamentoDAO = new FormaPagamentoDAO();
             return View(formaPagamentoDAO.GetFormaPagamento(id));
         }
-
-        // POST: FormaPagamento/Delete/5
+       
         [HttpPost]
         public ActionResult Delete(int id, FormaPagamento servico)
         {
@@ -108,7 +113,7 @@ namespace SistemaBarbearia.Controllers
             {
 
                 var formaPagamentoDAO = new FormaPagamentoDAO();
-                var select = formaPagamentoDAO.SelecionarFormaPagamento().Select(u => new { Id = u.Id, dsFormaPagamento = u.dsFormaPagamento });
+                var select = formaPagamentoDAO.SelecionarFormaPagamento().Select(u => new { Id = u.IdFormaPag, dsFormaPagamento = u.dsFormaPagamento });
 
                 IQueryable<dynamic> query = select.AsQueryable();
 

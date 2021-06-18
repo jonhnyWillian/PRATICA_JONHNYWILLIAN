@@ -47,18 +47,18 @@ namespace SistemaBarbearia.DAOs.Categorias
             }
         }
 
-        public bool UpdateCategoria(Categoria servico)
+        public bool UpdateCategoria(Categoria categoria)
         {
             try
             {
                 Open();
-                string updateCategoria = @"UPDATE CATEGORIA SET dsCategoria = @dsCategoria, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updateCategoria = @"UPDATE CATEGORIA SET dsCategoria = @dsCategoria, dtUltAlteracao = @dtUltAlteracao  WHERE IdCategoria = @IdCategoria";
                 SqlCommand sql = new SqlCommand(updateCategoria, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", servico.Id);
-                sql.Parameters.AddWithValue("@dsCategoria", servico.dsCategoria.ToUpper());
-                sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
+                sql.Parameters.AddWithValue("@IdCategoria", categoria.IdCategoria);
+                sql.Parameters.AddWithValue("@dsCategoria", categoria.dsCategoria.ToUpper());
+                sql.Parameters.AddWithValue("@dtUltAlteracao", categoria.dtUltAlteracao = DateTime.Now);
 
 
                 int i = sql.ExecuteNonQuery();
@@ -87,11 +87,11 @@ namespace SistemaBarbearia.DAOs.Categorias
             try
             {
                 Open();
-                string deleteCategoria = "DELETE FROM CATEGORIA WHERE Id = @Id";
+                string deleteCategoria = "DELETE FROM CATEGORIA WHERE IdCategoria = @IdCategoria";
                 SqlCommand sql = new SqlCommand(deleteCategoria, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdCategoria", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -129,10 +129,10 @@ namespace SistemaBarbearia.DAOs.Categorias
                 {
                     var servico = new Categoria()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdCategoria = Convert.ToInt32(Dr["IdCategoria"]),
                         dsCategoria = Convert.ToString(Dr["dsCategoria"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(servico);
                 }
@@ -154,17 +154,17 @@ namespace SistemaBarbearia.DAOs.Categorias
             {
                 Open();
                 var servicoVM = new CategoriaVM();
-                string selectEditCategoria = @"SELECT* FROM CATEGORIA WHERE id =" + Id;
+                string selectEditCategoria = @"SELECT* FROM CATEGORIA WHERE IdCategoria =" + Id;
                 SQL = new SqlCommand(selectEditCategoria, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    servicoVM.Id = Convert.ToInt32(Dr["id"]);
+                    servicoVM.IdCategoria = Convert.ToInt32(Dr["IdCategoria"]);
                     servicoVM.dsCategoria = Dr["dsCategoria"].ToString();
-                    servicoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-                    // paisVM.dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]);
+                    servicoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
+                    servicoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
                 return servicoVM;
             }
@@ -178,7 +178,63 @@ namespace SistemaBarbearia.DAOs.Categorias
             }
         }
 
+        protected string BuscarCategoria(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
 
-       
+            if (id != null)
+            {
+                where = "WHERE Id = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR dsCategoria LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM Categoria " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectCategoriaVM> SelectCategoria(int? id, string dsCategoria)
+        {
+            try
+            {
+
+                var sqlSelectCargo = this.BuscarCategoria(id, dsCategoria);
+                Open();
+                SQL = new SqlCommand(sqlSelectCargo, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectCategoriaVM>();
+
+                while (Dr.Read())
+                {
+                    var categoria = new SelectCategoriaVM
+                    {
+                        id = Convert.ToInt32(Dr["IdCategoria"]),
+                        text = Convert.ToString(Dr["dsCategoria"]),
+                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                    };
+
+                    list.Add(categoria);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
     }
 }

@@ -9,7 +9,7 @@ namespace SistemaBarbearia.ViewModels.Paises
     public class PaisVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdPais { get; set; }
 
         [Display(Name = "Pais")]
         [StringLength(50, MinimumLength = 3)]

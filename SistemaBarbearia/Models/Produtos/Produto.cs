@@ -11,7 +11,7 @@ namespace SistemaBarbearia.Models.Produtos
     public class Produto
     {
         [Key]
-        public int Id { get; set; }
+        public int IdProduto { get; set; }
 
         [Required]
         public string dsProduto { get; set; }
@@ -37,10 +37,7 @@ namespace SistemaBarbearia.Models.Produtos
         public int idCategoria { get; set; }
 
         public Categoria categoria { get; set; }
-
-        public int idFornecedor { get; set; }
-
-        public Fornecedor fornecedor { get; set; }
+      
 
         public DateTime? dtCadastro { get; set; }
 

@@ -12,7 +12,7 @@ namespace SistemaBarbearia.ViewModels.Estados
     public class EstadoVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdEstado { get; set; }
 
         [Display(Name = "Estado")]
         [Required(ErrorMessage = "Informe o nome do Estado. Nome do Estado não pode ser em branco")]

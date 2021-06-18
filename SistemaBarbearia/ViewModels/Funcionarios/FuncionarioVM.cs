@@ -12,7 +12,7 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
     public class FuncionarioVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdFuncionario { get; set; }
 
         [Display(Name = "Funcionario")]
         [StringLength(50, MinimumLength = 3)]
@@ -27,7 +27,7 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [Display(Name = "Login")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Login não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nmLogin { get; set; }
+        public string dsLogin { get; set; }
 
         [Display(Name = "Senha")]
         [StringLength(50, MinimumLength = 3)]
@@ -81,7 +81,7 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [Required(ErrorMessage = "Campo Lougradouro não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsLougradouro { get; set; }
 
-        [Display(Name = "Residencial")]
+        [Display(Name = "Nº")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrResidencial { get; set; }
@@ -89,12 +89,12 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [Display(Name = "Cidade")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public Cidade cidade { get; set; }
+        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
         [Display(Name = "Cargo")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cargo não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public Cargo cargos { get; set; }
+        public SistemaBarbearia.ViewModels.Cargos.SelectCargoVM cargos { get; set; }
 
 
         [Display(Name = "E-mail")]

@@ -10,7 +10,7 @@ namespace SistemaBarbearia.ViewModels.FormaPagamentos
     public class FormaPagamentoVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdFormaPag { get; set; }
 
         [Display(Name = "Forma Pagamento")]
         [Required(ErrorMessage = "Campo nome do Cargo não pode ser em branco")]

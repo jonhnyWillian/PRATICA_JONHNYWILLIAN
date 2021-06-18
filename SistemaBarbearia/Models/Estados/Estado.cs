@@ -10,7 +10,7 @@ namespace SistemaBarbearia.Models.Estados
     public class Estado
     {
         [Key]
-        public int Id { get; set; }
+        public int IdEstado { get; set; }
         [Required]
         public string nmEstado { get; set; }
         [Required]

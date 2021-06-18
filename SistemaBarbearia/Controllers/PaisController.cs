@@ -12,7 +12,6 @@ namespace SistemaBarbearia.Controllers
 {
     public class PaisController : Controller
     {
-        // GET: Pais
         public ActionResult Index()
         {
             var paisDAO = new PaisDAO();
@@ -20,28 +19,25 @@ namespace SistemaBarbearia.Controllers
             return View(paisDAO.SelecionarPais());
         }
 
-        // GET: Pais/Details/5
         public ActionResult Details(int id)
         {
             var paisDAO = new PaisDAO();
             return View(paisDAO.GetPais(id));
         }
 
-        // GET: Pais/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Pais/Create
         [HttpPost]
         public ActionResult Create(Pais pais)
         {
-            if (pais.nmPais == null)
+            if (string.IsNullOrWhiteSpace(pais.nmPais))
             {
                 ModelState.AddModelError("", "Nome do Pais Nao pode ser em braco");
             }
-            if (pais.dsSigla == null)
+            if (string.IsNullOrWhiteSpace(pais.dsSigla))
             {
                 ModelState.AddModelError("", "Sigla do Pais Nao pode ser em braco");
             }
@@ -51,13 +47,11 @@ namespace SistemaBarbearia.Controllers
                 {
                     var paisDAO = new PaisDAO();
 
-                    if (paisDAO.InsertPais(pais))
-                    {                      
-                        ViewBag.Message = "Pais criado com sucesso!";
-                    }
+                    paisDAO.InsertPais(pais);
+                    return RedirectToAction("Index");
                 }
-               
-                return RedirectToAction("Index");
+
+                return View();
             }
             catch
             {
@@ -65,24 +59,35 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Pais/Edit/5
         public ActionResult Edit(int id)
         {
             var paisDAO = new PaisDAO();
             return View(paisDAO.GetPais(id));
         }
 
-        // POST: Pais/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Pais pais)
         {
+            if (string.IsNullOrWhiteSpace(pais.nmPais))
+            {
+                ModelState.AddModelError("", "Nome do Pais Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(pais.dsSigla))
+            {
+                ModelState.AddModelError("", "Sigla do Pais Nao pode ser em braco");
+            }
             try
             {
-                var paisDAO = new PaisDAO();
+                if (ModelState.IsValid)
+                {
+                    var paisDAO = new PaisDAO();
 
-                paisDAO.UpdatePais(pais);
+                    paisDAO.UpdatePais(pais);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
@@ -90,14 +95,12 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Pais/Delete/5
         public ActionResult Delete(int id)
         {
             var paisDAO = new PaisDAO();
             return View(paisDAO.GetPais(id));
         }
 
-        // POST: Pais/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, Pais pais)
         {
@@ -139,7 +142,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var paisDAO = new PaisDAO();
-                IQueryable<dynamic> lista = paisDAO.SelecionarPais().Select(u => new { id = u.Id, nmPais = u.nmPais }).AsQueryable();
+                IQueryable<dynamic> lista = paisDAO.SelecionarPais().Select(u => new { IdPais = u.IdPais, nmPais = u.nmPais }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
@@ -150,8 +153,7 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-
-        public JsonResult JsCreate(Pais pais)
+        public JsonResult JsInsert(Pais pais)
         {
             var paisDAO = new PaisDAO();
             paisDAO.InsertPais(pais);
@@ -202,8 +204,8 @@ namespace SistemaBarbearia.Controllers
             var list = paisDAO.SelectPais(id, text);
             var select = list.Select(u => new
             {
-                idPais = u.idPais,
-                nmPais = u.nmPais,
+                idPais = u.id,
+                nmPais = u.text,
                 dsSigla = u.dsSigla,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao

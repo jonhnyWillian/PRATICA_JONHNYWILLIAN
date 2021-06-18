@@ -10,7 +10,7 @@ namespace SistemaBarbearia.ViewModels.Cidades
     public class CidadeVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdCidade { get; set; }
 
         [Display(Name = "Cidade")]
         [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]

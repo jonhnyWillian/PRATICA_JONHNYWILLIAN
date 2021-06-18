@@ -12,8 +12,8 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.Id, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Id, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                    @Html.LabelFor(e => e.IdCliente, new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.IdCliente, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
         </div>
@@ -29,39 +29,37 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.nmCliente, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nmCliente, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Nome Cliente" })
+            @Html.TextBoxFor(model => model.nmCliente, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "Nome Cliente" })
             @Html.ValidationMessageFor(model => model.nmCliente, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             @Html.LabelFor(model => model.nmApelido, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nmApelido, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Apelido" })
+            @Html.TextBoxFor(model => model.nmApelido, new { @class = "form-control col-md-16", maxlength = "50", @autofocus = "autofocus", @placeholder = "Apelido" })
             @Html.ValidationMessageFor(model => model.nmApelido, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrCEP, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nrCEP, new { @class = "form-control  col-md-6", @autofocus = "autofocus", @placeholder = "CEP" })
+            @Html.TextBoxFor(model => model.nrCEP, new { @class = "form-control  col-md-16", @autofocus = "autofocus", @placeholder = "CEP" })
             @Html.ValidationMessageFor(model => model.nrCEP, "", new { @class = "text-danger" })
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsLougradouro, htmlAttributes: new { @class = "control-label " })
-            @Html.TextBoxFor(model => model.dsLougradouro, new { @class = "form-control  col-md-12", @autofocus = "autofocus", @placeholder = "Endereço" })
+            @Html.TextBoxFor(model => model.dsLougradouro, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus",  @placeholder = "Endereço" })
             @Html.ValidationMessageFor(model => model.dsLougradouro, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrResidencial, htmlAttributes: new { @class = "control-label" })
             @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-4", @autofocus = "autofocus", @placeholder = "Nº" })
@@ -69,37 +67,35 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            @Html.LabelFor(model => model.dsComplemento, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "Complemento" })
-            @Html.ValidationMessageFor(model => model.dsComplemento, "", new { @class = "text-danger" })
-        </div>
-    </div>
-</div>
+
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
+            @Html.LabelFor(model => model.dsComplemento, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Complemento" })
+            @Html.ValidationMessageFor(model => model.dsComplemento, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
             @Html.LabelFor(model => model.dsBairro, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "Bairro" })
+            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Bairro" })
             @Html.ValidationMessageFor(model => model.dsBairro, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="form-group">
-            @Html.LabelFor(model => model.cidade, new { @class = "control-label" })
-
+            @Html.EditorFor(model => model.cidade, "Cidades/Select", new { @disabled = readOnly })
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrTelefone, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nrTelefone, new { @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "Telefone" })
+            @Html.TextBoxFor(model => model.nrTelefone, new { @class = "form-control  col-md-16", @autofocus = "autofocus", @placeholder = "Telefone" })
             @Html.ValidationMessageFor(model => model.nrTelefone, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -112,20 +108,20 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsEmail, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "E-Mail" })
+            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus",  @placeholder = "E-mail" })
             @Html.ValidationMessageFor(model => model.dsEmail, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
-<div class="form-group" id="fisica">
+<div class="form-group">
     <div class="row">
         <div class="col-md-4">
             @Html.LabelFor(model => model.nrCPF, htmlAttributes: new { @class = "control-label" })
             @Html.TextBoxFor(model => model.nrCPF, new { @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "CPF" })
-            @Html.ValidationMessageFor(model => model.nrCPF, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.nrCPF, "", new { @class = "text-danger", maxlength = "14" })
         </div>
         <div class="col-md-4">
             @Html.LabelFor(model => model.nrRG, htmlAttributes: new { @class = "control-label" })
@@ -136,6 +132,40 @@
             @Html.LabelFor(model => model.dataNasc, htmlAttributes: new { @class = "control-label" })
             @Html.EditorFor(model => model.dataNasc, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.dataNasc, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.LabelFor(model => model.dsLogin, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.dsLogin, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus",  @placeholder = "Login" })
+            @Html.ValidationMessageFor(model => model.dsLogin, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(model => model.senha, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.senha, new { @class = "form-control col-md-16", maxlength = "50", @autofocus = "autofocus", @placeholder = "Senha" })
+            @Html.ValidationMessageFor(model => model.senha, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>*@
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>

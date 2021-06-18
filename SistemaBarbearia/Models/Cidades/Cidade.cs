@@ -10,7 +10,7 @@ namespace SistemaBarbearia.Models.Cidades
     public class Cidade
     {
         [Key]
-        public int Id { get; set; }
+        public int IdCidade { get; set; }
         [Required]
         public string nmCidade { get; set; }
 

@@ -7,61 +7,47 @@ namespace SistemaBarbearia.Models.Clientes
     public class Cliente
     {
         [Key]
-        public int Id { get; set; }
-        [Required]
+        public int IdCliente { get; set; }
+
         public string nmCliente { get; set; }
 
-        [Required]
         public string nmApelido { get; set; }
 
+        public string dsLogin { get; set; }
 
-        [Required]
+        public string senha { get; set; }
+
         public string flSexo { get; set; }
 
-
-        [Required]
         public string nrTelefone { get; set; }
 
-        [Required]
         public string nrCelular { get; set; }
 
-        [Required]
-        public string dsLougradouro { get; set; }
+        public string nrCEP { get; set; }
 
-        [Required]
-        public string nrResidencial { get; set; }
-
-        [Required]
-        public string dsBairro { get; set; }
-
-        [Required]
         public string dsComplemento { get; set; }
 
-        [Required]
-        public string dsEmail { get; set; }
+       
+        public string dsBairro { get; set; }
 
-        [Required]
-        public string nrCPF { get; set; }
+        public string dsLougradouro { get; set; }
 
-        [Required]
-        public string nrRG { get; set; }
+     
+        public string nrResidencial { get; set; }
 
-
-        [Required]
-        public DateTime? dataNasc { get; set; }
-
-        public int? idCidade { get; set; }
-
+      
         public Cidade cidade { get; set; }
 
-        [Required]
-        public string nmLogin { get; set; }
+        public int idCidade { get; set; }
 
-        [Required]
-        public string dsSenha { get; set; }
+        public string dsEmail { get; set; }
 
+        public string nrCPF { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public string nrRG { get; set; }
+
+        public DateTime? dataNasc { get; set; }
+
         public DateTime? dtCadastro { get; set; }
 
         public DateTime? dtUltAlteracao { get; set; }

@@ -19,14 +19,12 @@
             <div class="form-horizontal">
                 @Html.Partial("Form", Model)
             </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <input type="submit" value="Excluir" class="btn btn-primary" />
-                    @Html.ActionLink("Voltar", "Index", routeValues: null, htmlAttributes: new { @class = "btn btn-danger me-md-2", @role = "button" })
-                </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o"></i> Excluir</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+
             </div>
         </div>
+
     }
 </div>

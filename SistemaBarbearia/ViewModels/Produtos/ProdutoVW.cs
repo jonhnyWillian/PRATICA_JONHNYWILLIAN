@@ -11,7 +11,7 @@ namespace SistemaBarbearia.ViewModels.Produtos
     public class ProdutoVW
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdProduto { get; set; }
 
         [Display(Name = "Produto")]
         [StringLength(50, MinimumLength = 3)]
@@ -66,11 +66,7 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "Campo categoria não Pode ser em Branco!", AllowEmptyStrings = false)]
         public SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM categoria { get; set; }
-
-        [Display(Name = "Fornecedor")]
-        [Required(ErrorMessage = "Campo fornecedor não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public SistemaBarbearia.ViewModels.Fornecedores.SelectFornecedorVM fornecedor { get; set; }
-
+       
 
         [Display(Name = "Data de Cadastro")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

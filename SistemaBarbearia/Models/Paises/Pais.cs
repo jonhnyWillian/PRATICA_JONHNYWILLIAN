@@ -9,7 +9,7 @@ namespace SistemaBarbearia.Models.Paises
     public class Pais
     {
         [Key]
-        public int Id { get; set; }
+        public int IdPais { get; set; }
         [Required]
         public string nmPais { get; set; }
         [Required]

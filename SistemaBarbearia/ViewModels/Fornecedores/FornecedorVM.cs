@@ -13,8 +13,6 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
         [Display(Name = "Codigo")]
         public int Id { get; set; }
 
-       
-
         [Display(Name = "Fornecedor")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo  não Pode ser em Branco!", AllowEmptyStrings = false)]
@@ -52,7 +50,7 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
         [Display(Name = "Cidade")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public Cidade cidade { get; set; }
+        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
         [Display(Name = "Bairro")]
         [StringLength(50, MinimumLength = 3)]
@@ -109,7 +107,7 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
         [Display(Name = "RG")]
         [StringLength(11, MinimumLength = 0)]
         [Required(ErrorMessage = "Campo não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrRGInscEst { get; set; }
+        public string nrRGIE { get; set; }
 
 
         [Display(Name = "Data de Cadastro")]

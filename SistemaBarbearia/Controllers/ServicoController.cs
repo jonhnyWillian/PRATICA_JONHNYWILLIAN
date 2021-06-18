@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace SistemaBarbearia.Controllers
 {
     public class ServicoController : Controller
     {
-        // GET: Servico
+      
         public ActionResult Index()
         {
             var servicoDAO = new ServicoDAO();
@@ -19,37 +20,39 @@ namespace SistemaBarbearia.Controllers
             return View(servicoDAO.SelecionarServico());
         }
 
-        // GET: Servico/Details/5
         public ActionResult Details(int id)
         {
             var servicoDAO = new ServicoDAO();
             return View(servicoDAO.GetServico(id));
         }
 
-        // GET: Servico/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Servico/Create
         [HttpPost]
         public ActionResult Create(Servico servico)
         {
-            
+            if (string.IsNullOrWhiteSpace(servico.dsServico))
+            {
+                ModelState.AddModelError("", "Nome do serviço Nao pode ser em braco");
+            }
+            if (servico.vlServico == null)
+            {
+                ModelState.AddModelError("", "Valor de serviço do Produto não pode ser em braco");     
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     var servicoDAO = new ServicoDAO();
 
-                    if (servicoDAO.InsertServico(servico))
-                    {
-                        ViewBag.Message = "Servico criado com sucesso!";
-                    }
+                    servicoDAO.InsertServico(servico);
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -57,24 +60,34 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Servico/Edit/5
         public ActionResult Edit(int id)
         {
             var servicoDAO = new ServicoDAO();
             return View(servicoDAO.GetServico(id));
         }
 
-        // POST: Servico/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Servico servico)
         {
+            if (string.IsNullOrWhiteSpace(servico.dsServico))
+            {
+                ModelState.AddModelError("", "Nome do serviço Nao pode ser em braco");
+            }
+            if (servico.vlServico == null)
+            {
+                ModelState.AddModelError("", "Valor de serviço do Produto não pode ser em braco");
+            }
             try
             {
-                var servicoDAO = new ServicoDAO();
+                if (ModelState.IsValid)
+                {
+                    var servicoDAO = new ServicoDAO();
 
-                servicoDAO.UpdateServico(servico);
+                    servicoDAO.UpdateServico(servico);
+                    return RedirectToAction("Index");
+                }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -82,14 +95,12 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Servico/Delete/5
         public ActionResult Delete(int id)
         {
             var servicoDAO = new ServicoDAO();
             return View(servicoDAO.GetServico(id));
         }
 
-        // POST: Servico/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, Servico servico)
         {
@@ -110,7 +121,7 @@ namespace SistemaBarbearia.Controllers
             {
 
                 var estadoDAO = new ServicoDAO();
-                var select = estadoDAO.SelecionarServico().Select(u => new { Id = u.Id, dsServico = u.dsServico, vlServico = u.vlServico });
+                var select = estadoDAO.SelecionarServico().Select(u => new { IdServico = u.IdServico, dsServico = u.dsServico, vlServico = u.vlServico });
 
                 IQueryable<dynamic> query = select.AsQueryable();
 

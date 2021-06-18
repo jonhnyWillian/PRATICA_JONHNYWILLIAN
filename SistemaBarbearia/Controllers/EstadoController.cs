@@ -12,7 +12,6 @@ namespace SistemaBarbearia.Controllers
 {
     public class EstadoController : Controller
     {
-        // GET: Estado
         public ActionResult Index()
         {
             var estadoDAO = new EstadoDAO();
@@ -20,44 +19,40 @@ namespace SistemaBarbearia.Controllers
             return View(estadoDAO.SelecionarEstado());
         }
 
-        // GET: Estado/Details/5
         public ActionResult Details(int id)
         {
             var estadoDAO = new EstadoDAO();
             return View(estadoDAO.GetEstado(id));
         }
 
-        // GET: Estado/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Estado/Create
+     
         [HttpPost]
         public ActionResult Create(Estado estado)
         {
-            if (estado.nmEstado == null)
+            if (string.IsNullOrWhiteSpace(estado.nmEstado))
             {
-                ModelState.AddModelError("Estado.nmEstado", "Nome do Estado Nao pode ser em braco");
+                ModelState.AddModelError("", "Nome do Estado Nao pode ser em braco");
             }
-            if (estado.dsUF == null)
+            if (string.IsNullOrWhiteSpace(estado.dsUF))
             {
-                ModelState.AddModelError("Estado.nmEstado", "Sigla do Estado Nao pode ser em braco");
+                ModelState.AddModelError("", "UF do Estado Nao pode ser em braco");
             }
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var paisDAO = new EstadoDAO();
+                    var estadoDAO = new EstadoDAO();
 
-                    if (paisDAO.InsertEstado(estado))
-                    {
-                        ViewBag.Message = "Estado criado com sucesso!";
-                    }
+                    estadoDAO.InsertEstado(estado);
+
+                    return RedirectToAction("Index");
+
                 }
-
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -65,39 +60,48 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Estado/Edit/5
         public ActionResult Edit(int id)
         {
             var estadoDAO = new EstadoDAO();
             return View(estadoDAO.GetEstado(id));
         }
 
-        // POST: Estado/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Estado pais)
+        public ActionResult Edit(int id, Estado estado)
         {
+            if (string.IsNullOrWhiteSpace(estado.nmEstado))
+            {
+                ModelState.AddModelError("", "Nome do Estado Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(estado.dsUF))
+            {
+                ModelState.AddModelError("", "UF do Estado Nao pode ser em braco");
+            }
             try
             {
-                var estadoDAO = new EstadoDAO();
+                if (ModelState.IsValid)
+                {
+                    var estadoDAO = new EstadoDAO();
 
-                estadoDAO.UpdateEstado(pais);
+                    estadoDAO.UpdateEstado(estado);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
                 return View();
             }
         }
-
-        // GET: Estado/Delete/5
+      
         public ActionResult Delete(int id)
         {
             var estadoDAO = new EstadoDAO();
             return View(estadoDAO.GetEstado(id));
         }
 
-        // POST: Estado/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, Estado estado)
         {
@@ -117,18 +121,30 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var estadoDAO = new EstadoDAO();
-                var select = estadoDAO.SelecionarEstado().Select(u => new { Id = u.Id, nmEstado = u.nmEstado, dsUF = u.dsUF });
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var estadoDAO = new EstadoDAO();
+                IQueryable<dynamic> lista = estadoDAO.SelecionarEstado().Select(u => new { IdEstado = u.IdEstado, nmEstado = u.nmEstado }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -136,6 +152,67 @@ namespace SistemaBarbearia.Controllers
                 Response.StatusCode = 500;
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult JsInsert(Estado estado)
+        {
+            var estadoDAO = new EstadoDAO();
+            estadoDAO.InsertEstado(estado);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = estado
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Estado estado)
+        {
+            var estadoDAO = new EstadoDAO();
+            estadoDAO.UpdateEstado(estado);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = estado
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? id, string text)
+        {
+            try
+            {
+                var result = this.Find(id, text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var estadoDAO = new EstadoDAO();
+            var list = estadoDAO.SelectEstado(id, text);
+            var select = list.Select(u => new
+            {
+                idEstado = u.idEstado,
+                nmEstado = u.nmEstado,
+                dsUF = u.dsUF,
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
+
+            }).OrderBy(u => u.nmEstado).ToList();
+            return select.AsQueryable();
         }
 
     }

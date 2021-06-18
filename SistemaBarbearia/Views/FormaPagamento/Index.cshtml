@@ -23,16 +23,16 @@
         {
             <tr>
                 <td style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => item.IdFormaPag)
                 </td>
                 <td style="width:60%;">
                     @Html.DisplayFor(modelItem => item.dsFormaPagamento)
                 </td>
 
                 <td>
-                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.Id }))"><i class="fa fa-eye"></i></a>
-                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.Id }))"><i class="fa fa-pencil-square-o"></i></a>
-                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.Id }))"><i class="fa fa-trash"></i></a>
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdFormaPag }))"><i class="fa fa-eye"></i></a>
+                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdFormaPag }))"><i class="fa fa-pencil-square-o"></i></a>
+                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdFormaPag }))"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         }

@@ -9,7 +9,7 @@ namespace SistemaBarbearia.ViewModels.Servicos
     public class ServicoVM
     {
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdServico { get; set; }
 
         [Display(Name = "Serviço")]
         [Required(ErrorMessage = "Campo nome do Serviço não pode ser em branco")]

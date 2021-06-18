@@ -55,11 +55,11 @@ namespace SistemaBarbearia.DAOs.Servicos
             try
             {
                 Open();
-                string updateServico = @"UPDATE SERVICO SET dsServico = @dsServico, vlServico = @vlServico, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updateServico = @"UPDATE SERVICO SET dsServico = @dsServico, vlServico = @vlServico, dtUltAlteracao = @dtUltAlteracao  WHERE IdServico = @IdServico";
                 SqlCommand sql = new SqlCommand(updateServico, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", servico.Id);
+                sql.Parameters.AddWithValue("@IdServico", servico.IdServico);
                 sql.Parameters.AddWithValue("@dsServico", servico.dsServico.ToUpper());
                 sql.Parameters.AddWithValue("@vlServico", servico.vlServico);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
@@ -91,11 +91,11 @@ namespace SistemaBarbearia.DAOs.Servicos
             try
             {
                 Open();
-                string deleteServico = "DELETE FROM SERVICO WHERE Id = @Id";
+                string deleteServico = "DELETE FROM SERVICO WHERE IdServico = @IdServico";
                 SqlCommand sql = new SqlCommand(deleteServico, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdServico", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -110,7 +110,7 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao excluir Serviço: " + e.Message);
+                throw new Exception("Erro ao excluir SERVICO: " + e.Message);
             }
             finally
             {
@@ -125,7 +125,7 @@ namespace SistemaBarbearia.DAOs.Servicos
             try
             {
                 Open();
-                SQL = new SqlCommand(@"SELECT * FROM Serviço", sqlconnection);
+                SQL = new SqlCommand(@"SELECT * FROM SERVICO", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
@@ -134,11 +134,11 @@ namespace SistemaBarbearia.DAOs.Servicos
                 {
                     var servico = new Servico()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdServico = Convert.ToInt32(Dr["IdServico"]),
                         dsServico = Convert.ToString(Dr["dsServico"]),
                         vlServico = Convert.ToDecimal(Dr["vlServico"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(servico);
                 }
@@ -146,7 +146,7 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao selecionar o Serviço: " + e.Message);
+                throw new Exception("Erro ao selecionar o SERVICO: " + e.Message);
             }
             finally
             {
@@ -160,17 +160,17 @@ namespace SistemaBarbearia.DAOs.Servicos
             {
                 Open();
                 var servicoVM = new ServicoVM();
-                string selectEditServico = @"SELECT* FROM Servico WHERE id =" + Id;
+                string selectEditServico = @"SELECT* FROM SERVICO WHERE IdServico =" + Id;
                 SQL = new SqlCommand(selectEditServico, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    servicoVM.Id = Convert.ToInt32(Dr["id"]);
+                    servicoVM.IdServico = Convert.ToInt32(Dr["IdServico"]);
                     servicoVM.dsServico = Dr["dsServico"].ToString();
-                    servicoVM.vlServico = Convert.ToDecimal(Dr["vlServico"]);
-                    servicoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
+                    servicoVM.vlServico = Convert.ToDecimal(Dr["vlServico"]);                    
+                    servicoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     servicoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
                 }

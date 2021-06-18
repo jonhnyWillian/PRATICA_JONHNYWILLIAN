@@ -49,19 +49,19 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             }
         }
 
-        public bool UpdateFormaPagamento(FormaPagamento servico)
+        public bool UpdateFormaPagamento(FormaPagamento formaPagamento)
         {
             try
             {
                 Open();
-                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsCargo, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsCargo, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE IdFormaPag = @IdFormaPag";
                 SqlCommand sql = new SqlCommand(updateCargo, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@id", servico.Id);
-                sql.Parameters.AddWithValue("@dsFormaPagamento", servico.dsFormaPagamento.ToUpper());
-                sql.Parameters.AddWithValue("@flSituacao", servico.flSituacao);
-                sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
+                sql.Parameters.AddWithValue("@IdFormaPag", formaPagamento.IdFormaPag);
+                sql.Parameters.AddWithValue("@dsFormaPagamento", formaPagamento.dsFormaPagamento.ToUpper());
+                sql.Parameters.AddWithValue("@flSituacao", formaPagamento.flSituacao);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", formaPagamento.dtUltAlteracao = DateTime.Now);
 
 
                 int i = sql.ExecuteNonQuery();
@@ -90,11 +90,11 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             try
             {
                 Open();
-                string deleteCargo = "DELETE FROM FormaPagamento WHERE Id = @Id";
+                string deleteCargo = "DELETE FROM FormaPagamento WHERE IdFormaPag = @IdFormaPag";
                 SqlCommand sql = new SqlCommand(deleteCargo, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdFormaPag", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -133,11 +133,11 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
                 {
                     var servico = new FormaPagamento()
                     {
-                        Id = Convert.ToInt32(Dr["Id"]),
+                        IdFormaPag = Convert.ToInt32(Dr["IdFormaPag"]),
                         dsFormaPagamento = Convert.ToString(Dr["dsFormaPagamento"]),
                         flSituacao = Convert.ToString(Dr["flSituacao"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        // dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(servico);
                 }
@@ -159,18 +159,18 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             {
                 Open();
                 var formaPagamentoVM = new FormaPagamentoVM();
-                string selectEditFormaPg = @"SELECT* FROM FormaPagamento WHERE id =" + Id;
+                string selectEditFormaPg = @"SELECT* FROM FormaPagamento WHERE IdFormaPag =" + Id;
                 SQL = new SqlCommand(selectEditFormaPg, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    formaPagamentoVM.Id = Convert.ToInt32(Dr["id"]);
+                    formaPagamentoVM.IdFormaPag = Convert.ToInt32(Dr["IdFormaPag"]);
                     formaPagamentoVM.dsFormaPagamento = Dr["dsFormaPagamento"].ToString();
                     formaPagamentoVM.flSituacao = Dr["flSituacao"].ToString();
-                    formaPagamentoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
-
+                    formaPagamentoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
+                    formaPagamentoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }
                 return formaPagamentoVM;
             }
@@ -184,6 +184,63 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             }
         }
 
-        
+        //protected string BuscarPais(int? id, string text)
+        //{
+        //    var sqlSelectPais = string.Empty;
+        //    var where = string.Empty;
+
+        //    if (id != null)
+        //    {
+        //        where = "WHERE IdPais = " + id;
+        //    }
+        //    if (!string.IsNullOrEmpty(text))
+        //    {
+        //        var query = text.Split(' ');
+        //        foreach (var item in query)
+        //        {
+        //            where += "OR nmPais LIKE '%'" + item + "'%'";
+        //        }
+        //        where = "WHERE" + where.Remove(0, 3);
+        //    }
+        //    sqlSelectPais = @"SELECT * FROM PAIS " + where;
+        //    return sqlSelectPais;
+        //}
+
+        //public List<SelectVM> SelectPais(int? id, string nmPais)
+        //{
+        //    try
+        //    {
+
+        //        var sqlSelectPais = this.BuscarPais(id, nmPais);
+        //        Open();
+        //        SQL = new SqlCommand(sqlSelectPais, sqlconnection);
+        //        Dr = SQL.ExecuteReader();
+        //        var list = new List<SelectPaisVM>();
+
+        //        while (Dr.Read())
+        //        {
+        //            var pais = new SelectPaisVM
+        //            {
+        //                idPais = Convert.ToInt32(Dr["IdPais"]),
+        //                nmPais = Convert.ToString(Dr["nmPais"]),
+        //                dsSigla = Convert.ToString(Dr["dsSigla"]),
+        //                dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+        //                dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+        //            };
+
+        //            list.Add(pais);
+        //        }
+
+        //        return list;
+        //    }
+        //    catch (Exception error)
+        //    {
+        //        throw new Exception(error.Message);
+        //    }
+        //    finally
+        //    {
+        //        Close();
+        //    }
+        //}
     }
 }

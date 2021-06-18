@@ -9,7 +9,7 @@ namespace SistemaBarbearia.ViewModels.Clientes
     {
 
         [Display(Name = "Codigo")]
-        public int Id { get; set; }
+        public int IdCliente { get; set; }
 
         [Display(Name = "Cliente")]
         [StringLength(50, MinimumLength = 3)]
@@ -20,6 +20,16 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nmApelido { get; set; }
+
+        [Display(Name = "Login")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Login não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public string dsLogin { get; set; }
+
+        [Display(Name = "Senha")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Senha não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public string senha { get; set; }
 
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
@@ -68,7 +78,7 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [Required(ErrorMessage = "Campo Lougradouro não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsLougradouro { get; set; }
 
-        [Display(Name = "Nº Residencial")]
+        [Display(Name = "Nº")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrResidencial { get; set; }
@@ -76,7 +86,7 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [Display(Name = "Cidade")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public Cidade cidade { get; set; }
+        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
         [Display(Name = "E-mail")]
         [StringLength(50, MinimumLength = 3)]
@@ -84,7 +94,7 @@ namespace SistemaBarbearia.ViewModels.Clientes
         public string dsEmail { get; set; }
 
         [Display(Name = "CPF")]
-        [StringLength(11, MinimumLength = 0)]
+        [StringLength(14, MinimumLength = 0)]
         [Required(ErrorMessage = "Campo CPF não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrCPF { get; set; }
 
@@ -92,16 +102,6 @@ namespace SistemaBarbearia.ViewModels.Clientes
         [StringLength(11, MinimumLength = 0)]
         [Required(ErrorMessage = "Campo RG não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrRG { get; set; }
-
-        [Display(Name = "CNPJ")]
-        [StringLength(11, MinimumLength = 0)]
-        [Required(ErrorMessage = "Campo CNPJ não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCNPJ { get; set; }
-
-        [Display(Name = "Insc. Estadual")]
-        [StringLength(11, MinimumLength = 0)]
-        [Required(ErrorMessage = "Campo Inscricao Estadual não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrInscEstadual { get; set; }
 
         [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]

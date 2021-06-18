@@ -8,9 +8,9 @@ namespace SistemaBarbearia.ViewModels.Categorias
 {
     public class SelectCategoriaVM
     {
-        public int IdCategoria { get; set; }
+        public int id { get; set; }
 
-        public string dsCategoria { get; set; }
+        public string text { get; set; }
 
      
         public DateTime? dtCadastro { get; set; }

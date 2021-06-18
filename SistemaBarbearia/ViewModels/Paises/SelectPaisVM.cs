@@ -8,8 +8,8 @@ namespace SistemaBarbearia.ViewModels.Paises
 {
     public class SelectPaisVM
     {
-        public int idPais { get; set; }
-        public string nmPais { get; set; }
+        public int? id { get; set; }
+        public string text { get; set; }
 
         public string dsSigla { get; set; }
 

@@ -11,7 +11,7 @@ namespace SistemaBarbearia.Controllers
 {
     public class CidadeController : Controller
     {
-        // GET: Cidade
+       
         public ActionResult Index()
         {
             var cidadeDAO = new CidadeDAO();
@@ -19,39 +19,41 @@ namespace SistemaBarbearia.Controllers
             return View(cidadeDAO.SelecionarCidade());
         }
 
-        // GET: Cidade/Details/5
         public ActionResult Details(int id)
         {
             var cidadeDAO = new CidadeDAO();
             ModelState.Clear();
             return View(cidadeDAO.GetCidade(id));
         }
-
-        // GET: PaCidadeis/Create
+       
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Cidade/Create
         [HttpPost]
         public ActionResult Create(Cidade cidade)
         {
-            
+
+            if (string.IsNullOrWhiteSpace(cidade.nmCidade))
+            {
+                ModelState.AddModelError("", "Nome do Cidade Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(cidade.DDD))
+            {
+                ModelState.AddModelError("", "DDD do Pais Nao pode ser em braco");
+            }
             try
             {
                 if (ModelState.IsValid)
                 {
                     var cidadeDAO = new CidadeDAO();
 
-                    if (cidadeDAO.InsertCidade(cidade))
-                    {
-
-                        ViewBag.Message = "Cidade criado com sucesso!";
-                    }
+                    cidadeDAO.InsertCidade(cidade);
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -59,24 +61,35 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Cidade/Edit/5
         public ActionResult Edit(int id)
         {
             var cidadeDAO = new CidadeDAO();
             return View(cidadeDAO.GetCidade(id));
         }
 
-        // POST: Cidade/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Cidade cidade)
         {
+            if (string.IsNullOrWhiteSpace(cidade.nmCidade))
+            {
+                ModelState.AddModelError("", "Nome do Cidade Nao pode ser em braco");
+            }
+            if (string.IsNullOrWhiteSpace(cidade.DDD))
+            {
+                ModelState.AddModelError("", "DDD do Pais Nao pode ser em braco");
+            }
             try
             {
-                var cidadeDAO = new CidadeDAO();
+                if (ModelState.IsValid)
+                {
+                    var cidadeDAO = new CidadeDAO();
 
-                cidadeDAO.UpdateCidade(cidade);
+                    cidadeDAO.UpdateCidade(cidade);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+
+                }
+                return View();
             }
             catch
             {
@@ -84,7 +97,6 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Cidade/Delete/5
         public ActionResult Delete(int id)
         {
             var cidadeDAO = new CidadeDAO();
@@ -92,7 +104,6 @@ namespace SistemaBarbearia.Controllers
             return View(cidadeDAO.GetCidade(id));
         }
 
-        // POST: Cidade/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, Cidade cidade)
         {
@@ -112,18 +123,30 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var cidadeDAO = new CidadeDAO();
-                var select = cidadeDAO.SelecionarCidade().Select(u => new { Id = u.Id, nmCidade = u.nmCidade, DDD = u.DDD });
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var cidadeDAO = new CidadeDAO();
+                IQueryable<dynamic> lista = cidadeDAO.SelecionarCidade().Select(u => new { IdCidade = u.idEstado, nmCidade = u.nmCidade }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -131,6 +154,67 @@ namespace SistemaBarbearia.Controllers
                 Response.StatusCode = 500;
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult JsInsert(Cidade cidade)
+        {
+            var cidadeDAO = new CidadeDAO();
+            cidadeDAO.InsertCidade(cidade);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = cidade
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Cidade cidade)
+        {
+            var cidadeDAO = new CidadeDAO();
+            cidadeDAO.UpdateCidade(cidade);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = cidade
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? id, string text)
+        {
+            try
+            {
+                var result = this.Find(id, text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var cidadeDAO = new CidadeDAO();
+            var list = cidadeDAO.SelectCidade(id, text);
+            var select = list.Select(u => new
+            {
+                IdCidade = u.IdCidade,
+                nmCidade = u.nmCidade,
+                DDD = u.DDD,
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
+
+            }).OrderBy(u => u.nmCidade).ToList();
+            return select.AsQueryable();
         }
     }
 }

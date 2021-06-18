@@ -11,7 +11,7 @@ namespace SistemaBarbearia.Models.Funcionarios
     public class Funcionario
     {
         [Key]
-        public int Id { get; set; }
+        public int IdFuncionario { get; set; }
         [Required]
         public string nmFuncionario { get; set; }
 
@@ -26,6 +26,10 @@ namespace SistemaBarbearia.Models.Funcionarios
 
         [Required]
         public string nrCelular { get; set; }
+
+
+        [Required]
+        public string nrCEP { get; set; }
 
         [Required]
         public string dsLougradouro { get; set; }
@@ -62,10 +66,10 @@ namespace SistemaBarbearia.Models.Funcionarios
         public Cargo Cargo { get; set; }
 
         [Required]
-        public string nmLogin { get; set; }
+        public string dsLogin { get; set; }
 
         [Required]
-        public string Senha { get; set; }
+        public string senha { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtNasc { get; set; }
