@@ -41,6 +41,7 @@ namespace SistemaBarbearia
                       "~/Scripts/bootstrap.js",
                        "~/Scripts/jquery.dataTables.min.js",
                         "~/Scripts/dataTables.bootstrap4.min.js",
+                        "~/Scripts/tDataTable.js",
                         "~/Scripts/bootstrap-datepicker.js",
 
                        "~/Scripts/select2.js",
@@ -48,11 +49,9 @@ namespace SistemaBarbearia
                         "~/Scripts/sSelect.js",
                         "~/Scripts/Functions.js",
                         "~/Scripts/functionsb3.js"
+                        
                       ));
-
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+           
         }
     }
 }

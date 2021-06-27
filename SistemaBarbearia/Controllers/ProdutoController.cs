@@ -33,7 +33,7 @@ namespace SistemaBarbearia.Controllers
         [HttpPost]
         public ActionResult Create(Produto produto)
         {
-            if (produto.dsProduto == null)
+            if (string.IsNullOrWhiteSpace(produto.dsProduto))
             {
                 ModelState.AddModelError("", "Nome do Produto Nao pode ser em braco");
             }
@@ -41,6 +41,11 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "Codigo de Barra do Produto Nao pode ser em braco");
             }
+            if (string.IsNullOrWhiteSpace(produto.nrUnidade))
+            {
+                ModelState.AddModelError("", "Unidade do Produto Nao pode ser em braco");
+            }
+
             try
             {
                 if (ModelState.IsValid)
@@ -48,9 +53,10 @@ namespace SistemaBarbearia.Controllers
                     var produtoDAO = new ProdutoDAO();
 
                     produtoDAO.InsertProduto(produto);
-                    return RedirectToAction("Index");
-                }
 
+                    return RedirectToAction("Index");
+
+                }
                 return View();
             }
             catch
@@ -182,11 +188,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? id, string text)
+        public JsonResult JsDetails(int? Id, string Text)
         {
             try
             {
-                var result = this.Find(id, text).FirstOrDefault();
+                var result = this.Find(Id, Text).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -198,18 +204,18 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? Id, string Text)
         {
             var produtoDAO = new ProdutoDAO();
-            var list = produtoDAO.SelectCategoria(id, text);
+            var list = produtoDAO.SelectCategoria(Id, Text);
             var select = list.Select(u => new
             {
-                id = u.id,
-                text = u.text,              
+                Id = u.Id,
+                Text = u.Text,              
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.text).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
     }

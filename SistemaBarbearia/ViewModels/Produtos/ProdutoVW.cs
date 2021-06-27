@@ -21,7 +21,7 @@ namespace SistemaBarbearia.ViewModels.Produtos
 
         [Display(Name = "Unidade")]
         [Required(ErrorMessage = "Campo Unidade não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string flUnidade { get; set; }
+        public string nrUnidade { get; set; }
 
         public static SelectListItem[] Unidade
         {
@@ -62,6 +62,11 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Valor Custo  não Pode ser em Branco!", AllowEmptyStrings = false)]
         public decimal? vlCusto { get; set; }
+
+        [Display(Name = "Valor Venda")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Valor Venda  não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public decimal? vlVenda { get; set; }
 
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "Campo categoria não Pode ser em Branco!", AllowEmptyStrings = false)]

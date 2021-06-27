@@ -15,6 +15,9 @@ namespace SistemaBarbearia.Models.Servicos
         public string dsServico { get; set; }
         [Required]
         public decimal? vlServico { get; set; }
+
+        public string flSituacao { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
 

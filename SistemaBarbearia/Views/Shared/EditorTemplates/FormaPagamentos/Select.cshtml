@@ -1,34 +1,31 @@
-﻿@model SistemaBarbearia.ViewModels.Estados.SelectEstadoVM
+﻿@model SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM
 @using SistemaBarbearia.Helper;
 @{
     bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Estado");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Formas Pagamento");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
-    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
-
-    var Pais = new SistemaBarbearia.ViewModels.Paises.SelectPaisVM();
 }
-@Html.Hidden("isEdit")
+
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
             @Html.Label("", Label)
             <div class="input-group">
                 <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.Text, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -41,22 +38,28 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Estado </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Forma de Pagamento</b></a></li>
                         </ul>
                     </div>
-                    <div style="text-align:left">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
+
+                    <div style="text-align:right">
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button>
                     </div>
+
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableEstado"></div>
+                            <div id="TableCategoria">
+
+                            </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -70,38 +73,28 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Forma Pagamento </b></a></li>
                         </ul>
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
 
+
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("IdEstado", "Código")
-                                    @Html.TextBox("IdEstado", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("IdFormaPag", "Código")
+                                    @Html.TextBox("IdFormaPag", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="@Helper.Input6">
-                                    @Html.Label("nmEstado", "Estado", new { @class = "required" })
-                                    @Html.TextBox("nmEstado", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
-                                    @Html.ValidationMessage("nmEstado", null, new { @class = "text-danger" })
+                                    @Html.Label("dsFormaPagamento", "Forma Pagamento", new { @class = "required" })
+                                    @Html.TextBox("dsFormaPagamento", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
+                                    @Html.ValidationMessage("dsFormaPagamento", null, new { @class = "text-danger" })
                                 </div>
+                            </div>
 
-                                <div class="@Helper.Input3">
-                                    @Html.Label("dsUf", "UF", new { @class = "required" })
-                                    @Html.TextBox("dsUf", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        @Html.EditorFor(model => Pais, "Paises/Select", new { @disabled = readOnly })
-                                    </div>
-                                </div>
-                            </div>
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input3">
                                     @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
@@ -112,15 +105,13 @@
                                 </div>
 
                                 <div class="@Helper.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                    @Html.Label("dtUltAlteracao", "Data Ult. Alteração", new { @class = "required" })
                                     <div class="input-group">
                                         @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
@@ -135,51 +126,51 @@
         </div>
     </div>
 </div>
-
 @Html.AddScriptBlock(
 @<script type="text/javascript">
 
     self = this;
     $(function () {
          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
-             InitModalEstado();
+             InitModalFormaPagamento();
          });
 
          $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
                 self.save();
          });
 
-         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').change(function (data, e) {
-             var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').val();
-             if (Id == "") {
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
-             } else {
-                 $.ajax({
-                     dataType: 'json',
-                     type: 'GET',
-                     url: '@Url.Action("JsDetails", "Estado")',
-                     data: { 'Id': Id },
-                     success: function (data) {
-                        
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
-                     },
-                     error: function (err) {
-                         alert(err);
-                         alert("Erro ao buscar registro");
-                     }
-                 });
-             }
-         });
+        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
+            var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').val();
+            if (id == "") {
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val("");
+            } else {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    url: '@Url.Action("JsDetails", "FormaPagamento")',
+                    data: { 'id': id },
+                    success: function (data) {
+                        if (!data) {
+                            $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                        }
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                    },
+                    error: function (err) {
+                        alert(err);
+                        alert("Erro ao buscar registro");
+                    }
+                });
+            }
+        });
 
      });
 
-    this.getForm = function() {
+     this.getForm = function() {
         var form = {
-                Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
-                nmEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)'),
-                dsUF: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)'),
+                IdFormaPag : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdFormaPag", Prefix)'),
+                dsFormaPagamento: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsFormaPagamento", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -188,26 +179,20 @@
 
     this.clear = function () {
         var form = self.getForm();
-        form.Id.val("");
-        form.nmEstado.val("");
-        form.dsUF.val("");
+        form.IdFormaPag.val("");
+        form.dsFormaPagamento.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
-        form.nmEstado.focus();
+        form.dsFormaPagamento.focus();
     };
 
     this.isValid = function () {
         var valid = true;
         var form = self.getForm();
 
-        if (IsNullOrEmpty(form.nmEstado.val())) {
-            form.nmEstado.blink({ msg: "Campo Estado é obrigatório" });
-            form.nmEstado.focus();
-            valid = false;
-        }
-        else if (IsNullOrEmpty(form.dsUF.val())) {
-            form.dsUF.blink({ msg: "Campo UF é obrigatório" });
-            form.dsUF.focus();
+        if (IsNullOrEmpty(form.nmPais.val())) {
+            form.dsFormaPagamento.blink({ msg: "Campo Forma Pagamento é obrigatório" });
+            form.dsFormaPagamento.focus();
             valid = false;
         }
         return valid;
@@ -215,9 +200,8 @@
 
     getModel = function (form) {
         var model = {
-            Id: form.Id.val(),
-            nmEstado: form.nmEstado.val(),
-            dsUF: form.dsUF.val(),
+            Id: form.IdFormaPag.val(),
+            dsFormaPagamento: form.dsFormaPagamento.val(),
         }
         return model;
     };
@@ -239,14 +223,14 @@
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsInsert", "Estado")',
+                url: '@Url.Action("jsInsert", "FormaPagamento")',
                 data: model,
                 success: function (data) {
                     self.clear();
-                    InitModalEstado();
+                    InitModalFormaPagamento();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
 
                 },
                 error: function (request) {
@@ -265,51 +249,52 @@
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsUpdate", "Estado")',
+                url: '@Url.Action("jsUpdate", "FormaPagamento")',
                 data: model,
                 success: function (data) {
                     console.log(data)
                     self.clear();
-                    InitModalEstado();
+                    InitModalFormaPagamento();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
                 },
             });
         }
     };
 
-    function InitModalEstado() {
-        $("#TableEstado").empty();
-          let table = null
-        let lis = getTableEstados();
-          $("#TableEstado").append(lis);
+    function InitModalFormaPagamento() {
+        $("#TableFormaPagamento").empty();
+        let table = null
+        let lis = getTableFormaPagamento();
+        $("#TableFormaPagamento").append(lis);
 
-        table = $('#lista').DataTable({
-            ajax: { url: $('#lista').attr('data-url') },
+        table = $('#listaFormaPagamento').DataTable({
+            ajax: { url: $('#listaFormaPagamento').attr('data-url') },
                 lengthMenu: false,
                 lengthChange: false,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
-                { data: "Id" },
-                { data: "Text" },
-                   {
-                    sortable: false,
-                    data: null,
-                    sClass: 'details-control center',
-                    mRender: function (data) {
-                        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
-                    }
-                },
-                {
-                    sortable: false,
-                    data: null,
-                    mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.Id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                    }
-                },
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    sClass: 'details-control center',
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
+                //    }
+                //},
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                //    }
+                //},
+                { data: "id" },
+                { data: "text" }
+
             ],
         });
 
@@ -326,21 +311,19 @@
                 });
             }
             else {
-                row.child(SelectEstado(row.data())).show();
+                row.child(SelectCategoria(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
         });
     }
 
-    function getTableEstados() {
-        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Estado")">
-                        <thead class="table-dark">
+    function getTableFormaPagamento() {
+        let tmp = `<table id="listaFormaPagamento" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "FormaPagamento")">
+                        <thead>
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:70%">Estado</th>
-                                <th export="true" style="width:10%">Selecionar</th>
-                                <th export="true" style="width:10%">Alterar</th>
+                                <th export="true" style="width:50%">Forma Pagamento</th>
                             </tr>
                         </thead>
                    </table>`;
@@ -370,10 +353,10 @@
 
     };
 
-    function SelectEstado(data) {
+    function SelectFormaPagamento(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
         return false;
     };
 
@@ -381,7 +364,7 @@
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: '@Url.Action("JsDetails", "Pais")',
+            url: '@Url.Action("JsDetails", "FormaPagamento")',
             data: { 'id': id },
             success: function (data) {
                 self.clear();
@@ -391,9 +374,8 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.nmEstado);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)").val(data.sigla);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);                
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
@@ -407,5 +389,8 @@
         return false;
     }
 
+
+
 </script>
-)
+
+)       

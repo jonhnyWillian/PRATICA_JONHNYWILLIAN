@@ -10,7 +10,7 @@
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
 }
-
+@Html.Hidden("isEdit")
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
@@ -48,7 +48,7 @@
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableCargos">
+                            <div id="TableCargo">
 
                             </div>
                         </div>
@@ -78,12 +78,12 @@
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                          
+
 
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("Id", "Código")
-                                    @Html.TextBox("Id", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("IdCargo", "Código")
+                                    @Html.TextBox("IdCargo", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
@@ -92,6 +92,13 @@
                                     @Html.Label("dsCargo", "Cargo", new { @class = "required" })
                                     @Html.TextBox("dsCargo", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
                                     @Html.ValidationMessage("nmPais", null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="@Helper.Input4">
+                                    @Html.Label("flSituacao", "Situação", new { @class = "required" })
+                                    @Html.DropDownList("flSituacao", SistemaBarbearia.ViewModels.Cargos.CargoVM.Situacao, new { @class = "form-control" })
+                                    @Html.ValidationMessage("flSituacao", null, new { @class = "text-danger" })
                                 </div>
                             </div>
 
@@ -140,11 +147,11 @@
                 self.save();
          });
 
-        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
-            var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').val();
+        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)').change(function (data, e) {
+            var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)').val();
             if (id == "") {
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val("");
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val("");
             } else {
                 $.ajax({
                     dataType: 'json',
@@ -155,8 +162,8 @@
                         if (!data) {
                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
                         }
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
                     },
                     error: function (err) {
                         alert(err);
@@ -170,8 +177,9 @@
 
      this.getForm = function() {
         var form = {
-                id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
+                IdCargo : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)'),
                 dsCargo: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)'),
+                flSituacao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -180,11 +188,12 @@
 
     this.clear = function () {
         var form = self.getForm();
-        form.Id.val("");
-        form.dsCargo.val("");      
+        form.IdCargo.val("");
+        form.dsCargo.val("");
+        form.flSituacao.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
-        form.nmPais.focus();
+        form.dsCargo.focus();
     };
 
     this.isValid = function () {
@@ -202,9 +211,10 @@
 
     getModel = function (form) {
         var model = {
-            Id: form.id.val(),
+            IdCargo: form.IdCargo.val(),
             dsCargo: form.dsCargo.val(),
-           
+            flSituacao: form.flSituacao.val(),
+
         }
         return model;
     };
@@ -233,7 +243,6 @@
                     InitModalCargo();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
 
                 },
                 error: function (request) {
@@ -260,7 +269,7 @@
                     InitModalCargo();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+
                 },
             });
         }
@@ -270,15 +279,36 @@
           $("#TableCargo").empty();
           let table = null
           let lis = getTableCargo();
-        $("#TableCargo").append(lis);
-        $(document).ready(function () {
-            $('#listaCargo').DataTable({
+          $("#TableCargo").append(lis);
+
+        table = $('#lista').DataTable({
+            ajax: { url: $('#lista').attr('data-url') },
                 lengthMenu: false,
                 lengthChange: false,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
-                }
-            });
+            },
+            columns: [
+                { data: "IdCargo" },
+                { data: "dsCargo" },
+                {
+                    sortable: false,
+                    data: null,
+                    sClass: 'details-control center',
+                    mRender: function (data) {
+                        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
+                    }
+                },
+                {
+                    sortable: false,
+                    data: null,
+                    mRender: function (data) {
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.IdCargo + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                    }
+                },
+               
+
+            ],
         });
 
 
@@ -294,20 +324,22 @@
                 });
             }
             else {
-                row.child(SelectPais(row.data())).show();
+                row.child(SelectCargo(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
         });
-      }
+    }
 
     function getTableCargo() {
-        let tmp = `<table id="listaCargo" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Cargo")">
+        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Cargo")">
                         <thead>
                             <tr>
+                                
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:50%">Cargo</th>                                
-                                <th export="true" style="width:20%">Opções</th>
+                                <th export="true" style="width:70%">Cargo</th>
+                                <th export="true" style="width:10%">Selecionar</th>                      
+                                <th export="true" style="width:10%">Alterar</th> 
                             </tr>
                         </thead>
                    </table>`;
@@ -339,17 +371,17 @@
 
     function SelectCargo(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEdit(IdCargo) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Cargo")',
-            data: { 'id': id },
+            data: { 'IdCargo': IdCargo },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -358,11 +390,10 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.text);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)").val(data.dsSigla);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");

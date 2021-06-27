@@ -41,7 +41,7 @@ namespace SistemaBarbearia.Controllers
             }
             if (string.IsNullOrWhiteSpace(cidade.DDD))
             {
-                ModelState.AddModelError("", "DDD do Pais Nao pode ser em braco");
+                ModelState.AddModelError("", "DDD do Cidade Nao pode ser em braco");
             }
             try
             {
@@ -50,9 +50,10 @@ namespace SistemaBarbearia.Controllers
                     var cidadeDAO = new CidadeDAO();
 
                     cidadeDAO.InsertCidade(cidade);
-                    return RedirectToAction("Index");
-                }
 
+                    return RedirectToAction("Index");
+
+                }
                 return View();
             }
             catch

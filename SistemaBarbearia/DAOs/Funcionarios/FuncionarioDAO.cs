@@ -228,7 +228,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                     funcionarioVM.dsComplemento = Dr["dsComplemento"].ToString();
                     funcionarioVM.dsLougradouro = Dr["dsLougradouro"].ToString();
                     funcionarioVM.nrResidencial = Dr["nrResidencial"].ToString();                    
-                    funcionarioVM.cargos.IdCargo = Convert.ToInt32(Dr["id"]);
+                    funcionarioVM.cargos.IdCargo = Convert.ToInt32(Dr["IdCargo"]);
                     funcionarioVM.dsEmail = Dr["dsEmail"].ToString();
                     funcionarioVM.nrCPF = Dr["nrCPF"].ToString();
                     funcionarioVM.nrRG = Dr["nrRG"].ToString();

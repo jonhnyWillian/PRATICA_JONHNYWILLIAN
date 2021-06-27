@@ -1,4 +1,4 @@
-﻿@model SistemaBarbearia.ViewModels.Cidades.CidadeVM
+﻿@model SistemaBarbearia.ViewModels.CondPagamentos.CondPagamentoVM
 @using SistemaBarbearia.Helper;
 @{
     ViewBag.Title = "Editar registro";
@@ -15,7 +15,7 @@
         <div class="pull-right col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="breadcrumb breadcrumb-arrow">
                 <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
-                <li class="active">Alterar Cidade</li>
+                <li class="active">Alterar Condição Pagamento</li>
             </ul>
             <div class="form-horizontal">
                 @Html.Partial("Form", Model)

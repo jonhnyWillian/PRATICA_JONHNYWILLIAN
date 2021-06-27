@@ -185,7 +185,7 @@ namespace SistemaBarbearia.DAOs.Categorias
 
             if (id != null)
             {
-                where = "WHERE Id = " + id;
+                where = "WHERE IdCategoria = " + id;
             }
             if (!string.IsNullOrEmpty(text))
             {
@@ -200,12 +200,12 @@ namespace SistemaBarbearia.DAOs.Categorias
             return sqlSelectPais;
         }
 
-        public List<SelectCategoriaVM> SelectCategoria(int? id, string dsCategoria)
+        public List<SelectCategoriaVM> SelectCategoria(int? IdCategoria, string dsCategoria)
         {
             try
             {
 
-                var sqlSelectCargo = this.BuscarCategoria(id, dsCategoria);
+                var sqlSelectCargo = this.BuscarCategoria(IdCategoria, dsCategoria);
                 Open();
                 SQL = new SqlCommand(sqlSelectCargo, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -215,10 +215,11 @@ namespace SistemaBarbearia.DAOs.Categorias
                 {
                     var categoria = new SelectCategoriaVM
                     {
-                        id = Convert.ToInt32(Dr["IdCategoria"]),
-                        text = Convert.ToString(Dr["dsCategoria"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        Id = Convert.ToInt32(Dr["IdCategoria"]),
+                        Text = Convert.ToString(Dr["dsCategoria"]),
+                        flSituacao = Convert.ToString(Dr["flSituacao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
 
                     list.Add(categoria);

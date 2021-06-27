@@ -8,8 +8,8 @@ namespace SistemaBarbearia.ViewModels.Estados
 {
     public class SelectEstadoVM
     {
-        public int idEstado { get; set; }
-        public string nmEstado { get; set; }
+        public int Id { get; set; }
+        public string Text { get; set; }
 
         public string dsUF { get; set; }
 

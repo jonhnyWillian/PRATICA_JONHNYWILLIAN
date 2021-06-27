@@ -40,6 +40,16 @@
 </div>
 
 <div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.Servicos.ServicoVM.Situacao, new { @datadrop = "select2", @class = "form-control  col-md-6" })
+            @Html.ValidationMessageFor(model => model.flSituacao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-6">
         @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
         <div class="input-group-append">

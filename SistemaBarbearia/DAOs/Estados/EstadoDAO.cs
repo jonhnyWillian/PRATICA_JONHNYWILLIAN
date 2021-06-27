@@ -19,13 +19,13 @@ namespace SistemaBarbearia.DAOs.Estados
             try
             {
                 Open();
-                string insertEstado = @"INSERT INTO ESTADO (nmEstado, dsUF, dtCadastro, idPais) VALUES(@nmEstado, @dsUF, @dtCadastro, @idPais)";
+                string insertEstado = @"INSERT INTO ESTADO (nmEstado, dsUF, dtCadastro, IdPais) VALUES(@nmEstado, @dsUF, @dtCadastro, @IdPais)";
                 SQL = new SqlCommand(insertEstado, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
                 SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                SQL.Parameters.AddWithValue("idPais", estado.idPais);
+                SQL.Parameters.AddWithValue("@IdPais", estado.pais.Id);
                 SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -54,14 +54,14 @@ namespace SistemaBarbearia.DAOs.Estados
             try
             {
                 Open();
-                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsSigla, idPais = @idPais ,dtUltAlteracao = @dtUltAlteracao  WHERE IdEstado = @IdEstado";
+                string updateEstado = @"UPDATE ESTADO SET nmEstado = @nmEstado, dsUF = @dsUF, IdPais = @IdPais ,dtUltAlteracao = @dtUltAlteracao  WHERE IdEstado =" + estado.IdEstado;
                 SqlCommand sql = new SqlCommand(updateEstado, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdEstado", estado.IdEstado);
                 sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                sql.Parameters.AddWithValue("@idPais", estado.idPais);
+                sql.Parameters.AddWithValue("@IdPais", estado.pais.Id);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
 
                 int i = sql.ExecuteNonQuery();
@@ -136,11 +136,12 @@ namespace SistemaBarbearia.DAOs.Estados
                         IdEstado = Convert.ToInt32(Dr["IdEstado"]),
                         nmEstado = Convert.ToString(Dr["nmEstado"]),
                         dsUF = Convert.ToString(Dr["dsUF"]),
-                        idPais = Convert.ToInt32(Dr["idPais"]),
+                        IdPais = Convert.ToInt32(Dr["IdPais"]),
+                       
 
 
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
                     lista.Add(estado);
                 }
@@ -162,19 +163,26 @@ namespace SistemaBarbearia.DAOs.Estados
             {
                 Open();
                 var estadoVM = new EstadoVM();
-                string selectEditPais = @"SELECT* FROM ESTADO WHERE IdEstado =" + Id;
-                SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
+                string selectEditEstado = @"SELECT* FROM ESTADO WHERE IdEstado =" + Id;
+                SQL = new SqlCommand(selectEditEstado, sqlconnection);
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
                     estadoVM.IdEstado = Convert.ToInt32(Dr["IdEstado"]);
                     estadoVM.nmEstado = Dr["nmEstado"].ToString();
                     estadoVM.dsUF = Dr["dsUF"].ToString();
-                    //estadoVM.Pais = Convert.ToInt32(Dr["idPais"]);
-                    estadoVM.dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]);
+                   
+                    estadoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     estadoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
+
+                    estadoVM.Pais = new SistemaBarbearia.ViewModels.Paises.SelectPaisVM
+                    {
+                        Id = Convert.ToInt32(Dr["IdPais"]),
+                        //Text = Convert.ToString(Dr["nmPais"]),
+                       
+                    };
+
+
                 }
                 return estadoVM;
             }
@@ -225,8 +233,8 @@ namespace SistemaBarbearia.DAOs.Estados
                 {
                     var estado = new SelectEstadoVM
                     {
-                        idEstado = Convert.ToInt32(Dr["idEstado"]),
-                        nmEstado = Convert.ToString(Dr["nmEstado"]),
+                        Id = Convert.ToInt32(Dr["idEstado"]),
+                        Text = Convert.ToString(Dr["nmEstado"]),
                         dsUF = Convert.ToString(Dr["dsUF"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),

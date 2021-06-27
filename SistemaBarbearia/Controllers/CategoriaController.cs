@@ -113,24 +113,20 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var categoriaDAO = new CategoriaDAO();
-                var select = categoriaDAO.SelecionarCategoria().Select(u => new { IdCategoria = u.IdCategoria, dsCategoria = u.dsCategoria});
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
 
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -196,19 +192,18 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? Id, string Text)
         {
             var categoriaDAO = new CategoriaDAO();
-            var list = categoriaDAO.SelectCategoria(id, text);
+            var list = categoriaDAO.SelectCategoria(Id, Text);
             var select = list.Select(u => new
             {
-                id = u.id,
-                text = u.text,
-
+                Id = u.Id,
+                Text = u.Text,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.text).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
     }

@@ -19,20 +19,20 @@
             <tr>
                 <th export="true" style="width:10%">Codigo</th>
                 <th export="true" style="width:70%">Produto</th>
-                <th export="true" style="width:20%">Valor Custo</th>
-                <th export="true" style="width:20%">Opções</th>
+                <th export="true" class="text-right" style="width:20%">Valor Custo</th>
+                <th export="true" style="width:20% ">Opções</th>
             </tr>
         </thead>
         @foreach (var item in Model)
         {
             <tr>
-                <td style="width:10%;">
+                <td class="text-right" style="width:10%;">
                     @Html.DisplayFor(modelItem => item.IdProduto)
                 </td>
-                <td style="width:60%;">
+                <td style="width:50%;">
                     @Html.DisplayFor(modelItem => item.dsProduto)
                 </td>
-                <td style="width:10%;">
+                <td class="text-right" style="width:20%;">
                     @Html.DisplayFor(modelItem => item.vlCusto)
                 </td>
                 <td>

@@ -16,9 +16,9 @@ namespace SistemaBarbearia.Models.Estados
         [Required]
         public string dsUF { get; set; }
         [Required]
-        public int idPais { get; set; }
+        public int IdPais { get; set; }
 
-        public Pais pais { get; set; }
+        public SistemaBarbearia.ViewModels.Paises.SelectPaisVM pais { get; set; }
        
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

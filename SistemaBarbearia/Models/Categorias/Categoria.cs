@@ -12,8 +12,9 @@ namespace SistemaBarbearia.Models.Categorias
         public int IdCategoria { get; set; }
         [Required]
         public string dsCategoria { get; set; }
-       
-      
+
+        public string flSituacao { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }
 

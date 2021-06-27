@@ -8,11 +8,13 @@ namespace SistemaBarbearia.ViewModels.Categorias
 {
     public class SelectCategoriaVM
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string text { get; set; }
+        public string Text { get; set; }
 
-     
+        public string flSituacao { get; set; }
+
+
         public DateTime? dtCadastro { get; set; }
 
        

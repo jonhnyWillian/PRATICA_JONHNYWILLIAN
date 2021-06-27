@@ -150,6 +150,7 @@
     <Compile Include="Controllers\CargoController.cs" />
     <Compile Include="Controllers\CidadeController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\CondPagamentoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
@@ -192,9 +193,11 @@
     <Compile Include="ViewModels\Categorias\SelectCategoriaVM.cs" />
     <Compile Include="ViewModels\Cidades\CidadeVM.cs" />
     <Compile Include="ViewModels\Cidades\SelectCidadeVM.cs" />
+    <Compile Include="ViewModels\CondPagamentos\CondPagamentoVM.cs" />
     <Compile Include="ViewModels\Estados\EstadoVM.cs" />
     <Compile Include="ViewModels\Estados\SelectEstadoVM.cs" />
     <Compile Include="ViewModels\FormaPagamentos\FormaPagamentoVM.cs" />
+    <Compile Include="ViewModels\FormaPagamentos\SelectFormaPagamentoVM.cs" />
     <Compile Include="ViewModels\Fornecedores\FornecedorVM.cs" />
     <Compile Include="ViewModels\Fornecedores\SelectFornecedorVM.cs" />
     <Compile Include="ViewModels\Paises\SelectPaisVM.cs" />
@@ -432,11 +435,13 @@
     <Content Include="Scripts\plugins\sortable.js" />
     <Content Include="Scripts\plugins\sortable.min.js" />
     <Content Include="Scripts\runtime.js" />
+    <Content Include="Scripts\tDataTable.js" />
     <Content Include="Scripts\Views\Cargos\Cargo.js" />
     <Content Include="Scripts\Views\Categorias\Categoria.js" />
     <Content Include="Scripts\Views\Cidades\Cidade.js" />
     <Content Include="Scripts\Views\Clientes\Cliente.js" />
     <Content Include="Scripts\Views\Clientes\Create.js" />
+    <Content Include="Scripts\Views\CondPagamentos\CondPagamento.js" />
     <Content Include="Scripts\Views\Estados\Estado.js" />
     <Content Include="Scripts\Views\FormaPagamentos\FormaPagamento.js" />
     <Content Include="Scripts\Views\Fornecedores\Create.js" />
@@ -617,6 +622,13 @@
     <Content Include="Views\FormaPagamento\Delete.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CondPagamento\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Cargos\Select.cshtml" />
+    <Content Include="Views\CondPagamento\Index.cshtml" />
+    <Content Include="Views\CondPagamento\Form.cshtml" />
+    <Content Include="Views\CondPagamento\Create.cshtml" />
+    <Content Include="Views\CondPagamento\Edit.cshtml" />
+    <Content Include="Views\CondPagamento\Details.cshtml" />
+    <Content Include="Views\CondPagamento\Delete.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FormaPagamentos\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,15 +19,15 @@
             @Html.Label("", Label)
             <div class="input-group">
                 <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -41,26 +41,22 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Paises </b></a></li>
                         </ul>
                     </div>
-
-                    <div style="text-align:right">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                    <div style="text-align:left">
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar</button>
                     </div>
-
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TablePaises"></div>
                         </div>
                     </div>
-
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -79,27 +75,23 @@
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
                                     @Html.Label("IdPais", "Código")
                                     @Html.TextBox("IdPais", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
-
                             <div class="form-row">
                                 <div class="@Helper.Input6">
                                     @Html.Label("nmPais", "País", new { @class = "required" })
                                     @Html.TextBox("nmPais", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
                                     @Html.ValidationMessage("nmPais", null, new { @class = "text-danger" })
                                 </div>
-
                                 <div class="@Helper.Input3">
                                     @Html.Label("dsSigla", "Sigla", new { @class = "required" })
                                     @Html.TextBox("dsSigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
                                 </div>
                             </div>
-
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input3">
                                     @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
@@ -108,7 +100,6 @@
                                         <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
                                     </div>
                                 </div>
-
                                 <div class="@Helper.Input3 ">
                                     @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group">
@@ -117,15 +108,13 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
                             <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -147,23 +136,21 @@
                 self.save();
          });
 
-         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
-             var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').val();
-             if (id == "") {
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val("");
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val("");
+         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').change(function (data, e) {
+             var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').val();
+             if (Id == "") {
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
              } else {
                  $.ajax({
                      dataType: 'json',
                      type: 'GET',
                      url: '@Url.Action("JsDetails", "Pais")',
-                     data: { 'id': id },
+                     data: { 'Id': Id },
                      success: function (data) {
-                         if (!data) {
-                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
-                         }
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                         
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                      },
                      error: function (err) {
                          alert(err);
@@ -177,9 +164,9 @@
 
     this.getForm = function() {
         var form = {
-                idPais : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idPais", Prefix)'),
+                Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 nmPais: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)'),
-                dsSigla: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("sigla", Prefix)'),
+                dsSigla: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -188,12 +175,12 @@
 
     this.clear = function () {
         var form = self.getForm();
-        form.idPais.val("");
+        form.Id.val("");
         form.nmPais.val("");
         form.dsSigla.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
-        form.nomePais.focus();
+        form.nmPais.focus();
     };
 
     this.isValid = function () {
@@ -205,9 +192,6 @@
             form.nmPais.focus();
             valid = false;
         }
-
-
-
         else if (IsNullOrEmpty(form.dsSigla.val())) {
             form.dsSigla.blink({ msg: "Campo sigla é obrigatório" });
             form.dsSigla.focus();
@@ -218,7 +202,7 @@
 
     getModel = function (form) {
         var model = {
-            idPais: form.idPais.val(),
+            Id: form.Id.val(),
             nmPais: form.nmPais.val(),
             dsSigla: form.dsSigla.val(),
         }
@@ -249,8 +233,6 @@
                     InitModalPaises();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
-
                 },
                 error: function (request) {
                     alert("Erro ao adicionar registro")
@@ -276,7 +258,6 @@
                     InitModalPaises();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
                 },
             });
         }
@@ -296,6 +277,8 @@
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
+                { data: "Id" },
+                { data: "Text" },
                 {
                     sortable: false,
                     data: null,
@@ -308,12 +291,9 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.Id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
-                { data: "id" },
-                { data: "text" }              
-
             ],
         });
         
@@ -342,7 +322,9 @@
                         <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:90%">Pais</th>
+                                <th export="true" style="width:70%">Pais</th>                      
+                                <th export="true" style="width:10%">Selecionar</th>                      
+                                <th export="true" style="width:10%">Alterar</th>                      
                             </tr>
                         </thead>
                    </table>`;
@@ -374,17 +356,17 @@
 
     function SelectPais(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.Text);
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEdit(IdPais) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Pais")',
-            data: { 'id': id },
+            data: { 'IdPais': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -393,14 +375,11 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("codPais", Prefix)").val(data.id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nomePais", Prefix)").val(data.text);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ddi", Prefix)").val(data.ddi);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("sigla", Prefix)").val(data.sigla);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.nmPais);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)").val(data.dsSigla);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
-
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

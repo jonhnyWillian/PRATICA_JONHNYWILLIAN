@@ -113,24 +113,20 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var cargoDAO = new CargoDAO();
-                var select = cargoDAO.SelecionarCargo().Select(u => new { IdCargo = u.IdCargo, dsCargo = u.dsCargo});
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
 
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 500;
-                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -179,11 +175,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? id, string text)
+        public JsonResult JsDetails(int? IdCargo, string dsCargo)
         {
             try
             {
-                var result = this.Find(id, text).FirstOrDefault();
+                var result = this.Find(IdCargo, dsCargo).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -195,15 +191,15 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? IdCargo, string dsCargo)
         {
             var cargoDAO = new CargoDAO();
-            var list = cargoDAO.SelectCargo(id, text);
+            var list = cargoDAO.SelectCargo(IdCargo, dsCargo);
             var select = list.Select(u => new
             {
                 IdCargo = u.IdCargo,
                 dsCargo = u.dsCargo,
-             
+                
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 

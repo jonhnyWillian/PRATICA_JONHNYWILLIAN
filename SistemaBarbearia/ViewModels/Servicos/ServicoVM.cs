@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SistemaBarbearia.ViewModels.Servicos
 {
@@ -18,6 +19,22 @@ namespace SistemaBarbearia.ViewModels.Servicos
         [Display(Name = "Valor Serviço")]
         [Required(ErrorMessage = "Campo de Valor Serviço não pode ser em branco")]
         public decimal? vlServico { get; set; }
+
+        [Display(Name = "Situação")]
+        [Required(ErrorMessage = "Campo nome do Cargo não pode ser em branco")]
+        public string flSituacao { get; set; }
+
+        public static SelectListItem[] Situacao
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "A", Text = "ATIVA" },
+                    new SelectListItem { Value = "I", Text = "INATIVA" }
+                };
+            }
+        }
 
         [Display(Name = "Data de Cadastro")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

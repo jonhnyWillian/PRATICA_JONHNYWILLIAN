@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SistemaBarbearia.Models.Produtos
 {
@@ -19,6 +20,8 @@ namespace SistemaBarbearia.Models.Produtos
         [Required]
         public string nrUnidade { get; set; }
 
+        
+
         [Required]
         public int nrQtd { get; set; }
 
@@ -32,11 +35,14 @@ namespace SistemaBarbearia.Models.Produtos
         public Decimal? vlCompra { get; set; }
 
         [Required]
-        public Decimal? vlCusto { get; set; } 
+        public Decimal? vlCusto { get; set; }
+
+        [Required]
+        public Decimal? vlVenda { get; set; }
 
         public int idCategoria { get; set; }
 
-        public Categoria categoria { get; set; }
+        public SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM categoria { get; set; }
       
 
         public DateTime? dtCadastro { get; set; }

@@ -185,18 +185,18 @@ namespace SistemaBarbearia.DAOs.Cargos
             }
         }
 
-        protected string BuscarCargo(int? id, string text)
+        protected string BuscarCargo(int? IdCargo, string dsCargo)
         {
             var sqlSelectPais = string.Empty;
             var where = string.Empty;
 
-            if (id != null)
+            if (IdCargo != null)
             {
-                where = "WHERE IdCargo = " + id;
+                where = "WHERE IdCargo = " + IdCargo;
             }
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(dsCargo))
             {
-                var query = text.Split(' ');
+                var query = dsCargo.Split(' ');
                 foreach (var item in query)
                 {
                     where += "OR dsCargo LIKE '%'" + item + "'%'";
@@ -207,12 +207,12 @@ namespace SistemaBarbearia.DAOs.Cargos
             return sqlSelectPais;
         }
 
-        public List<SelectCargoVM> SelectCargo(int? id, string dsCargo)
+        public List<SelectCargoVM> SelectCargo(int? IdCargo, string dsCargo)
         {
             try
             {
 
-                var sqlSelectCargo = this.BuscarCargo(id, dsCargo);
+                var sqlSelectCargo = this.BuscarCargo(IdCargo, dsCargo);
                 Open();
                 SQL = new SqlCommand(sqlSelectCargo, sqlconnection);
                 Dr = SQL.ExecuteReader();

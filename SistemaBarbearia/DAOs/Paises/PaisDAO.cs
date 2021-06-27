@@ -188,18 +188,18 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        protected string BuscarPais(int? id, string text)
+        protected string BuscarPais(int? IdPais, string nmPais)
         {
             var sqlSelectPais = string.Empty;
             var where = string.Empty;
 
-            if (id != null)
+            if (IdPais != null)
             {
-                where = "WHERE IdPais = " + id;
+                where = "WHERE IdPais = " + IdPais;
             }
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(nmPais))
             {
-                var query = text.Split(' ');
+                var query = nmPais.Split(' ');
                 foreach (var item in query)
                 {
                     where += "OR nmPais LIKE '%'" + item + "'%'";
@@ -210,12 +210,12 @@ namespace SistemaBarbearia.DAOs.Paises
             return sqlSelectPais;
         }
 
-        public List<SelectPaisVM> SelectPais(int? id, string nmPais)
+        public List<SelectPaisVM> SelectPais(int? Id, string Text)
         {
             try
             {
 
-                var sqlSelectPais = this.BuscarPais(id, nmPais);
+                var sqlSelectPais = this.BuscarPais(Id, Text);
                 Open();
                 SQL = new SqlCommand(sqlSelectPais, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -225,8 +225,8 @@ namespace SistemaBarbearia.DAOs.Paises
                 {
                     var pais = new SelectPaisVM
                     {
-                        id = Convert.ToInt32(Dr["IdPais"]),
-                        text = Convert.ToString(Dr["nmPais"]),                       
+                        Id = Convert.ToInt32(Dr["IdPais"]),
+                        Text = Convert.ToString(Dr["nmPais"]),                       
                         dsSigla = Convert.ToString(Dr["dsSigla"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),

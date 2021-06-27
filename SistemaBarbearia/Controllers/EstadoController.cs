@@ -205,13 +205,13 @@ namespace SistemaBarbearia.Controllers
             var list = estadoDAO.SelectEstado(id, text);
             var select = list.Select(u => new
             {
-                idEstado = u.idEstado,
-                nmEstado = u.nmEstado,
+                Id = u.Id,
+                Text = u.Text,
                 dsUF = u.dsUF,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.nmEstado).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
 

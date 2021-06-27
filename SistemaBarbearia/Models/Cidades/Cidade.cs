@@ -20,7 +20,7 @@ namespace SistemaBarbearia.Models.Cidades
         [Required]
         public int idEstado { get; set; }
 
-        public Estado estado { get; set; }
+        public SistemaBarbearia.ViewModels.Estados.SelectEstadoVM estado { get; set; }
 
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
