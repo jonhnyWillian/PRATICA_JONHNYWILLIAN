@@ -207,12 +207,12 @@ namespace SistemaBarbearia.DAOs.Cargos
             return sqlSelectPais;
         }
 
-        public List<SelectCargoVM> SelectCargo(int? IdCargo, string dsCargo)
+        public List<SelectCargoVM> SelectCargo(int? Id, string Text)
         {
             try
             {
 
-                var sqlSelectCargo = this.BuscarCargo(IdCargo, dsCargo);
+                var sqlSelectCargo = this.BuscarCargo(Id, Text);
                 Open();
                 SQL = new SqlCommand(sqlSelectCargo, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -222,8 +222,8 @@ namespace SistemaBarbearia.DAOs.Cargos
                 {
                     var cargo = new SelectCargoVM
                     {
-                        IdCargo = Convert.ToInt32(Dr["IdCargo"]),
-                        dsCargo = Convert.ToString(Dr["dsCargo"]),
+                        Id = Convert.ToInt32(Dr["IdCargo"]),
+                        Text = Convert.ToString(Dr["dsCargo"]),
                         flSituacao = Convert.ToString(Dr["flSituacao"]),
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),

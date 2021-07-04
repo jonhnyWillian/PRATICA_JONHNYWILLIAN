@@ -13,7 +13,7 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.IdCategoria, new { @class = "control-label" })
+                    @Html.LabelFor(model => model.IdCategoria, new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.IdCategoria, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
@@ -23,8 +23,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.LabelFor(model => model.dsCategoria, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsCategoria, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Categoria" })
+            @Html.LabelFor(model => model.dsCategoria, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsCategoria, new { @class = "form-control col-md-8", @maxlength = "50", @autofocus = "autofocus", @style = "text-transform:uppercase", @placeholder = "Categoria" })
             @Html.ValidationMessageFor(model => model.dsCategoria, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -32,7 +32,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
-            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label required" })
             @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.Categorias.CategoriaVM.Situacao, new { @datadrop = "select2", @class = "form-control  col-md-6" })
             @Html.ValidationMessageFor(model => model.flSituacao, "", new { @class = "text-danger" })
         </div>

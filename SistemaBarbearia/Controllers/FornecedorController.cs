@@ -1,6 +1,9 @@
-﻿using SistemaBarbearia.DAOs.Fornecedores;
+﻿using SistemaBarbearia.DAOs.Cidades;
+using SistemaBarbearia.DAOs.CondPagamentos;
+using SistemaBarbearia.DAOs.Fornecedores;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Fornecedores;
+using SistemaBarbearia.ViewModels.Fornecedores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,64 @@ namespace SistemaBarbearia.Controllers
 {
     public class FornecedorController : Controller
     {
-        // GET: Fornecedor
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            FornecedorDAO objFornecedor = new FornecedorDAO();
+            CidadeDAO DAOCidade = new CidadeDAO();
+            CondPagamentoDAO condPagamentoDAO = new CondPagamentoDAO();
+            var obj = objFornecedor.GetFornecedor(id);
+            var result = new FornecedorVM
+            {
+                IdModelPai = obj.IdFornecedor,
+                nmPessoa = obj.nmNome,
+
+
+                nrTelefone = obj.nrTelefone,
+                nrCelular = obj.nrCelular,
+                dsEmail = obj.dsEmail,
+
+              
+                flTipo = obj.flTipo,
+                
+                nrCEP = obj.nrCEP,
+                dsLogradouro = obj.dsLogradouro,
+                nrResidencial = obj.nrResidencial,
+                dsBairro = obj.dsBairro,
+                dsComplemento = obj.dsComplemento,
+              
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,
+                idCidade = obj.idCidade,
+                IdCondPag = obj.idCondPagamento,
+
+                Fisica = new FornecedorVM.PessoaFisicaVM
+                {
+                    nmApelido = obj.dsNome,
+                    nrCPF = obj.nrCPFCNPJ,
+                    nrRG = obj.nrRGIE,
+                    dtNascimento = obj.dtNasc,
+                    flSexo = obj.flSexo
+                },
+                Juridica = new FornecedorVM.PessoaJuridicaVM
+                {
+                    nmFantasia = obj.dsNome,
+                    dsSite = obj.dsSite,
+                    nrContato = obj.nrContato,                    
+                    nrCNPJ = obj.nrCPFCNPJ,
+                    nrIE = obj.nrRGIE,
+                    
+                }
+            };
+            var objCidade = DAOCidade.GetCidade(result.idCidade);
+            result.Cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
+            var objCondPag = condPagamentoDAO.GetCondPagamento(result.IdCondPag);
+            result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
+            return View(result);
+        }
+        #endregion
+
         public ActionResult Index()
         {
             var fornecedorDAO = new FornecedorDAO();
@@ -19,52 +79,52 @@ namespace SistemaBarbearia.Controllers
             return View(fornecedorDAO.SelecionarFornecedor());
         }
 
-        // GET: Fornecedor/Details/5
+      
         public ActionResult Details(int id)
         {
-            var fornecedorDAO = new FornecedorDAO();
-            return View(fornecedorDAO.GetFornecedor(id));
+            return this.GetView(id);
         }
 
-        // GET: Fornecedor/Create
+      
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Fornecedor/Create
+     
         [HttpPost]
-        public ActionResult Create(Fornecedor fornecedor)
+        public ActionResult Create(FornecedorVM fornecedor)
         {
-            try
+            if (ModelState.IsValid)
             {
-               
-                if (ModelState.IsValid)
+                try
                 {
-                    var fornecedorDAO = new FornecedorDAO();
+                    var bean = fornecedor.GetFornecedor(new Fornecedor());
+                    var dao = new FornecedorDAO();
+                    bean.dtCadastro = DateTime.Now;
+                    //bean.dtUltAlteracao = DateTime.Now;
+                   
+                    dao.InsertFornecedor(bean);
 
-                    if (fornecedorDAO.InsertFornecedor(fornecedor))
-                    {
-                        ViewBag.Message = "Fornecedor criado com sucesso!";
-                    }
+                    
+                    return RedirectToAction("index");
                 }
-
-                return RedirectToAction("Index");
+                catch 
+                {
+                    
+                    return View(fornecedor);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(fornecedor);
         }
 
-        // GET: Fornecedor/Edit/5
+      
         public ActionResult Edit(int id)
         {
-            var fornecedorDAO = new FornecedorDAO();
-            return View(fornecedorDAO.GetFornecedor(id));
+            return this.GetView(id);
         }
 
-        // POST: Fornecedor/Edit/5
+      
         [HttpPost]
         public ActionResult Edit(int id, Fornecedor fornecedor)
         {
@@ -88,14 +148,13 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Fornecedor/Delete/5
+      
         public ActionResult Delete(int id)
         {
-            var fornecedorDAO = new FornecedorDAO();
-            return View(fornecedorDAO.GetFornecedor(id));
+            return this.GetView(id);
         }
 
-        // POST: Fornecedor/Delete/5
+       
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -118,7 +177,7 @@ namespace SistemaBarbearia.Controllers
             {
 
                 var fornecedorDAO = new FornecedorDAO();
-                var select = fornecedorDAO.SelecionarFornecedor().Select(u => new { Id = u.Id, nmNome = u.nmNome, nrTelefone = u.nrTelefone });
+                var select = fornecedorDAO.SelecionarFornecedor().Select(u => new { Id = u.IdFornecedor, nmNome = u.nmNome, nrTelefone = u.nrTelefone });
 
                 IQueryable<dynamic> query = select.AsQueryable();
 

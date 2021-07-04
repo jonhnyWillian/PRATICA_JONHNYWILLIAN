@@ -7,9 +7,9 @@ namespace SistemaBarbearia.ViewModels.FormaPagamentos
 {
     public class SelectFormaPagamentoVM
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string text { get; set; }
+        public string Text { get; set; }
 
         public DateTime? dtCadastro { get; set; }
 

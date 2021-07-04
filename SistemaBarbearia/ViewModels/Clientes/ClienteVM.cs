@@ -1,121 +1,85 @@
 ﻿using SistemaBarbearia.Models.Cidades;
+using SistemaBarbearia.Models.Clientes;
+using SistemaBarbearia.ViewModels.Model;
+using SistemaBarbearia.ViewModels.Pessoas;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace SistemaBarbearia.ViewModels.Clientes
 {
-    public class ClienteVM
+    public class ClienteVM : PessoaVM
     {
-
-        [Display(Name = "Codigo")]
-        public int IdCliente { get; set; }
-
-        [Display(Name = "Cliente")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Cliente não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nmCliente { get; set; }
-
-        [Display(Name = "Apelido")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nmApelido { get; set; }
-
-        [Display(Name = "Login")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Login não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsLogin { get; set; }
-
-        [Display(Name = "Senha")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Senha não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string senha { get; set; }
-
-        [Display(Name = "Sexo")]
-        [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string flSexo { get; set; }
-
-        public static SelectListItem[] Sexo
+        public Cliente GetCliente(Cliente cliente)
         {
-            get
-            {
-                return new[]
-                {
-                    new SelectListItem { Text = "Feminino", Value = "F" },
-                     new SelectListItem { Text = "Masculino", Value = "M" }
-                };
-            }
+            cliente.nmCliente = this.nmPessoa;
+            cliente.nrTelefone = !string.IsNullOrEmpty(this.nrTelefone) ? this.nrTelefone.Replace("(", "").Replace(")", "").Replace("-", "") : this.nrTelefone;
+            cliente.nrCelular = !string.IsNullOrEmpty(this.nrCelular) ? this.nrCelular.Replace("(", "").Replace(")", "").Replace("-", "") : this.nrCelular;
+            cliente.dsEmail = this.dsEmail;
+            cliente.flTipo = this.flTipo;
+            cliente.nrCEP = !string.IsNullOrEmpty(this.nrCEP) ? this.nrCEP.Replace("-", "") : this.nrCEP;
+            cliente.dsLogradouro = this.dsLogradouro;
+            cliente.nrResidencial = this.nrResidencial;
+            cliente.dsBairro = this.dsBairro;
+            cliente.dsComplemento = this.dsComplemento;
+            cliente.idCidade = this.Cidade.Id;
+            cliente.IdCondPag = this.condPagamento.Id;
+            cliente = this.Fisica.GetCliente(cliente);
+            cliente.dtCadastro = this.dtCadastro;
+            cliente.dtUltAlteracao = this.dtUltAlteracao;
+            return cliente;
         }
 
 
-        [Display(Name = "Telefone")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Telefone não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrTelefone { get; set; }
+        public PessoaFisicaVM Fisica { get; set; }
 
-        [Display(Name = "Celular")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Celular não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCelular { get; set; }
+        public class PessoaFisicaVM
+        {
 
-        [Display(Name = "CEP")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo CEP não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCEP { get; set; }
+            [Display(Name = "Apelido")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!", AllowEmptyStrings = false)]
+            public string nmApelido { get; set; }
 
-        [Display(Name = "Complemento")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Complemento não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsComplemento { get; set; }
+            [Display(Name = "CPF")]
+            [StringLength(14, MinimumLength = 0)]
+            [Required(ErrorMessage = "Campo CPF não Pode ser em Branco!", AllowEmptyStrings = false)]
+            public string nrCPF { get; set; }
 
-        [Display(Name = "Bairro")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Bairro não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsBairro { get; set; }
+            [Display(Name = "RG")]
+            [StringLength(11, MinimumLength = 0)]
+            [Required(ErrorMessage = "Campo RG não Pode ser em Branco!", AllowEmptyStrings = false)]
+            public string nrRG { get; set; }
 
-        [Display(Name = "Endereço")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Lougradouro não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsLougradouro { get; set; }
+            [Display(Name = "Sexo")]
+            [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
+            public string flSexo { get; set; }
 
-        [Display(Name = "Nº")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrResidencial { get; set; }
+            public SistemaBarbearia.ViewModels.CondPagamentos.CondPagamentoVM condPagamento { get; set; }
 
-        [Display(Name = "Cidade")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
+            [Display(Name = "Data de Nascimento")]
+            [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+            public DateTime? dataNasc { get; set; }
 
-        [Display(Name = "E-mail")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Email não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsEmail { get; set; }
 
-        [Display(Name = "CPF")]
-        [StringLength(14, MinimumLength = 0)]
-        [Required(ErrorMessage = "Campo CPF não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCPF { get; set; }
 
-        [Display(Name = "RG")]
-        [StringLength(11, MinimumLength = 0)]
-        [Required(ErrorMessage = "Campo RG não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrRG { get; set; }
+            public Cliente GetCliente(Cliente cliente)
+            {
+                
+                cliente.nmApelido = this.nmApelido;
+                cliente.nrCPF = !string.IsNullOrEmpty(this.nrCPF) ? this.nrCPF.Replace(".", "").Replace("-", "") : this.nrCPF;
+                cliente.nrRG = this.nrRG;
+                cliente.flSexo = this.flSexo;
+                cliente.dataNasc = this.dataNasc;
 
-        [Display(Name = "Data de Nascimento")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dataNasc { get; set; }
+                return cliente;
+            }
+        }
 
-        [Display(Name = "Data de Cadastro")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data de Ult. Alteracao")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dtUltAlteracao { get; set; }
+        internal object GetCliente()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

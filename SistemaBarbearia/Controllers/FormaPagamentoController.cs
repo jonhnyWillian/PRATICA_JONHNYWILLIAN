@@ -190,18 +190,18 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? Id, string Text)
         {
             var formaPagamentoDAO = new FormaPagamentoDAO();
-            var list = formaPagamentoDAO.SelectFormaPagamento(id, text);
+            var list = formaPagamentoDAO.SelectFormaPagamento(Id, Text);
             var select = list.Select(u => new
             {
-                id = u.id,
-                text = u.text,               
+                Id = u.Id,
+                Text = u.Text,               
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.text).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
     }

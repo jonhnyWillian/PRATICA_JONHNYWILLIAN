@@ -1,43 +1,24 @@
 ﻿$(function () {
 
 
-    $("#flTipoPessoa").change(function () {       
-       
-        if ($("#flTipoPessoa").val() == "F") {
-           
-            $("#lblJuridica").hide(); 
-            $("#lblFisica").show();
+    if ($("#flTipo").val() == "F") {
+        $(".fisica").show();
+        $(".juridica").hide();
+    } else {
+        $(".fisica").hide();
+        $(".juridica").show();
+    }
 
-            $("#lblJuridicaNome").hide();
-            $("#lblFisicaNome").show();
+    $("#flTipo").change(function () {
+        if ($("#flTipo").val() == "F") {
+            $(".fisica").slideDown();
+            $(".juridica").slideUp();
+        } else {
+            $(".fisica").slideUp();
+            $(".juridica").slideDown();
+        }
 
-            $("#lblJuridicaCNPJ").hide();
-            $("#lblFisicaCPF").show();
-
-            $("#lblJuridicaIE").hide();
-            $("#lblFisicaRG").show();
-         
-
-        } else if ($("#flTipoPessoa").val() == "J") {
-
-            $("#lblFisica").hide();
-            $("#lblJuridica").show();        
-
-            $("#lblFisicaNome").hide();
-            $("#lblJuridicaNome").show();
-
-            $("#lblFisicaCPF").hide();
-            $("#lblJuridicaCNPJ").show();
-
-            $("#lblJuridicaIE").show();
-            $("#lblFisicaRG").hide();
-         
-        } 
     });
-
-
-    
-
 
 
 });

@@ -13,6 +13,7 @@ namespace SistemaBarbearia.ViewModels.Paises
 
         [Display(Name = "Pais")]
         [StringLength(50, MinimumLength = 3)]
+        [RegularExpression("([A-Z])", ErrorMessage = "Somente Letras")]
         [Required(ErrorMessage = "Campo Pais não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nmPais { get; set; }
 

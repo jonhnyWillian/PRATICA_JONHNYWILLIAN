@@ -54,7 +54,7 @@ namespace SistemaBarbearia.DAOs.Paises
             try
             {
                 Open();
-                string updatePais = @"UPDATE Pais SET nmPais = @nmPais, dsSigla = @dsSigla, dtUltAlteracao = @dtUltAlteracao  WHERE id = @id";
+                string updatePais = @"UPDATE Pais SET nmPais = @nmPais, dsSigla = @dsSigla, dtUltAlteracao = @dtUltAlteracao  WHERE IdPais = "+ pais.IdPais;
                 SqlCommand sql = new SqlCommand(updatePais, sqlconnection);
                 sql.CommandType = CommandType.Text;
 

@@ -1,6 +1,8 @@
-﻿using SistemaBarbearia.DAOs.Produtos;
+﻿using SistemaBarbearia.DAOs.Categorias;
+using SistemaBarbearia.DAOs.Produtos;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Produtos;
+using SistemaBarbearia.ViewModels.Produtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,34 @@ namespace SistemaBarbearia.Controllers
 {
     public class ProdutoController : Controller
     {
-        
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            ProdutoDAO produto = new ProdutoDAO();
+            CategoriaDAO categoria = new CategoriaDAO();
+            var obj = produto.GetProduto(id);
+            var result = new ProdutoVW
+            {
+                IdProduto = obj.IdProduto,
+                dsProduto = obj.dsProduto,
+                codBarra = obj.codBarra,
+                nrQtd = obj.nrQtd,
+                nrUnidade = obj.nrUnidade,
+                vlCompra = obj.vlCompra,
+                vlCusto = obj.vlCusto,
+                vlVenda = obj.vlVenda,
+                qtdEstoque = obj.qtdEstoque,
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,
+                IdCategoria = obj.IdCategoria
+            };
+            var objCategoria = categoria.GetCategoria(result.IdCategoria);
+            result.categoria = new ViewModels.Categorias.SelectCategoriaVM { Id = objCategoria.IdCategoria, Text = objCategoria.dsCategoria };
+            return View(result);
+        }
+        #endregion
+
         public ActionResult Index()
         {
             var produtoDAO = new ProdutoDAO();
@@ -21,8 +50,8 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Details(int id)
         {
-            var produtoDAO = new ProdutoDAO();
-            return View(produtoDAO.GetProduto(id));
+
+            return GetView(id);
         }
 
         public ActionResult Create()
@@ -67,8 +96,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Edit(int id)
         {
-            var produtoDAO = new ProdutoDAO();
-            return View(produtoDAO.GetProduto(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -103,8 +131,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Delete(int id)
         {
-            var produtoDAO = new ProdutoDAO();
-            return View(produtoDAO.GetProduto(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -148,7 +175,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var produtoDAO = new ProdutoDAO();
-                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { IdProduto = u.idCategoria, dsProduto = u.dsProduto }).AsQueryable();
+                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { Id = u.idCategoria, Text = u.dsProduto }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }

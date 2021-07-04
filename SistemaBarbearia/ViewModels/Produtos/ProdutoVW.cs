@@ -68,6 +68,9 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Required(ErrorMessage = "Campo Valor Venda  não Pode ser em Branco!", AllowEmptyStrings = false)]
         public decimal? vlVenda { get; set; }
 
+
+        public int IdCategoria { get; set; }
+
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "Campo categoria não Pode ser em Branco!", AllowEmptyStrings = false)]
         public SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM categoria { get; set; }

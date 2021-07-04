@@ -8,9 +8,9 @@ namespace SistemaBarbearia.ViewModels.Cargos
 {
     public class SelectCargoVM
     {
-        public int IdCargo { get; set; }
+        public int Id { get; set; }
 
-        public string dsCargo { get; set; }
+        public string Text { get; set; }
 
         public string flSituacao { get; set; }
 

@@ -22,6 +22,7 @@ namespace SistemaBarbearia.ViewModels.Estados
         [Required(ErrorMessage = "Campo UF não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsUF { get; set; }
 
+        public int IdPais { get; set; }
         public SistemaBarbearia.ViewModels.Paises.SelectPaisVM Pais { get; set; }
 
         [Display(Name = "Data de Cadastro")]

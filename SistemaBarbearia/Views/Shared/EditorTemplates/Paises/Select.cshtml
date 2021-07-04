@@ -9,29 +9,31 @@
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    var action = Convert.ToString(ViewBag.Action);
 }
 
 @Html.Hidden("isEdit")
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            @Html.Label("", Label)
-            <div class="input-group">
-                <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("", Label)
+                <div class="input-group">
+                    <div class="input-group-btn" style="width:15%">
+                        @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    </div>
+                    <div class="input-group-btn" style="width:45%">
+                        @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
+                    </div>
+                    <div class="input-group-btn">
+                        <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" 
+                          id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
                 </div>
-                <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
-                </div>
-                <div class="input-group-btn">
-                    <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-                </div>
-                @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
-</div>
 
 <div id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -92,22 +94,22 @@
                                     @Html.TextBox("dsSigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
                                 </div>
                             </div>
-                            <div class="form-row isEdit">
-                                <div class="@Helper.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
-                                    <div class="input-group-append">
-                                        @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
-                                        <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+                            @*<div class="form-row isEdit">
+                                    <div class="@Helper.Input3">
+                                        @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
+                                        <div class="input-group-append">
+                                            @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
+                                            <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="@Helper.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
-                                    <div class="input-group">
-                                        @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
-                                        <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+                                    <div class="@Helper.Input3 ">
+                                        @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
+                                        <div class="input-group">
+                                            @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
+                                            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>*@
                         </div>
                     </div>
 
@@ -148,7 +150,7 @@
                      url: '@Url.Action("JsDetails", "Pais")',
                      data: { 'Id': Id },
                      success: function (data) {
-                         
+
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                      },
@@ -272,7 +274,7 @@
         table = $('#lista').DataTable({
             ajax: { url: $('#lista').attr('data-url') },
                 lengthMenu: false,
-                lengthChange: false,    
+                lengthChange: false,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
@@ -296,7 +298,7 @@
                 },
             ],
         });
-        
+
 
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
 
@@ -322,9 +324,9 @@
                         <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:70%">Pais</th>                      
-                                <th export="true" style="width:10%">Selecionar</th>                      
-                                <th export="true" style="width:10%">Alterar</th>                      
+                                <th export="true" style="width:70%">Pais</th>
+                                <th export="true" style="width:10%">Selecionar</th>
+                                <th export="true" style="width:10%">Alterar</th>
                             </tr>
                         </thead>
                    </table>`;
@@ -357,16 +359,16 @@
     function SelectPais(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.Text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
         return false;
     };
 
-    function OpenEdit(IdPais) {
+    function OpenEdit(Id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Pais")',
-            data: { 'IdPais': Id },
+            data: { 'Id': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -376,10 +378,10 @@
                 }
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.nmPais);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.Text);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)").val(data.dsSigla);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
+                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

@@ -18,6 +18,8 @@ namespace SistemaBarbearia.Models.Clientes
         public string senha { get; set; }
 
         public string flSexo { get; set; }
+        
+        public string flTipo { get; set; }
 
         public string nrTelefone { get; set; }
 
@@ -27,18 +29,20 @@ namespace SistemaBarbearia.Models.Clientes
 
         public string dsComplemento { get; set; }
 
-       
         public string dsBairro { get; set; }
 
-        public string dsLougradouro { get; set; }
+        public string dsLogradouro { get; set; }
 
-     
         public string nrResidencial { get; set; }
-
       
-        public Cidade cidade { get; set; }
+        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM Cidade { get; set; }
 
         public int idCidade { get; set; }
+
+        public SistemaBarbearia.ViewModels.CondPagamentos.SelectCondPagamentoVM CondPagamento { get; set; }
+
+        public int IdCondPag { get; set; }
+
 
         public string dsEmail { get; set; }
 

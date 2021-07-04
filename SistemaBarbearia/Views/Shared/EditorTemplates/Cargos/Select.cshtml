@@ -17,15 +17,15 @@
             @Html.Label("", Label)
             <div class="input-group">
                 <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.IdCargo, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.dsCargo, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.IdCargo, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -42,8 +42,8 @@
                         </ul>
                     </div>
 
-                    <div style="text-align:right">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button>
+                    <div style="text-align:left">
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
                     </div>
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
@@ -82,8 +82,8 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("IdCargo", "Código")
-                                    @Html.TextBox("IdCargo", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("Id", "Código")
+                                    @Html.TextBox("Id", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
@@ -102,7 +102,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-row isEdit">
+                            @*<div class="form-row isEdit">
                                 <div class="@Helper.Input3">
                                     @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group-append">
@@ -118,7 +118,7 @@
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
 
@@ -147,23 +147,23 @@
                 self.save();
          });
 
-        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)').change(function (data, e) {
-            var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)').val();
-            if (id == "") {
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val("");
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val("");
+        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').change(function (data, e) {
+            var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').val();
+            if (Id == "") {
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
             } else {
                 $.ajax({
                     dataType: 'json',
                     type: 'GET',
                     url: '@Url.Action("JsDetails", "Cargo")',
-                    data: { 'id': id },
+                    data: { 'Id': Id },
                     success: function (data) {
                         if (!data) {
                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
                         }
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                     },
                     error: function (err) {
                         alert(err);
@@ -177,7 +177,7 @@
 
      this.getForm = function() {
         var form = {
-                IdCargo : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)'),
+                Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 dsCargo: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)'),
                 flSituacao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
@@ -188,7 +188,7 @@
 
     this.clear = function () {
         var form = self.getForm();
-        form.IdCargo.val("");
+        form.Id.val("");
         form.dsCargo.val("");
         form.flSituacao.val("");
         form.dtCadastro.val("");
@@ -200,7 +200,7 @@
         var valid = true;
         var form = self.getForm();
 
-        if (IsNullOrEmpty(form.nmPais.val())) {
+        if (IsNullOrEmpty(form.dsCargo.val())) {
             form.dsCargo.blink({ msg: "Campo Cargo é obrigatório" });
             form.dsCargo.focus();
             valid = false;
@@ -211,7 +211,7 @@
 
     getModel = function (form) {
         var model = {
-            IdCargo: form.IdCargo.val(),
+            Id: form.Id.val(),
             dsCargo: form.dsCargo.val(),
             flSituacao: form.flSituacao.val(),
 
@@ -289,8 +289,8 @@
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
-                { data: "IdCargo" },
-                { data: "dsCargo" },
+                { data: "Id" },
+                { data: "Text" },
                 {
                     sortable: false,
                     data: null,
@@ -303,7 +303,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.IdCargo + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.Id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
                
@@ -371,17 +371,17 @@
 
     function SelectCargo(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
         return false;
     };
 
-    function OpenEdit(IdCargo) {
+    function OpenEdit(Id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Cargo")',
-            data: { 'IdCargo': IdCargo },
+            data: { 'IdCargo': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -390,8 +390,8 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCargo", Prefix)").val(data.IdCargo);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.dsCargo);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCargo", Prefix)").val(data.Text);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));

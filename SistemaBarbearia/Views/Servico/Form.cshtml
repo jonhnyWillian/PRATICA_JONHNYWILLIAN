@@ -12,7 +12,7 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.IdServico, new { @class = "control-label" })
+                    @Html.LabelFor(model => model.IdServico, new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.IdServico, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
@@ -22,18 +22,18 @@
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsServico, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Servico" })
+            @Html.LabelFor(model => model.dsServico, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsServico, new { @class = "form-control col-md-8", @maxlength = "50", @style = "text-transform:uppercase", @autofocus = "autofocus",  @placeholder = "Serviço" })
             @Html.ValidationMessageFor(model => model.dsServico, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
-        @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label" })
+        @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control col-md-4", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor do Serviço" })
+            @Html.TextBoxFor(model => model.vlServico, "" ,new { @class = "form-control col-md-4 text-right ", @autofocus = "autofocus", @placeholder = "Valor do Serviço" })
             @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -42,7 +42,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
-            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label required" })
             @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.Servicos.ServicoVM.Situacao, new { @datadrop = "select2", @class = "form-control  col-md-6" })
             @Html.ValidationMessageFor(model => model.flSituacao, "", new { @class = "text-danger" })
         </div>

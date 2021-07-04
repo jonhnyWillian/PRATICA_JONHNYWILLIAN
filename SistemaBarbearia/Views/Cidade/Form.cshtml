@@ -12,7 +12,7 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.IdCidade, new { @class = "control-label" })
+                    @Html.LabelFor(e => e.IdCidade, new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.IdCidade, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
@@ -22,8 +22,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.LabelFor(model => model.nmCidade, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nmCidade, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Cidade" })
+            @Html.LabelFor(model => model.nmCidade, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.nmCidade, new { @class = "form-control col-md-8", @style = "text-transform:uppercase", @maxlength = "50", @autofocus = "autofocus", @placeholder = "Cidade" })
             @Html.ValidationMessageFor(model => model.nmCidade, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            @Html.LabelFor(model => model.DDD, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.DDD, htmlAttributes: new { @class = "control-label required" })
             @Html.TextBoxFor(model => model.DDD, new { @class = "form-control col-md-2", @style = "text-transform:uppercase", @placeholder = "DDD", })
             @Html.ValidationMessageFor(model => model.DDD, "", new { @class = "text-danger" })
         </div>
@@ -41,7 +41,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="form-group">
-            @Html.EditorFor(model => model.Estado, "Estados/Select", new { @disabled = readOnly })
+            @Html.EditorFor(model => model.Estado, "Estados/Select", new { @Required = false, Disable = readOnly })
         </div>
     </div>
 </div>

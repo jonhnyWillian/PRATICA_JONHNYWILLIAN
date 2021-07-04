@@ -135,7 +135,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var categoriaDAO = new CategoriaDAO();
-                IQueryable<dynamic> lista = categoriaDAO.SelecionarCategoria().Select(u => new { IdCategoria = u.IdCategoria, dsCategoria = u.dsCategoria }).AsQueryable();
+                IQueryable<dynamic> lista = categoriaDAO.SelecionarCategoria().Select(u => new { Id = u.IdCategoria, Text = u.dsCategoria }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }

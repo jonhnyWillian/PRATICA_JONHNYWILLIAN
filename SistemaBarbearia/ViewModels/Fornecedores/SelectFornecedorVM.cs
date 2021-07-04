@@ -39,7 +39,7 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
 
         public string dsComplemento { get; set; }
 
-        public string dsLougradouro { get; set; }
+        public string dsLogradouro { get; set; }
 
         public string nrResidencial { get; set; }
 

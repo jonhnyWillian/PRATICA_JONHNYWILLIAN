@@ -14,7 +14,7 @@ namespace SistemaBarbearia.DAOs.Servicos
     {
 
         #region INSERT UPDATE DELETE 
-        public bool InsertServico(Servico servicos)
+        public bool InsertServico(Servico servico)
         {
 
             try
@@ -24,9 +24,9 @@ namespace SistemaBarbearia.DAOs.Servicos
                 SQL = new SqlCommand(insertServico, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@dsServico", servicos.dsServico.ToUpper());
-                SQL.Parameters.AddWithValue("@vlServico", servicos.vlServico);
-                SQL.Parameters.AddWithValue("@dtCadastro", servicos.dtCadastro = DateTime.Now);
+                SQL.Parameters.AddWithValue("@dsServico", servico.dsServico.ToUpper());
+                SQL.Parameters.AddWithValue("@vlServico", ((object)servico.vlServico) != DBNull.Value ? ((object)servico.vlServico) : 0);
+                SQL.Parameters.AddWithValue("@dtCadastro", servico.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
 
@@ -61,7 +61,7 @@ namespace SistemaBarbearia.DAOs.Servicos
 
                 sql.Parameters.AddWithValue("@IdServico", servico.IdServico);
                 sql.Parameters.AddWithValue("@dsServico", servico.dsServico.ToUpper());
-                sql.Parameters.AddWithValue("@vlServico", servico.vlServico);
+                sql.Parameters.AddWithValue("@vlServico", ((object)servico.vlServico) != DBNull.Value ? ((object)servico.vlServico) : 0);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", servico.dtUltAlteracao = DateTime.Now);
 
 
@@ -169,7 +169,7 @@ namespace SistemaBarbearia.DAOs.Servicos
                 {
                     servicoVM.IdServico = Convert.ToInt32(Dr["IdServico"]);
                     servicoVM.dsServico = Dr["dsServico"].ToString();
-                    servicoVM.vlServico = Convert.ToDecimal(Dr["vlServico"]);                    
+                    servicoVM.vlServico = Dr["vlServico"] == DBNull.Value ? 0 : Convert.ToDecimal(Dr["vlServico"]);
                     servicoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     servicoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 

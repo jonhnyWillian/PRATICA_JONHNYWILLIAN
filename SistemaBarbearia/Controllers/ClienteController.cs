@@ -6,11 +6,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SistemaBarbearia.ViewModels.Clientes;
+using SistemaBarbearia.DAOs.Cidades;
+using SistemaBarbearia.DAOs.CondPagamentos;
 
 namespace SistemaBarbearia.Controllers
 {
     public class ClienteController : Controller
     {
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            ClienteDAO objCliente = new ClienteDAO();
+            CidadeDAO DAOCidade = new CidadeDAO();
+            CondPagamentoDAO condPagamentoDAO = new CondPagamentoDAO();
+            var obj = objCliente.DAOGetCliente(id);
+            var result = new ClienteVM
+            {
+                IdModelPai = obj.IdCliente,
+                nmPessoa = obj.nmCliente,
+                nrTelefone = obj.nrTelefone,
+                nrCelular = obj.nrCelular,
+                dsEmail = obj.dsEmail,
+                flTipo = obj.flTipo,
+                nrCEP = obj.nrCEP,
+                dsLogradouro = obj.dsLogradouro,
+                nrResidencial = obj.nrResidencial,
+                dsBairro = obj.dsBairro,
+                dsComplemento = obj.dsComplemento,
+
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,
+                idCidade = obj.idCidade,
+                IdCondPag = obj.IdCondPag,
+                Fisica = new ClienteVM.PessoaFisicaVM
+                {
+                    nmApelido = obj.nmApelido,
+                    nrCPF = obj.nrCPF,
+                    nrRG = obj.nrRG,
+                    dataNasc = obj.dataNasc,
+                    flSexo = obj.flSexo,
+                    
+                },
+                
+            };
+            var objCidade = DAOCidade.GetCidade(result.idCidade);
+            result.Cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
+            var objCondPag = condPagamentoDAO.GetCondPagamento(result.IdCondPag);
+            result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
+            return View(result);
+        }
+        #endregion
 
         public ActionResult Index()
         {
@@ -21,8 +68,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Details(int id)
         {
-            var clienteDAO = new ClienteDAO();
-            return View(clienteDAO.GetCliente(id));
+            return this.GetView(id);
         }
 
         public ActionResult Create()
@@ -31,90 +77,90 @@ namespace SistemaBarbearia.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Cliente cliente)
+        public ActionResult Create(ClienteVM model)
         {
-            if (string.IsNullOrWhiteSpace(cliente.nmCliente))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Nome do Cliente Nao pode ser em braco");
-            }
-            if (string.IsNullOrWhiteSpace(cliente.nmApelido))
-            {
-                ModelState.AddModelError("", "Sigla do Apelido Nao pode ser em braco");
-            }
-            try
-            {
-                if (ModelState.IsValid)
+                try
                 {
-                    var clienteDAO = new ClienteDAO();
+                    var bean = model.GetCliente(new Cliente());
+                    var dao = new ClienteDAO();
+                    bean.dtCadastro = DateTime.Now;
+                    bean.dtUltAlteracao = DateTime.Now;
 
-                    clienteDAO.InsertCliente(cliente);
-                    return RedirectToAction("Index");
+                    dao.InsertCliente(bean);
+
+                  
+                    return RedirectToAction("index");
                 }
-
-                return View();
+                catch 
+                {
+                    return View(model);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
       
         public ActionResult Edit(int id)
         {
-            var clienteDAO = new ClienteDAO();
-            return View(clienteDAO.GetCliente(id));
+          
+            return this.GetView(id);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Cliente cliente)
+        public ActionResult Edit(int id, ClienteVM model)
         {
-            if (string.IsNullOrWhiteSpace(cliente.nmCliente))
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Nome do Cliente Nao pode ser em braco");
-            }
-            if (string.IsNullOrWhiteSpace(cliente.nmApelido))
-            {
-                ModelState.AddModelError("", "Sigla do Apelido Nao pode ser em braco");
-            }
-            try
-            {
-                if (ModelState.IsValid)
+
+                try
                 {
-                    var clienteDAO = new ClienteDAO();
+                    ClienteDAO dao = new ClienteDAO();
+                    var cliente = dao.DAOGetCliente(id);
 
-                    clienteDAO.UpdateCliente(cliente);
+                    var bean = model.GetCliente(cliente);
+                    bean.dtUltAlteracao = DateTime.Now;
 
-                    return RedirectToAction("Index");
-
+                    dao.UpdateCliente(bean);
+                    return RedirectToAction("index");
                 }
-                return View();
+                catch 
+                {
+                    
+                    return View(model);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
        
         public ActionResult Delete(int id)
         {
             var clienteDAO = new ClienteDAO();
-            return View(clienteDAO.GetCliente(id));
+            return View(clienteDAO.DAOGetCliente(id));
         }
        
         [HttpPost]
-        public ActionResult Delete(int id, Cliente cliente)
+        public ActionResult Delete(int id, ClienteVM cliente)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var clienteDAO = new ClienteDAO();
-                clienteDAO.DeleteCliente(id);
+                try
+                {
+                    // TODO: Add update logic here
+                    var bean = cliente.GetCliente(new Cliente());
+                    var daoCliente = new ClienteDAO();
+                    daoCliente.DeleteCliente(cliente.IdModelPai);
 
-                return RedirectToAction("Index");
+                   
+                    return RedirectToAction("index");
+                }
+                catch 
+                {
+                    
+                    return View(cliente);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(cliente);
         }
 
         //public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)

@@ -7,11 +7,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SistemaBarbearia.DAOs.Paises;
+using SistemaBarbearia.DAOs.Cidades;
+using SistemaBarbearia.ViewModels.Paises;
+using SistemaBarbearia.ViewModels.Estados;
 
 namespace SistemaBarbearia.Controllers
 {
     public class EstadoController : Controller
     {
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            EstadoDAO objEstado = new EstadoDAO();
+            PaisDAO DAOPais = new PaisDAO();
+            var obj = objEstado.GetEstado(id);
+            var result = new EstadoVM
+            {
+                IdEstado = obj.IdEstado,
+                nmEstado = obj.nmEstado,
+                dsUF = obj.dsUF,
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,               
+                IdPais = obj.IdPais
+            };
+            var objPais = DAOPais.GetPais(result.IdPais);
+            result.Pais = new ViewModels.Paises.SelectPaisVM { Id = objPais.IdPais, Text = objPais.nmPais };
+            return View(result);
+        }
+        #endregion
+
         public ActionResult Index()
         {
             var estadoDAO = new EstadoDAO();
@@ -21,8 +47,8 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Details(int id)
         {
-            var estadoDAO = new EstadoDAO();
-            return View(estadoDAO.GetEstado(id));
+
+            return GetView(id);
         }
 
         public ActionResult Create()
@@ -35,11 +61,15 @@ namespace SistemaBarbearia.Controllers
         {
             if (string.IsNullOrWhiteSpace(estado.nmEstado))
             {
-                ModelState.AddModelError("", "Nome do Estado Nao pode ser em braco");
+                ModelState.AddModelError("", "Nome do Estado não pode ser em branco");
             }
             if (string.IsNullOrWhiteSpace(estado.dsUF))
             {
-                ModelState.AddModelError("", "UF do Estado Nao pode ser em braco");
+                ModelState.AddModelError("", "UF do Estado não pode ser em branco");
+            }
+            if(estado.pais.Id == 0)
+            {
+                ModelState.AddModelError("", "Campo Pais não pode ser em branco");
             }
             try
             {
@@ -62,8 +92,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Edit(int id)
         {
-            var estadoDAO = new EstadoDAO();
-            return View(estadoDAO.GetEstado(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -95,11 +124,10 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
-      
+        
         public ActionResult Delete(int id)
         {
-            var estadoDAO = new EstadoDAO();
-            return View(estadoDAO.GetEstado(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -143,7 +171,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var estadoDAO = new EstadoDAO();
-                IQueryable<dynamic> lista = estadoDAO.SelecionarEstado().Select(u => new { IdEstado = u.IdEstado, nmEstado = u.nmEstado }).AsQueryable();
+                IQueryable<dynamic> lista = estadoDAO.SelecionarEstado().Select(u => new { Id = u.IdEstado, Text = u.nmEstado }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
@@ -208,6 +236,7 @@ namespace SistemaBarbearia.Controllers
                 Id = u.Id,
                 Text = u.Text,
                 dsUF = u.dsUF,
+                IdPais = u.IdPais,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 

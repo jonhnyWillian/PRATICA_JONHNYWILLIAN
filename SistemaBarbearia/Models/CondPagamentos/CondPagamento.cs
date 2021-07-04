@@ -10,8 +10,8 @@ namespace SistemaBarbearia.Models.CondPagamento
 	public class CondPagamento
 	{
 
-		[Key]
-		public int idCondPag { get; set; }
+		
+		public int IdCondPag { get; set; }
 
 		public string dsCondPag { get; set; }
 
@@ -21,12 +21,22 @@ namespace SistemaBarbearia.Models.CondPagamento
 
 		public decimal txDesconto { get; set; }
 
-		public FormaPagamento formaPagamento { get; set; }
+		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
 		public int idFormaPagamento { get; set; }
+
+		public CondPagamento()
+        {
+			this.CondPagamentoParcela = new List<CondPagamentoParcela>();
+        }
+		
+		public ICollection<CondPagamentoParcela> CondPagamentoParcela { get; set; }
+
 
 		public DateTime? dtCadastro { get; set; }
 
 		public DateTime? dtUltAlteracao { get; set; }
+
+
 
 	}
 }

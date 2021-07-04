@@ -13,12 +13,14 @@ namespace SistemaBarbearia.ViewModels.Cidades
         public int IdCidade { get; set; }
 
         [Display(Name = "Cidade")]
-        [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!")]
         public string nmCidade { get; set; }
 
         [Display(Name = "DDD")]
-        [Required(ErrorMessage = "Campo DDD não Pode ser em Branco!", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Campo DDD não Pode ser em Branco!")]
         public string DDD { get; set; }
+
+        public int IdEstado { get; set; }
 
         public SistemaBarbearia.ViewModels.Estados.SelectEstadoVM Estado { get; set; }
 

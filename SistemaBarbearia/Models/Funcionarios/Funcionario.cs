@@ -32,7 +32,7 @@ namespace SistemaBarbearia.Models.Funcionarios
         public string nrCEP { get; set; }
 
         [Required]
-        public string dsLougradouro { get; set; }
+        public string dsLogradouro { get; set; }
 
         [Required]
         public string nrResidencial { get; set; }
@@ -56,14 +56,14 @@ namespace SistemaBarbearia.Models.Funcionarios
         [Required]
         public Decimal? vlSalario { get; set; }
 
-        public int? idCidade { get; set; }
+        public int IdCidade { get; set; }
 
-        public Cidade Cidade { get; set; }
+        public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
 
-        public int? idCargo { get; set; }
+        public int IdCargo { get; set; }
 
-        public Cargo Cargo { get; set; }
+        public SistemaBarbearia.ViewModels.Cargos.SelectCargoVM cargo { get; set; }
 
         [Required]
         public string dsLogin { get; set; }

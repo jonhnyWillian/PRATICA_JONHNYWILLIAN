@@ -13,7 +13,7 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.IdPais, new { @class = "control-label" })
+                    @Html.LabelFor(e => e.IdPais, new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.IdPais, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
@@ -23,15 +23,15 @@
 <div class="row">
     <div class="col-md-8">
         <div class="form-group">
-            @Html.LabelFor(model => model.nmPais, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control col-md-12", maxlength = "100", @placeholder = "Nome Pais" })
+            @Html.LabelFor(model => model.nmPais, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control col-md-12", @maxlength = "100",  @style = "text-transform:uppercase ",  @placeholder = "Nome Pais" })
             @Html.ValidationMessageFor(model => model.nmPais, null, new { @class = "alert-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
-            @Html.LabelFor(model => model.dsSigla, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsSigla, new { @class = "form-control col-md-4", maxlength = "4", @placeholder = "Sigla", })
+            @Html.LabelFor(model => model.dsSigla, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsSigla, new { @class = "form-control col-md-4", @style = "text-transform:uppercase", @maxlength = "4", @placeholder = "Sigla" })
             @Html.ValidationMessageFor(model => model.dsSigla, "", new { @class = "alert-danger" })
         </div>
     </div>

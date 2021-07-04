@@ -1,16 +1,17 @@
-﻿using SistemaBarbearia.Models.FormaPagamentos;
+﻿using SistemaBarbearia.ViewModels.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
+using System.Web.Mvc;
+using SistemaBarbearia.Models.CondPagamento;
 
 namespace SistemaBarbearia.ViewModels.CondPagamentos
 {
-    public class CondPagamentoVM
+    public class CondPagamentoVM : ModelPaiVM
     {
-		[Display(Name = "Codigo")]
-		public int idCondPag { get; set; }
 
 		[Display(Name = "Condição Pagamento")]
 		[StringLength(50, MinimumLength = 3)]
@@ -23,23 +24,57 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Multa")]
 		[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
-		public decimal txMulta { get; set; }
+		public decimal txMulta { get; set; }			
 
-		[Display(Name = "Desconto")]		
-		[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
-		public decimal txDesconto { get; set; }
+		[Display(Name = "Dias")]
+		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		public short? qtdDias { get; set; }
+
+		[Display(Name = "Porcentagem (%)")]
+		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		public short? txPercentual { get; set; }
 
 		[Display(Name = "Forma Pagamento")]
 		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
 
-		[Display(Name = "Data de Cadastro")]
-		[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-		public DateTime? dtCadastro { get; set; }
+		public CondPagamento GetCondPagamento (CondPagamento bean)
+        {
+			bean.dsCondPag = this.dsCondPag;
+			bean.txJuro = this.txJuro;
+			bean.txMulta = this.txMulta;
+		
 
-		[Display(Name = "Data de Ult. Alteracao")]
-		[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-		public DateTime? dtUltAlteracao { get; set; }
+			foreach (var item in Itens)
+			{
+				bean.CondPagamentoParcela.Add(new CondPagamentoParcela
+				{
+					idCondicaoPagParc = item.idCondicaoPagParc ?? 0,
+					nrParcela = item.nrParcela ?? 0,
+					qtdDias = item.qtdDias ?? 0,
+					txPercentual = item.txPercentual ?? 0,
+					idFormaPagto = item.idFormaPagto ?? 0,
+					nmFormaPagto = item.nmFormaPagto
+
+
+				});
+
+            }
+
+			return bean;
+        }
+
+
+		public List<CondPagamentoParcelaVM> Itens { get; set; }
+		
+
+		public class CondPagamentoParcelaVM
+		{
+			public int? idCondicaoPagParc { get; set; }
+			public short? nrParcela { get; set; }
+			public short? qtdDias { get; set; }
+			public decimal? txPercentual { get; set; }
+			public int? idFormaPagto { get; set; }
+			public string nmFormaPagto { get; set; }
+		}
 	}
 }

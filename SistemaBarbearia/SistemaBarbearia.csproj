@@ -51,6 +51,9 @@
       <HintPath>..\packages\Fizzler.1.2.0\lib\netstandard2.0\Fizzler.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Svg, Version=3.2.0.0, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
       <HintPath>..\packages\Svg.3.2.3\lib\net461\Svg.dll</HintPath>
     </Reference>
@@ -126,9 +129,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -163,6 +163,7 @@
     <Compile Include="DAOs\Cargos\CargoDAO.cs" />
     <Compile Include="DAOs\Cidades\CidadeDAO.cs" />
     <Compile Include="DAOs\Clientes\ClienteDAO.cs" />
+    <Compile Include="DAOs\CondPagamentos\CondPagamentoDAO.cs" />
     <Compile Include="DAOs\Estados\EstadoDAO.cs" />
     <Compile Include="DAOs\FormaPagamentos\FormaPagamentoDAO.cs" />
     <Compile Include="DAOs\Fornecedores\FornecedorDAO.cs" />
@@ -194,17 +195,20 @@
     <Compile Include="ViewModels\Cidades\CidadeVM.cs" />
     <Compile Include="ViewModels\Cidades\SelectCidadeVM.cs" />
     <Compile Include="ViewModels\CondPagamentos\CondPagamentoVM.cs" />
+    <Compile Include="ViewModels\CondPagamentos\SelectCondPagamentoVM.cs" />
     <Compile Include="ViewModels\Estados\EstadoVM.cs" />
     <Compile Include="ViewModels\Estados\SelectEstadoVM.cs" />
     <Compile Include="ViewModels\FormaPagamentos\FormaPagamentoVM.cs" />
     <Compile Include="ViewModels\FormaPagamentos\SelectFormaPagamentoVM.cs" />
     <Compile Include="ViewModels\Fornecedores\FornecedorVM.cs" />
     <Compile Include="ViewModels\Fornecedores\SelectFornecedorVM.cs" />
+    <Compile Include="ViewModels\Model\ModelPaiVM.cs" />
     <Compile Include="ViewModels\Paises\SelectPaisVM.cs" />
     <Compile Include="ViewModels\Paises\PaisVM.cs" />
     <Compile Include="ViewModels\Categorias\CategoriaVM.cs" />
     <Compile Include="ViewModels\Clientes\ClienteVM.cs" />
     <Compile Include="ViewModels\Funcionarios\FuncionarioVM.cs" />
+    <Compile Include="ViewModels\Pessoas\PessoaVM.cs" />
     <Compile Include="ViewModels\Produtos\ProdutoVW.cs" />
     <Compile Include="ViewModels\Servicos\ServicoVM.cs" />
     <Compile Include="DataTable\Column.cs" />
@@ -442,6 +446,7 @@
     <Content Include="Scripts\Views\Clientes\Cliente.js" />
     <Content Include="Scripts\Views\Clientes\Create.js" />
     <Content Include="Scripts\Views\CondPagamentos\CondPagamento.js" />
+    <Content Include="Scripts\Views\CondPagamentos\Create.js" />
     <Content Include="Scripts\Views\Estados\Estado.js" />
     <Content Include="Scripts\Views\FormaPagamentos\FormaPagamento.js" />
     <Content Include="Scripts\Views\Fornecedores\Create.js" />

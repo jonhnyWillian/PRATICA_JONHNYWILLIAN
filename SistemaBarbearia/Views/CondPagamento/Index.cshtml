@@ -25,16 +25,16 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.idCondPag)
+                <td class="text-right" style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.IdCondPag)
                 </td>
                 <td style="width:60%;">
                     @Html.DisplayFor(modelItem => item.dsCondPag)
                 </td>
                 <td>
-                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.idCondPag }))"><i class="fa fa-eye"></i></a>
-                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.idCondPag }))"><i class="fa fa-pencil-square-o"></i></a>
-                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.idCondPag }))"><i class="fa fa-trash"></i></a>
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCondPag }))"><i class="fa fa-eye"></i></a>
+                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCondPag }))"><i class="fa fa-pencil-square-o"></i></a>
+                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCondPag }))"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         }

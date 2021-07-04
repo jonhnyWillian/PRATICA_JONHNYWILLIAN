@@ -13,45 +13,50 @@ namespace SistemaBarbearia.DAOs.Clientes
     public class ClienteDAO : DataAccess
     {
         #region INSERT UPDATE DELETE
-        public bool InsertCliente(Cliente cliente)
+        public void InsertCliente(Cliente cliente)
         {
 
             try
             {
-                string insertCliente = @"INSERT INTO CLIENTE (nmCliente,nmApelido,flSexo,nrTelefone,nrCelular,dsLougradouro,nrResidencial,dsBairro,dsComplemento,dsEmail,
-                                                             nrCPF,nrRG,idCidade,idCondPagamento,dsLogin,senha,dtCadastro)
-                                                    VALUES(@nmCliente,@nmApelido,@flSexo,@nrTelefone,@nrCelular,@dsLougradouro,@nrResidencial,@dsBairro,@dsComplemento,@dsEmail,
-                                                             @nrCPF,@nrRG,@idCidade,@idCondPagamento,@dsLogin,@senha,@dtCadastro)";
-                SQL = new SqlCommand(insertCliente, sqlconnection);
-                SQL.CommandType = CommandType.Text;
+                Open();
+                string insertCliente = @"INSERT INTO CLIENTE (nmCliente,nmApelido,flSexo,nrTelefone,nrCelular,nrCEP,dsLogradouro,nrResidencial,dsBairro,dsComplemento,dsEmail,
+                                                             nrCPF,nrRG, dataNasc, IdCidade,IdCondPagamento,dtCadastro, dtUltAlteracao)
+                                                    VALUES(@nmCliente,@nmApelido,@flSexo,@nrTelefone,@nrCelular,@nrCEP,@dsLogradouro,@nrResidencial,@dsBairro,@dsComplemento,@dsEmail,
+                                                             @nrCPF,@nrRG,@dataNasc,@IdCidade,@IdCondPagamento,@dtCadastro, @dtUltAlteracao)";
+                SqlCommand sql = new SqlCommand(insertCliente, sqlconnection);
+                sql.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@nmCliente", cliente.nmCliente.ToUpper());
-                SQL.Parameters.AddWithValue("@nmApelido", cliente.nmApelido.ToUpper());
-                SQL.Parameters.AddWithValue("@flSexo", cliente.flSexo);
-                SQL.Parameters.AddWithValue("@nrTelefone", cliente.nrTelefone);
-                SQL.Parameters.AddWithValue("@nrCelular", cliente.nrCelular);
-                SQL.Parameters.AddWithValue("@dsLougradouro", cliente.dsLougradouro.ToUpper());
-                SQL.Parameters.AddWithValue("@nrResidencial", cliente.nrResidencial);
-                SQL.Parameters.AddWithValue("@dsBairro", cliente.dsBairro.ToUpper());
-                SQL.Parameters.AddWithValue("@dsComplemento", cliente.dsComplemento.ToUpper());
-                SQL.Parameters.AddWithValue("@nrCPF", cliente.nrCPF);
-                SQL.Parameters.AddWithValue("@nrRG", cliente.nrRG);
-                SQL.Parameters.AddWithValue("@idCidade", cliente.cidade.IdCidade);
-                //SQL.Parameters.AddWithValue("@idCondPagamento", cliente.condPagamento.Id);
-                SQL.Parameters.AddWithValue("@dsLogin", cliente.dsLogin);
-                SQL.Parameters.AddWithValue("@senha", cliente.senha);
-                SQL.Parameters.AddWithValue("@dtCadastro", cliente.dtCadastro = DateTime.Now);
+                sql.Parameters.AddWithValue("@nmCliente", cliente.nmCliente.ToUpper());
+                sql.Parameters.AddWithValue("@nmApelido", cliente.nmApelido.ToUpper());
+                sql.Parameters.AddWithValue("@flSexo", cliente.flSexo);
+                sql.Parameters.AddWithValue("@nrTelefone", cliente.nrTelefone);
+                sql.Parameters.AddWithValue("@nrCelular", cliente.nrCelular);
+                sql.Parameters.AddWithValue("@nrCEP", cliente.nrCEP);
+                sql.Parameters.AddWithValue("@dsLogradouro", cliente.dsLogradouro.ToUpper());
+                sql.Parameters.AddWithValue("@nrResidencial", cliente.nrResidencial);
+                sql.Parameters.AddWithValue("@dsBairro", cliente.dsBairro.ToUpper());
+                sql.Parameters.AddWithValue("@dsComplemento", cliente.dsComplemento.ToUpper());
+                sql.Parameters.AddWithValue("@dsEmail", cliente.dsEmail.ToUpper());
+                sql.Parameters.AddWithValue("@dataNasc", cliente.dataNasc);
+                sql.Parameters.AddWithValue("@nrCPF", cliente.nrCPF);
+                sql.Parameters.AddWithValue("@nrRG", cliente.nrRG);
+                sql.Parameters.AddWithValue("@IdCidade", cliente.idCidade);
+                sql.Parameters.AddWithValue("@IdCondPagamento", cliente.IdCondPag);
+                //SQL.Parameters.AddWithValue("@dsLogin", cliente.dsLogin);
+                //SQL.Parameters.AddWithValue("@senha", cliente.senha);
+                sql.Parameters.AddWithValue("@dtCadastro", cliente.dtCadastro = DateTime.Now);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", cliente.dtUltAlteracao = DateTime.Now);
 
-                int i = SQL.ExecuteNonQuery();
+                //int i = sql.ExecuteNonQuery();
 
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //if (i >= 1)
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
             catch (Exception e)
             {
@@ -63,15 +68,15 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public bool UpdateCliente(Cliente cliente)
+        public void UpdateCliente(Cliente cliente)
         {
             try
             {
                 Open();
-                string updateCliente = @"UPDATE ESTADO SET nmCliente = @nmCliente , nmApelido = @nmApelido, flSexo = @flSexo, nrTelefone = @nrTelefone, nrCelular = @nrCelular, 
-                                                          dsLougradouro = @dsLougradouro, nrResidencial = @nrResidencial, dsBairro = @dsBairro, dsComplemento = @dsComplemento,
-                                                          dsEmail = @dsEmail, nrCPF = @nrCPF, nrRG = @nrRG, idCidade = @idCidade, idCondPagamento = @idCondPagamento, 
-                                                          dsLogin = @dsLogin, senha = @senha, dtUltAlteracao = @dtUltAlteracao  
+                string updateCliente = @"UPDATE CLIENTE SET nmCliente = @nmCliente , nmApelido = @nmApelido, flSexo = @flSexo, nrTelefone = @nrTelefone, nrCelular = @nrCelular, nrCEP = @nrCEP, 
+                                                          dsLogradouro = @dsLogradouro, nrResidencial = @nrResidencial, dsBairro = @dsBairro, dsComplemento = @dsComplemento,
+                                                          dsEmail = @dsEmail, nrCPF = @nrCPF, dataNasc = @dataNasc, nrRG = @nrRG, IdCidade = @IdCidade, IdCondPagamento = @IdCondPagamento, 
+                                                          dtUltAlteracao = @dtUltAlteracao  
                                                           WHERE IdCliente = @IdCliente";
                 SqlCommand sql = new SqlCommand(updateCliente, sqlconnection);
                 sql.CommandType = CommandType.Text;
@@ -82,30 +87,32 @@ namespace SistemaBarbearia.DAOs.Clientes
                 sql.Parameters.AddWithValue("@flSexo", cliente.flSexo);
                 sql.Parameters.AddWithValue("@nrTelefone", cliente.nrTelefone);
                 sql.Parameters.AddWithValue("@nrCelular", cliente.nrCelular);
-                sql.Parameters.AddWithValue("@dsLougradouro", cliente.dsLougradouro);
+                sql.Parameters.AddWithValue("@dsLogradouro", cliente.dsLogradouro);
+                sql.Parameters.AddWithValue("@nrCEP", cliente.nrCEP);
                 sql.Parameters.AddWithValue("@nrResidencial", cliente.nrResidencial);
                 sql.Parameters.AddWithValue("@dsBairro", cliente.dsBairro);
                 sql.Parameters.AddWithValue("@dsComplemento", cliente.dsComplemento);
                 sql.Parameters.AddWithValue("@dsEmail", cliente.dsEmail);
+                sql.Parameters.AddWithValue("@dataNasc", cliente.dataNasc);
                 sql.Parameters.AddWithValue("@nrCPF", cliente.nrCPF);
                 sql.Parameters.AddWithValue("@nrRG", cliente.nrRG);
-                sql.Parameters.AddWithValue("@idCidade", cliente.cidade.IdCidade);
-                //sql.Parameters.AddWithValue("@idCondPagamento", cliente.condPagamento.Id);
-                sql.Parameters.AddWithValue("@dsLogin", cliente.dsLogin);
-                sql.Parameters.AddWithValue("@senha", cliente.senha);
+                sql.Parameters.AddWithValue("@IdCidade", cliente.idCidade);
+                sql.Parameters.AddWithValue("@IdCondPagamento", cliente.IdCondPag);
+                //sql.Parameters.AddWithValue("@dsLogin", cliente.dsLogin);
+                //sql.Parameters.AddWithValue("@senha", cliente.senha);
 
                 sql.Parameters.AddWithValue("@dtUltAlteracao", cliente.dtUltAlteracao = DateTime.Now);
 
-                int i = sql.ExecuteNonQuery();
+                //int i = sql.ExecuteNonQuery();
 
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //if (i >= 1)
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
             catch (Exception e)
             {
@@ -117,31 +124,22 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public bool DeleteCliente(int Id)
+        public void DeleteCliente(int Id)
         {
             try
             {
                 Open();
-                string deleteCliente = "DELETE FROM CLIENTE WHERE Id = @Id";
+                string deleteCliente = "DELETE FROM CLIENTE WHERE IdCliente = @IdCliente";
                 SqlCommand sql = new SqlCommand(deleteCliente, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdCliente", Id);
 
-                int i = sql.ExecuteNonQuery();
-
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+               
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao excluir CLIENTE: " + e.Message);
+                throw new Exception("Erro ao excluir Cliente: " + e.Message);
             }
             finally
             {
@@ -170,7 +168,7 @@ namespace SistemaBarbearia.DAOs.Clientes
                         flSexo = Convert.ToString(Dr["flSexo"]),
                         nrTelefone = Convert.ToString(Dr["nrTelefone"]),
                         nrCelular = Convert.ToString(Dr["nrCelular"]),
-                        dsLougradouro = Convert.ToString(Dr["dsLougradouro"]),
+                        dsLogradouro = Convert.ToString(Dr["dsLogradouro"]),
                         nrResidencial = Convert.ToString(Dr["nrResidencial"]),
                         dsBairro = Convert.ToString(Dr["dsBairro"]),
                         dsComplemento = Convert.ToString(Dr["dsComplemento"]),
@@ -178,7 +176,7 @@ namespace SistemaBarbearia.DAOs.Clientes
                         nrCPF = Convert.ToString(Dr["nrCPF"]),
                         nrRG = Convert.ToString(Dr["nrRG"]),
                         idCidade = Convert.ToInt32(Dr["idCidade"]),
-                        // idCondPagamento = Convert.ToInt32(Dr[""]),
+                        // IdCondPagamento = Convert.ToInt32(Dr[""]),
                         dsLogin = Convert.ToString(Dr["dsLogin"]),
                         senha = Convert.ToString(Dr["senha"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
@@ -199,12 +197,12 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public ClienteVM GetCliente(int? Id)
+        public Cliente DAOGetCliente(int Id)
         {
             try
             {
                 Open();
-                var clienteVM = new ClienteVM();
+                var clienteVM = new Cliente();
                 string selectEditCliente = @"SELECT* FROM CLIENTE WHERE IdCliente =" + Id;
                 SQL = new SqlCommand(selectEditCliente, sqlconnection);
 
@@ -213,21 +211,24 @@ namespace SistemaBarbearia.DAOs.Clientes
                 while (Dr.Read())
                 {
                     clienteVM.IdCliente = Convert.ToInt32(Dr["IdCliente"]);
-                    clienteVM.nmCliente = Dr["nmEstado"].ToString();
+                    clienteVM.nmCliente = Dr["nmCliente"].ToString();
                     clienteVM.nmApelido = Dr["nmApelido"].ToString();
                     clienteVM.flSexo = Dr["flSexo"].ToString();
                     clienteVM.nrTelefone = Dr["nrTelefone"].ToString();
                     clienteVM.nrCelular = Dr["nrCelular"].ToString();
-                    clienteVM.dsLougradouro = Dr["dsLougradouro"].ToString();
+                    clienteVM.nrCEP = Dr["nrCEP"].ToString();
+                    clienteVM.dsLogradouro = Dr["dsLogradouro"].ToString();
                     clienteVM.nrResidencial = Dr["nrResidencial"].ToString();
                     clienteVM.dsBairro = Dr["dsBairro"].ToString();
                     clienteVM.dsComplemento = Dr["dsComplemento"].ToString();
                     clienteVM.dsEmail = Dr["dsEmail"].ToString();
                     clienteVM.nrCPF = Dr["nrCPF"].ToString();
                     clienteVM.nrRG = Dr["nrRG"].ToString();
-                    clienteVM.cidade.IdCidade = Convert.ToInt32(Dr["idCidade"]);
-                    clienteVM.dsLogin = Dr["dsLogin"].ToString();
-                    clienteVM.senha = Dr["senha"].ToString();
+                    
+                    clienteVM.idCidade = Convert.ToInt32(Dr["IdCidade"]);
+                    clienteVM.IdCondPag = Convert.ToInt32(Dr["IdCondPagamento"]);
+                    
+                    clienteVM.dataNasc = Dr["dataNasc"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dataNasc"]);
                     clienteVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     clienteVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
                 }

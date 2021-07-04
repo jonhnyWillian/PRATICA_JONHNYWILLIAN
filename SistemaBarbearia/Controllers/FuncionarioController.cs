@@ -1,6 +1,9 @@
-﻿using SistemaBarbearia.DAOs.Funcionarios;
+﻿using SistemaBarbearia.DAOs.Cargos;
+using SistemaBarbearia.DAOs.Cidades;
+using SistemaBarbearia.DAOs.Funcionarios;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Funcionarios;
+using SistemaBarbearia.ViewModels.Funcionarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,48 @@ namespace SistemaBarbearia.Controllers
 {
     public class FuncionarioController : Controller
     {
-        // GET: Funcionario
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            FuncionarioDAO funcionario = new FuncionarioDAO();
+            CargoDAO cargo = new CargoDAO();
+            CidadeDAO cidade = new CidadeDAO();
+            var obj = funcionario.GetFuncionario(id);
+            var result = new FuncionarioVM
+            {
+                IdModelPai = obj.IdFuncionario,
+                nmFuncionario = obj.nmFuncionario,
+                nmApelido = obj.nmApelido,
+                nrCEP = obj.nrCEP,
+                dsLogradouro = obj.dsLogradouro,
+                nrResidencial = obj.nrResidencial,
+                dsComplemento = obj.dsComplemento,
+                dsBairro = obj.dsBairro,
+                idCidade = obj.IdCidade,
+                nrTelefone = obj.nrTelefone,
+                nrCelular = obj.nrCelular,
+                dsEmail = obj.dsEmail,
+                IdCargo = obj.IdCargo,
+                nrCPF = obj.nrCPF,
+                nrRG = obj.nrRG,
+                dtNasc = obj.dtNasc,
+                dsLogin = obj.dsLogin,
+                senha = obj.senha,
+                vlSalario = obj.vlSalario,
+                dtAdimissao = obj.dtAdimissao,
+                dtDemissao = obj.dtDemissao,
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao
+            };
+            var objCargo = cargo.GetCargo(result.IdCargo);
+            result.cargo = new ViewModels.Cargos.SelectCargoVM { Id = objCargo.IdCargo, Text = objCargo.dsCargo };
+            var objCidade = cidade.GetCidade(result.idCidade);
+            result.cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
+            return View(result);
+        }
+        #endregion
+
         public ActionResult Index()
         {
             var funcionarioDAO = new FuncionarioDAO();
@@ -19,83 +63,85 @@ namespace SistemaBarbearia.Controllers
             return View(funcionarioDAO.SelecionarFuncionario());
         }
 
-        // GET: Funcionario/Details/5
+       
         public ActionResult Details(int id)
         {
-            var funcionarioDAO = new FuncionarioDAO();
-            return View(funcionarioDAO.GetFuncionario(id));
+            return GetView(id);
         }
 
-        // GET: Funcionario/Create
+       
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Funcionario/Create
+   
         [HttpPost]
-        public ActionResult Create(Funcionario funcionario)
+        public ActionResult Create(FuncionarioVM model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    var funcionarioDAO = new FuncionarioDAO();
+                    var bean = model.GetFuncionario(new Funcionario());
+                    var dao = new FuncionarioDAO();
+                    
+                    bean.dtCadastro = DateTime.Now;
+                    bean.dtUltAlteracao = DateTime.Now;
 
-                    if (funcionarioDAO.InsertFuncionario(funcionario))
-                    {
-                        ViewBag.Message = "Funcionario criado com sucesso!";
-                    }
+                    dao.InsertFuncionario(bean);
+
+
+                    return RedirectToAction("index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    return View(model);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
-        // GET: Funcionario/Edit/5
+       
         public ActionResult Edit(int id)
         {
-            var funcionarioDAO = new FuncionarioDAO();
-            return View(funcionarioDAO.GetFuncionario(id));
+            return GetView(id);
         }
 
-        // POST: Funcionario/Edit/5
+      
         [HttpPost]
-        public ActionResult Edit(int id, Funcionario funcionario)
+        public ActionResult Edit(int id, FuncionarioVM model)
         {
 
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+
+                try
                 {
-                    var funcionarioDAO = new FuncionarioDAO();
+                    FuncionarioDAO dao = new FuncionarioDAO();
+                    var funcionario = dao.GetFuncionario(id);
 
-                    if (funcionarioDAO.UpdateFuncionario(funcionario))
-                    {
-                        ViewBag.Message = "Funcionario criado com sucesso!";
-                    }
+                    var bean = model.GetFuncionario(funcionario);
+                    bean.dtUltAlteracao = DateTime.Now;
+
+                    dao.UpdateFuncionario(bean);
+                    return RedirectToAction("index");
                 }
+                catch
+                {
 
-                return RedirectToAction("Index");
+                    return View(model);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
-        // GET: Funcionario/Delete/5
+    
         public ActionResult Delete(int id)
         {
-            var funcionarioDAO = new FuncionarioDAO();
-            return View(funcionarioDAO.GetFuncionario(id));
+            return GetView(id);
         }
 
-        // POST: Funcionario/Delete/5
+        
         [HttpPost]
         public ActionResult Delete(int id, Funcionario funcionario)
         {

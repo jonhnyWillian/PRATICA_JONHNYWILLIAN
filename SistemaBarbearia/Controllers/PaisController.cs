@@ -142,7 +142,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var paisDAO = new PaisDAO();
-                IQueryable<dynamic> lista = paisDAO.SelecionarPais().Select(u => new { IdPais = u.IdPais, nmPais = u.nmPais }).AsQueryable();
+                IQueryable<dynamic> lista = paisDAO.SelecionarPais().Select(u => new { Id = u.IdPais, Text = u.nmPais }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }

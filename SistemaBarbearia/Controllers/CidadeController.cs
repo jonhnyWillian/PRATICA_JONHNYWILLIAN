@@ -6,12 +6,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SistemaBarbearia.DAOs.Estados;
+using SistemaBarbearia.ViewModels.Cidades;
 
 namespace SistemaBarbearia.Controllers
 {
     public class CidadeController : Controller
     {
-       
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            CidadeDAO objCidade = new CidadeDAO();
+            EstadoDAO DAOEstado = new EstadoDAO();
+            var obj = objCidade.GetCidade(id);
+            var result = new CidadeVM
+            {
+                IdCidade = obj.IdCidade,
+                nmCidade = obj.nmCidade,
+                DDD = obj.DDD,
+              
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,
+                IdEstado = obj.IdEstado
+            };
+            var objEstado = DAOEstado.GetEstado(result.IdEstado);
+            result.Estado = new ViewModels.Estados.SelectEstadoVM { Id = objEstado.IdEstado, Text = objEstado.nmEstado };
+            return View(result);
+        }
+        #endregion
+
+
         public ActionResult Index()
         {
             var cidadeDAO = new CidadeDAO();
@@ -21,9 +45,8 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Details(int id)
         {
-            var cidadeDAO = new CidadeDAO();
-            ModelState.Clear();
-            return View(cidadeDAO.GetCidade(id));
+
+            return GetView(id);
         }
        
         public ActionResult Create()
@@ -64,8 +87,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Edit(int id)
         {
-            var cidadeDAO = new CidadeDAO();
-            return View(cidadeDAO.GetCidade(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -100,9 +122,7 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Delete(int id)
         {
-            var cidadeDAO = new CidadeDAO();
-
-            return View(cidadeDAO.GetCidade(id));
+            return GetView(id);
         }
 
         [HttpPost]
@@ -146,7 +166,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var cidadeDAO = new CidadeDAO();
-                IQueryable<dynamic> lista = cidadeDAO.SelecionarCidade().Select(u => new { IdCidade = u.idEstado, nmCidade = u.nmCidade }).AsQueryable();
+                IQueryable<dynamic> lista = cidadeDAO.SelecionarCidade().Select(u => new { Id = u.IdCidade, Text = u.nmCidade }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
@@ -186,11 +206,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? id, string text)
+        public JsonResult JsDetails(int? Id, string Text)
         {
             try
             {
-                var result = this.Find(id, text).FirstOrDefault();
+                var result = this.Find(Id, Text).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -208,13 +228,13 @@ namespace SistemaBarbearia.Controllers
             var list = cidadeDAO.SelectCidade(id, text);
             var select = list.Select(u => new
             {
-                IdCidade = u.IdCidade,
-                nmCidade = u.nmCidade,
+                Id = u.Id,
+                Text = u.Text,
                 DDD = u.DDD,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.nmCidade).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
     }

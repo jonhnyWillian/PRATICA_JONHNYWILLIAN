@@ -98,11 +98,11 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        @Html.EditorFor(model => Pais, "Paises/Select", new { @disabled = readOnly })
+                                        @Html.EditorFor(model => Pais, "Paises/Select", new { @Required = true, Disable = readOnly })
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row isEdit">
+                            @*<div class="form-row isEdit">
                                 <div class="@Helper.Input3">
                                     @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group-append">
@@ -118,7 +118,7 @@
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
 
 
                         </div>
@@ -161,7 +161,7 @@
                      url: '@Url.Action("JsDetails", "Estado")',
                      data: { 'Id': Id },
                      success: function (data) {
-                        
+
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                      },
@@ -180,6 +180,7 @@
                 Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 nmEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)'),
                 dsUF: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)'),
+                IdPais : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idPais", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -191,6 +192,7 @@
         form.Id.val("");
         form.nmEstado.val("");
         form.dsUF.val("");
+        form.IdPais.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
         form.nmEstado.focus();
@@ -218,6 +220,7 @@
             Id: form.Id.val(),
             nmEstado: form.nmEstado.val(),
             dsUF: form.dsUF.val(),
+            IdPais: form.IdPais.val(),
         }
         return model;
     };
@@ -372,17 +375,17 @@
 
     function SelectEstado(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEdit(Id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: '@Url.Action("JsDetails", "Pais")',
-            data: { 'id': id },
+            url: '@Url.Action("JsDetails", "Estado")',
+            data: { 'Id': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -392,11 +395,12 @@
                 }
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.nmEstado);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)").val(data.sigla);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.Text);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)").val(data.dsUF);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)").val(data.IdPais);
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
+                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },

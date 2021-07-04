@@ -1,5 +1,7 @@
 ﻿using SistemaBarbearia.Models.Cargos;
 using SistemaBarbearia.Models.Cidades;
+using SistemaBarbearia.Models.Funcionarios;
+using SistemaBarbearia.ViewModels.Pessoas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +11,36 @@ using System.Web.Mvc;
 
 namespace SistemaBarbearia.ViewModels.Funcionarios
 {
-    public class FuncionarioVM
+    public class FuncionarioVM : PessoaVM
     {
-        [Display(Name = "Codigo")]
-        public int IdFuncionario { get; set; }
+       
+        public Funcionario GetFuncionario (Funcionario funcionario)
+        {
+            funcionario.nmFuncionario = this.nmFuncionario;
+            funcionario.nmApelido = this.nmApelido;
+            funcionario.nrCEP = this.nrCEP;
+            funcionario.dsLogradouro = this.dsLogradouro;
+            funcionario.nrResidencial = this.nrResidencial;
+            funcionario.dsComplemento = this.dsComplemento;
+            funcionario.dsBairro = this.dsBairro;
+            funcionario.IdCidade = this.cidade.Id;
+            funcionario.nrTelefone = this.nrTelefone;
+            funcionario.nrCelular = this.nrCelular;
+            funcionario.dsEmail = this.dsEmail;
+            funcionario.IdCargo = this.cargo.Id;
+            funcionario.nrCPF = this.nrCPF;
+            funcionario.nrRG = this.nrRG;
+            funcionario.dtNasc = this.dtNasc;
+            funcionario.dsLogin = this.dsLogin;
+            funcionario.senha = this.senha;
+            funcionario.vlSalario = this.vlSalario;
+            funcionario.dtAdimissao = this.dtAdimissao;
+            funcionario.dtDemissao = this.dtDemissao;
+            funcionario.dtCadastro = this.dtCadastro;
+            funcionario.dtUltAlteracao = this.dtUltAlteracao;
+            return funcionario;
+        }
+
 
         [Display(Name = "Funcionario")]
         [StringLength(50, MinimumLength = 3)]
@@ -38,69 +66,18 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string flSexo { get; set; }
 
-        public static SelectListItem[] Sexo
-        {
-            get
-            {
-                return new[]
-                {
-                    new SelectListItem { Text = "Feminino", Value = "F" },
-                     new SelectListItem { Text = "Masculino", Value = "M" }
-                };
-            }
-        }
-
-
-        [Display(Name = "Telefone")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Telefone não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrTelefone { get; set; }
-
-        [Display(Name = "Celular")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Celular não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCelular { get; set; }
-
-        [Display(Name = "CEP")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo CEP não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrCEP { get; set; }
-
-        [Display(Name = "Complemento")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Complemento não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsComplemento { get; set; }
-
-        [Display(Name = "Bairro")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Bairro não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsBairro { get; set; }
-
-        [Display(Name = "Lougradouro")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Lougradouro não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsLougradouro { get; set; }
-
-        [Display(Name = "Nº")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Residencial não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string nrResidencial { get; set; }
-
         [Display(Name = "Cidade")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cidade não Pode ser em Branco!", AllowEmptyStrings = false)]
         public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
+        public int IdCargo { get; set; }
+
         [Display(Name = "Cargo")]
         [StringLength(10, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Cargo não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public SistemaBarbearia.ViewModels.Cargos.SelectCargoVM cargos { get; set; }
-
-
-        [Display(Name = "E-mail")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Email não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public string dsEmail { get; set; }
+        public SistemaBarbearia.ViewModels.Cargos.SelectCargoVM cargo { get; set; }
+     
 
         [Display(Name = "CPF")]
         [StringLength(11, MinimumLength = 0)]
@@ -112,7 +89,7 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [Required(ErrorMessage = "Campo RG não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrRG { get; set; }
 
-        [Display(Name = "Salário")]
+        [Display(Name = "Comissão")]
         [StringLength(11, MinimumLength = 0)]
         [Required(ErrorMessage = "Campo Salario não Pode ser em Branco!", AllowEmptyStrings = false)]
         public Decimal? vlSalario { get; set; }
@@ -132,14 +109,6 @@ namespace SistemaBarbearia.ViewModels.Funcionarios
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtDemissao { get; set; }
 
-        [Display(Name = "Data de Cadastro")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dtCadastro { get; set; }
-
-        [Display(Name = "Data de Ult. Alteracao")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dtUltAlteracao { get; set; }
+    
     }
 }

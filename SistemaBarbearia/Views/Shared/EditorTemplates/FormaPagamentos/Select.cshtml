@@ -10,22 +10,22 @@
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
 }
-
+@Html.Hidden("isEdit")
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
             @Html.Label("", Label)
             <div class="input-group">
                 <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.id, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -42,13 +42,13 @@
                         </ul>
                     </div>
 
-                    <div style="text-align:right">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button>
+                    <div style="text-align:left">
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
                     </div>
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableCategoria">
+                            <div id="TableFormaPagamento">
 
                             </div>
                         </div>
@@ -92,6 +92,13 @@
                                     @Html.Label("dsFormaPagamento", "Forma Pagamento", new { @class = "required" })
                                     @Html.TextBox("dsFormaPagamento", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
                                     @Html.ValidationMessage("dsFormaPagamento", null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="@Helper.Input4">
+                                    @Html.Label("flSituacao", "Situação", new { @class = "required" })
+                                    @Html.DropDownList("flSituacao", SistemaBarbearia.ViewModels.FormaPagamentos.FormaPagamentoVM.Situacao, new { @class = "form-control" })
+                                    @Html.ValidationMessage("flSituacao", null, new { @class = "text-danger" })
                                 </div>
                             </div>
 
@@ -139,23 +146,21 @@
                 self.save();
          });
 
-        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').change(function (data, e) {
-            var id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)').val();
-            if (id == "") {
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val("");
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val("");
+        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').change(function (data, e) {
+            var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').val();
+            if (Id == "") {
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
             } else {
                 $.ajax({
                     dataType: 'json',
                     type: 'GET',
                     url: '@Url.Action("JsDetails", "FormaPagamento")',
-                    data: { 'id': id },
+                    data: { 'Id': Id },
                     success: function (data) {
-                        if (!data) {
-                            $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
-                        }
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+                      
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                     },
                     error: function (err) {
                         alert(err);
@@ -169,8 +174,9 @@
 
      this.getForm = function() {
         var form = {
-                IdFormaPag : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdFormaPag", Prefix)'),
+                Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 dsFormaPagamento: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsFormaPagamento", Prefix)'),
+                flSituacao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -179,8 +185,9 @@
 
     this.clear = function () {
         var form = self.getForm();
-        form.IdFormaPag.val("");
+        form.Id.val("");
         form.dsFormaPagamento.val("");
+        form.flSituacao.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
         form.dsFormaPagamento.focus();
@@ -190,7 +197,7 @@
         var valid = true;
         var form = self.getForm();
 
-        if (IsNullOrEmpty(form.nmPais.val())) {
+        if (IsNullOrEmpty(form.dsFormaPagamento.val())) {
             form.dsFormaPagamento.blink({ msg: "Campo Forma Pagamento é obrigatório" });
             form.dsFormaPagamento.focus();
             valid = false;
@@ -200,8 +207,9 @@
 
     getModel = function (form) {
         var model = {
-            Id: form.IdFormaPag.val(),
+            Id: form.Id.val(),
             dsFormaPagamento: form.dsFormaPagamento.val(),
+            flSituacao: form.flSituacao.val(),
         }
         return model;
     };
@@ -230,7 +238,7 @@
                     InitModalFormaPagamento();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
+                   
 
                 },
                 error: function (request) {
@@ -269,32 +277,31 @@
         let lis = getTableFormaPagamento();
         $("#TableFormaPagamento").append(lis);
 
-        table = $('#listaFormaPagamento').DataTable({
-            ajax: { url: $('#listaFormaPagamento').attr('data-url') },
+        table = $('#lista').DataTable({
+            ajax: { url: $('#lista').attr('data-url') },
                 lengthMenu: false,
                 lengthChange: false,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
-                //{
-                //    sortable: false,
-                //    data: null,
-                //    sClass: 'details-control center',
-                //    mRender: function (data) {
-                //        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
-                //    }
-                //},
-                //{
-                //    sortable: false,
-                //    data: null,
-                //    mRender: function (data) {
-                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                //    }
-                //},
-                { data: "id" },
-                { data: "text" }
-
+                { data: "Id" },
+                { data: "Text" },
+                 {
+                    sortable: false,
+                    data: null,
+                    sClass: 'details-control center',
+                    mRender: function (data) {
+                        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
+                    }
+                },
+                {
+                    sortable: false,
+                    data: null,
+                    mRender: function (data) {
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.Id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                    }
+                },
             ],
         });
 
@@ -311,7 +318,7 @@
                 });
             }
             else {
-                row.child(SelectCategoria(row.data())).show();
+                row.child(SelectFormaPagamento(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
@@ -319,11 +326,13 @@
     }
 
     function getTableFormaPagamento() {
-        let tmp = `<table id="listaFormaPagamento" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "FormaPagamento")">
-                        <thead>
+        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "FormaPagamento")">
+                        <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:50%">Forma Pagamento</th>
+                                <th export="true" style="width:70%">Forma Pagamento</th>
+                                <th export="true" style="width:10%">Selecionar</th>
+                                <th export="true" style="width:10%">Alterar</th>
                             </tr>
                         </thead>
                    </table>`;
@@ -355,17 +364,17 @@
 
     function SelectFormaPagamento(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsFormaPagamento", Prefix)").val(data.Text);
         return false;
     };
 
-    function OpenEdit(id) {
+    function OpenEdit(Id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "FormaPagamento")',
-            data: { 'id': id },
+            data: { 'IdFormaPag': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -374,8 +383,9 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("id", Prefix)").val(data.id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("text", Prefix)").val(data.text);                
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.id);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsFormaPagamento", Prefix)").val(data.dsFormaPagamento);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));

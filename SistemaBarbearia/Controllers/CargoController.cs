@@ -191,19 +191,19 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? IdCargo, string dsCargo)
+        private IQueryable<dynamic> Find(int? Id, string Text)
         {
             var cargoDAO = new CargoDAO();
-            var list = cargoDAO.SelectCargo(IdCargo, dsCargo);
+            var list = cargoDAO.SelectCargo(Id, Text);
             var select = list.Select(u => new
             {
-                IdCargo = u.IdCargo,
-                dsCargo = u.dsCargo,
+                Id = u.Id,
+                Text = u.Text,
                 
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.dsCargo).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
     }

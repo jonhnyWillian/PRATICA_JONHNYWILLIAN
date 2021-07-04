@@ -66,26 +66,25 @@ namespace SistemaBarbearia.DAOs.Produtos
                 Open();
                 string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd, qtdEstoque = @qtdEstoque,
                                                             codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto, vlVenda = @vlVenda,
-                                                            idCategoria = @idCategoria, dtUltAlteracao = @dtUltAlteracao  
+                                                            IdCategoria = @IdCategoria, dtUltAlteracao = @dtUltAlteracao  
 
-                                                           WHERE IdProduto = " + produto.idCategoria;
+                                                           WHERE IdProduto = " + produto.IdProduto;
                 SqlCommand sql = new SqlCommand(updateProduto, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdProduto", produto.IdProduto);
-                SQL.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
-                SQL.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade.ToUpper());
+                sql.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
+                sql.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade.ToUpper());                
+                sql.Parameters.AddWithValue("@nrQtd", produto.nrQtd);
+                sql.Parameters.AddWithValue("@qtdEstoque", produto.qtdEstoque);
+                sql.Parameters.AddWithValue("@codBarra", produto.codBarra);
+                sql.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
+                sql.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
+                sql.Parameters.AddWithValue("@vlVenda", produto.vlVenda);
+                sql.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
 
-                SQL.Parameters.AddWithValue("@nrQtd", produto.nrQtd);
-                SQL.Parameters.AddWithValue("@qtdEstoque", produto.qtdEstoque);
-                SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
-                SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
-                SQL.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
-                SQL.Parameters.AddWithValue("@vlVenda", produto.vlVenda);
-                SQL.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
-                
 
-                SQL.Parameters.AddWithValue("@dtUltAlteracao", produto.dtUltAlteracao = DateTime.Now);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", produto.dtUltAlteracao = DateTime.Now);
 
 
                 int i = sql.ExecuteNonQuery();
@@ -208,10 +207,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                     produtoVM.vlCompra = Convert.ToDecimal(Dr["vlCompra"]);
                     produtoVM.vlCusto = Convert.ToDecimal(Dr["vlCusto"]);
                     produtoVM.vlVenda = Convert.ToDecimal(Dr["vlVenda"]);
-                    produtoVM.categoria = new SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM
-                    {
-                        Id = Convert.ToInt32(Dr["IdCategoria"])
-                    };            
+                    produtoVM.IdCategoria = Convert.ToInt32(Dr["IdCategoria"]);
                     produtoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     produtoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 

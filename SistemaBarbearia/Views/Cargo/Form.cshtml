@@ -12,7 +12,7 @@
             <div class="form-group">
                 @using (Html.BeginForm())
                 {
-                    @Html.LabelFor(e => e.IdCargo, new { @class = "control-label" })
+                    @Html.LabelFor(e => e.IdCargo, new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.IdCargo, new { @class = "form-control col-md-2", readOnly = "readonly" })
                 }
             </div>
@@ -22,8 +22,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.LabelFor(model => model.dsCargo, htmlAttributes: new { @class = "control-label" })
-            @Html.TextBoxFor(model => model.dsCargo, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @title = "Nome do país", @placeholder = "Cargo" })
+            @Html.LabelFor(model => model.dsCargo, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsCargo, new { @class = "form-control col-md-8", @maxlength = "50", @autofocus = "autofocus", @style = "text-transform:uppercase", @placeholder = "Cargo" })
             @Html.ValidationMessageFor(model => model.dsCargo, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="form-group">
-            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label" })
+            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label required" })
             @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.Cargos.CargoVM.Situacao, new { @datadrop = "select2", @class = "form-control  col-md-6" })
             @Html.ValidationMessageFor(model => model.flSituacao, "", new { @class = "text-danger" })
         </div>

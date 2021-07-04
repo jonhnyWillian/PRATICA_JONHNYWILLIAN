@@ -8,10 +8,10 @@ namespace SistemaBarbearia.ViewModels.Cidades
     public class SelectCidadeVM
     {
        
-        public int IdCidade { get; set; }
+        public int Id { get; set; }
 
     
-        public string nmCidade { get; set; }
+        public string Text { get; set; }
 
     
         public string DDD { get; set; }

@@ -55,14 +55,14 @@ namespace SistemaBarbearia.DAOs.Cidades
             try
             {
                 Open();
-                string updateCidade = @"UPDATE CIDADE SET nmCidade = @nmCidade, ddd = @ddd, IdEstado = @IdEstado dtUltAlteracao = @dtUltAlteracao  WHERE IdCidade =" + cidade.IdCidade;
+                string updateCidade = @"UPDATE CIDADE SET nmCidade = @nmCidade, ddd = @ddd, IdEstado = @IdEstado, dtUltAlteracao = @dtUltAlteracao  WHERE IdCidade =" + cidade.IdCidade;
                 SqlCommand sql = new SqlCommand(updateCidade, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdCidade", cidade.IdCidade);
                 sql.Parameters.AddWithValue("@nmCidade", cidade.nmCidade.ToUpper());
                 sql.Parameters.AddWithValue("@ddd", cidade.DDD.ToUpper());
-                SQL.Parameters.AddWithValue("@IdEstado", cidade.estado.Id);                
+                sql.Parameters.AddWithValue("@IdEstado", cidade.estado.Id);                
                 sql.Parameters.AddWithValue("@dtUltAlteracao", cidade.dtUltAlteracao = DateTime.Now);
 
 
@@ -137,7 +137,7 @@ namespace SistemaBarbearia.DAOs.Cidades
                         IdCidade = Convert.ToInt32(Dr["IdCidade"]),
                         nmCidade = Convert.ToString(Dr["nmCidade"]),
                         DDD = Convert.ToString(Dr["ddd"]),
-                        idEstado = Convert.ToInt32(Dr["IdEstado"]),
+                        IdEstado = Convert.ToInt32(Dr["IdEstado"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
@@ -171,11 +171,7 @@ namespace SistemaBarbearia.DAOs.Cidades
                     cidadeVM.IdCidade = Convert.ToInt32(Dr["IdCidade"]);
                     cidadeVM.nmCidade = Dr["nmCidade"].ToString();
                     cidadeVM.DDD = Dr["ddd"].ToString();
-                    cidadeVM.Estado = new SistemaBarbearia.ViewModels.Estados.SelectEstadoVM
-                    {
-                        Id = Convert.ToInt32(Dr["IdEstado"]),
-                        //Text = Convert.ToString(Dr["nmEstado"]),
-                    };
+                    cidadeVM.IdEstado = Convert.ToInt32(Dr["IdEstado"]);                     
 
                     cidadeVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     cidadeVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
@@ -231,8 +227,8 @@ namespace SistemaBarbearia.DAOs.Cidades
                 {
                     var pais = new SelectCidadeVM
                     {
-                        IdCidade = Convert.ToInt32(Dr["IdCidade"]),
-                        nmCidade = Convert.ToString(Dr["nmCidade"]),
+                        Id = Convert.ToInt32(Dr["IdCidade"]),
+                        Text = Convert.ToString(Dr["nmCidade"]),
                         DDD = Convert.ToString(Dr["DDD"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),

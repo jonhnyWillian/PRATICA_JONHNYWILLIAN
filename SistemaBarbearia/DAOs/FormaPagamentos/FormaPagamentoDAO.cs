@@ -206,28 +206,28 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             return sqlSelectPais;
         }
 
-        public List<SelectFormaPagamentoVM> SelectFormaPagamento(int? id, string nmPais)
+        public List<SelectFormaPagamentoVM> SelectFormaPagamento(int? Id, string dsFormaPag)
         {
             try
             {
 
-                var sqlSelectPais = this.BuscarFormaPagamento(id, nmPais);
+                var sqlSelectformaPg = this.BuscarFormaPagamento(Id, dsFormaPag);
                 Open();
-                SQL = new SqlCommand(sqlSelectPais, sqlconnection);
+                SQL = new SqlCommand(sqlSelectformaPg, sqlconnection);
                 Dr = SQL.ExecuteReader();
                 var list = new List<SelectFormaPagamentoVM>();
 
                 while (Dr.Read())
                 {
-                    var pais = new SelectFormaPagamentoVM
+                    var formaPg = new SelectFormaPagamentoVM
                     {
-                        id = Convert.ToInt32(Dr["id"]),
-                        text = Convert.ToString(Dr["text"]),                       
+                        Id = Convert.ToInt32(Dr["IdFormaPag"]),
+                        Text = Convert.ToString(Dr["dsFormaPagamento"]),                       
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
 
-                    list.Add(pais);
+                    list.Add(formaPg);
                 }
 
                 return list;

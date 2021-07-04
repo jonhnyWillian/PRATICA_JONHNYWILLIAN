@@ -18,7 +18,7 @@ namespace SistemaBarbearia.Models.Cidades
         public string DDD { get; set; }
 
         [Required]
-        public int idEstado { get; set; }
+        public int IdEstado { get; set; }
 
         public SistemaBarbearia.ViewModels.Estados.SelectEstadoVM estado { get; set; }
 

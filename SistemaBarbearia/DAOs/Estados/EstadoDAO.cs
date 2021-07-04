@@ -175,12 +175,8 @@ namespace SistemaBarbearia.DAOs.Estados
                     estadoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     estadoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
-                    estadoVM.Pais = new SistemaBarbearia.ViewModels.Paises.SelectPaisVM
-                    {
-                        Id = Convert.ToInt32(Dr["IdPais"]),
-                        //Text = Convert.ToString(Dr["nmPais"]),
-                       
-                    };
+                    estadoVM.IdPais = Convert.ToInt32(Dr["IdPais"]);
+                                           
 
 
                 }
@@ -233,9 +229,10 @@ namespace SistemaBarbearia.DAOs.Estados
                 {
                     var estado = new SelectEstadoVM
                     {
-                        Id = Convert.ToInt32(Dr["idEstado"]),
+                        Id = Convert.ToInt32(Dr["IdEstado"]),
                         Text = Convert.ToString(Dr["nmEstado"]),
                         dsUF = Convert.ToString(Dr["dsUF"]),
+                        IdPais = Convert.ToInt32(Dr["IdPais"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
