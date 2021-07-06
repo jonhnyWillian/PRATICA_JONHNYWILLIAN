@@ -23,16 +23,13 @@
     </div>
 }
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             @Html.LabelFor(model => model.dsCondPag, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsCondPag, new { @class = "form-control col-md-12", maxlength = "50", @style = "text-transform:uppercase ", @autofocus = "autofocus", @placeholder = "Descrição Condição Pagamento" })
+            @Html.TextBoxFor(model => model.dsCondPag, new { @class = "form-control col-md-10", maxlength = "50", @style = "text-transform:uppercase ", @autofocus = "autofocus", @placeholder = "Condição Pagamento" })
             @Html.ValidationMessageFor(model => model.dsCondPag, "", new { @class = "text-danger" })
         </div>
     </div>
-</div>
-
-<div class="row">
     <div class="col-md-4">
         @Html.LabelFor(model => model.txJuro, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
@@ -53,22 +50,22 @@
 <div class="bs-callout bs-callout-primary">
     <h4 class="heading no-margin">Pagamentos</h4>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="form-group">
                 @Html.EditorFor(model => model.formaPagamento, "formaPagamentos/Select", new { @Required = true, Disable = readOnly })
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <div class="form-group">
                 @Html.LabelFor(model => model.qtdDias, new { @class = "form-control-label required " })
-                @Html.TextBoxFor(model => model.qtdDias, new { @class = "form-control text-right", maxlength = "100", @autofocus = "autofocus" })
+                @Html.TextBoxFor(model => model.qtdDias, new { @class = "form-control col-md-10 text-right", maxlength = "100", @autofocus = "autofocus" })
                 @Html.ValidationMessageFor(model => model.qtdDias, null, new { @class = "text-danger" })
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-2">
             <div class="form-group">
                 @Html.LabelFor(model => model.txPercentual, new { @class = "form-control-label required text-right" })
-                @Html.TextBoxFor(model => model.txPercentual, new { @class = "form-control text-right", maxlength = "100", @autofocus = "autofocus" })
+                @Html.TextBoxFor(model => model.txPercentual, new { @class = "form-control col-md-10 text-right", maxlength = "100", @autofocus = "autofocus" })
                 @Html.ValidationMessageFor(model => model.txPercentual, null, new { @class = "text-danger" })
             </div>
         </div>

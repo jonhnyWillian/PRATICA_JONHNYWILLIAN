@@ -7,7 +7,7 @@
 }
 @if (action != "create")
 {
-    <div class="form-group">
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 @using (Html.BeginForm())
@@ -34,30 +34,28 @@
         <div class="form-group ">
             @Html.LabelFor(e => e.nmPessoa, "Razão Social", new { @class = "form-control-label juridica required" })
             @Html.LabelFor(e => e.nmPessoa, "Fornecedor", new { @class = "form-control-label fisica required" })
-            @Html.TextBoxFor(model => model.nmPessoa, new { @class = "form-control", maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.nmPessoa, new { @class = "form-control", maxlength = "50", @autofocus = "autofocus", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.nmPessoa, null, new { @class = "text-danger" })
         </div>
     </div>
-   
-</div>
-<div class="row fisica">
-    <div class="col-md-6">
+    <div class="col-md-6 fisica">
         <div class="form-group">
             @Html.LabelFor(e => e.Fisica.nmApelido, new { @class = "form-control-label required" })
-            @Html.TextBoxFor(model => model.Fisica.nmApelido, new { @class = "form-control col-md-10" })
+            @Html.TextBoxFor(model => model.Fisica.nmApelido, new { @class = "form-control col-md-10", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.Fisica.nmApelido, "", new { @class = "text-danger" })
         </div>
     </div>
-</div>
-<div class="row juridica">
-    <div class="col-lg-6 ">
+    <div class="col-lg-6 juridica">
         <div class="form-group">
             @Html.LabelFor(e => e.Juridica.nmFantasia, new { @class = "form-control-label required" })
-            @Html.TextBoxFor(model => model.Juridica.nmFantasia, new { @class = "form-control", maxlength = "30", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.Juridica.nmFantasia, new { @class = "form-control", maxlength = "30", @autofocus = "autofocus", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.Juridica.nmFantasia, null, new { @class = "text-danger" })
         </div>
     </div>
 </div>
+
+  
+
 <div class="row">
     <div class="col-md-2">
         <div class="form-group">
@@ -69,14 +67,14 @@
     <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsLogradouro, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsLogradouro, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "Endereço" })
+            @Html.TextBoxFor(model => model.dsLogradouro, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "Endereço", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsLogradouro, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrResidencial, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-4", @autofocus = "autofocus", @placeholder = "Nº" })
+            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-6", @autofocus = "autofocus", @placeholder = "Nº" })
             @Html.ValidationMessageFor(model => model.nrResidencial, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -86,14 +84,14 @@
     <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.dsComplemento, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Complemento" })
+            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Complemento", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsComplemento, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.dsBairro, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Bairro" })
+            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Bairro", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsBairro, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -124,7 +122,7 @@
     <div class="col-md-4 juridica">
         <div class="form-group">
             @Html.LabelFor(model => model.Juridica.nrContato, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Juridica.nrContato, new { @class = "form-control col-md-8", @placeholder = "Nº Celular" })
+            @Html.TextBoxFor(model => model.Juridica.nrContato, new { @class = "form-control col-md-8", @placeholder = "Nº Contato" })
             @Html.ValidationMessageFor(model => model.Juridica.nrContato, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -133,14 +131,14 @@
     <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.dsEmail, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control col-md-8", @placeholder = "E-mail" })
+            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control col-md-8", @placeholder = "E-mail", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsEmail, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-6 juridica">
         <div class="form-group">
             @Html.LabelFor(model => model.Juridica.dsSite, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Juridica.dsSite, new { @class = "form-control col-md-8", @placeholder = "Site" })
+            @Html.TextBoxFor(model => model.Juridica.dsSite, new { @class = "form-control col-md-8", @placeholder = "Site", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.Juridica.dsSite, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -162,7 +160,8 @@
     </div>
     <div class="col-md-4">
         @Html.LabelFor(model => model.Fisica.dtNascimento, htmlAttributes: new { @class = "control-label required" })
-        @Html.EditorFor(model => model.Fisica.dtNascimento, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.TextBoxFor(model => model.Fisica.dtNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control", @mask = "99/99/9999" })
+        @*@Html.TextBoxFor(model => model.Fisica.dtNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6" })*@
         @Html.ValidationMessageFor(model => model.Fisica.dtNascimento, "", new { @class = "text-danger" })
     </div>
 </div>
@@ -182,13 +181,13 @@
         </div>
     </div>
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-md-8">
         <div class="form-group">
             @Html.EditorFor(model => model.condPagamento, "CondPagamento/Select", new { @disabled = readOnly })
         </div>
     </div>
-</div>
+</div>*@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">

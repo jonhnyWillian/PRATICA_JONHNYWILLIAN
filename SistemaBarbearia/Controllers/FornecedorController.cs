@@ -26,25 +26,19 @@ namespace SistemaBarbearia.Controllers
             {
                 IdModelPai = obj.IdFornecedor,
                 nmPessoa = obj.nmNome,
-
-
                 nrTelefone = obj.nrTelefone,
                 nrCelular = obj.nrCelular,
-                dsEmail = obj.dsEmail,
-
-              
-                flTipo = obj.flTipo,
-                
+                dsEmail = obj.dsEmail,              
+                flTipo = obj.flTipo,                
                 nrCEP = obj.nrCEP,
                 dsLogradouro = obj.dsLogradouro,
                 nrResidencial = obj.nrResidencial,
                 dsBairro = obj.dsBairro,
-                dsComplemento = obj.dsComplemento,
-              
+                dsComplemento = obj.dsComplemento,              
                 dtCadastro = obj.dtCadastro,
                 dtUltAlteracao = obj.dtUltAlteracao,
                 idCidade = obj.idCidade,
-                IdCondPag = obj.idCondPagamento,
+                idCondPagamento = obj.idCondPagamento,
 
                 Fisica = new FornecedorVM.PessoaFisicaVM
                 {
@@ -66,7 +60,7 @@ namespace SistemaBarbearia.Controllers
             };
             var objCidade = DAOCidade.GetCidade(result.idCidade);
             result.Cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
-            var objCondPag = condPagamentoDAO.GetCondPagamento(result.IdCondPag);
+            var objCondPag = condPagamentoDAO.GetCondPagamento(result.idCondPagamento);
             result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
             return View(result);
         }
@@ -78,14 +72,12 @@ namespace SistemaBarbearia.Controllers
             ModelState.Clear();
             return View(fornecedorDAO.SelecionarFornecedor());
         }
-
-      
+     
         public ActionResult Details(int id)
         {
             return this.GetView(id);
         }
 
-      
         public ActionResult Create()
         {
             return View();
@@ -126,29 +118,34 @@ namespace SistemaBarbearia.Controllers
 
       
         [HttpPost]
-        public ActionResult Edit(int id, Fornecedor fornecedor)
+        public ActionResult Edit(int id, FornecedorVM fornecedor)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+
+                try
                 {
-                    var fornecedorDAO = new FornecedorDAO();
+                    
+                    FornecedorDAO objFornecedor = new FornecedorDAO();
+                    var obj = objFornecedor.GetFornecedor(id);
 
-                    if (fornecedorDAO.UpdateFornecedor(fornecedor))
-                    {
-                        ViewBag.Message = "Fornecedor criado com sucesso!";
-                    }
+                    var bean = fornecedor.GetFornecedor(obj);
+                    var dao = new FornecedorDAO();
+                    bean.dtUltAlteracao = DateTime.Now;
+                    dao.UpdateFornecedor(bean);
+
+                  
+                    return RedirectToAction("index");
                 }
-
-                return RedirectToAction("Index");
+                catch 
+                {
+                  
+                    return View(fornecedor);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(fornecedor);
         }
 
-      
         public ActionResult Delete(int id)
         {
             return this.GetView(id);
@@ -177,7 +174,7 @@ namespace SistemaBarbearia.Controllers
             {
 
                 var fornecedorDAO = new FornecedorDAO();
-                var select = fornecedorDAO.SelecionarFornecedor().Select(u => new { Id = u.IdFornecedor, nmNome = u.nmNome, nrTelefone = u.nrTelefone });
+                var select = fornecedorDAO.SelecionarFornecedor().Select(u => new { Id = u.IdFornecedor, Text = u.nmNome });
 
                 IQueryable<dynamic> query = select.AsQueryable();
 

@@ -35,11 +35,11 @@ namespace SistemaBarbearia.Controllers
                 nrResidencial = obj.nrResidencial,
                 dsBairro = obj.dsBairro,
                 dsComplemento = obj.dsComplemento,
-
+                
                 dtCadastro = obj.dtCadastro,
                 dtUltAlteracao = obj.dtUltAlteracao,
                 idCidade = obj.idCidade,
-                IdCondPag = obj.IdCondPag,
+                idCondPagamento = obj.IdCondPag,
                 Fisica = new ClienteVM.PessoaFisicaVM
                 {
                     nmApelido = obj.nmApelido,
@@ -53,7 +53,7 @@ namespace SistemaBarbearia.Controllers
             };
             var objCidade = DAOCidade.GetCidade(result.idCidade);
             result.Cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
-            var objCondPag = condPagamentoDAO.GetCondPagamento(result.IdCondPag);
+            var objCondPag = condPagamentoDAO.GetCondPagamento(result.idCondPagamento);
             result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
             return View(result);
         }
@@ -135,8 +135,7 @@ namespace SistemaBarbearia.Controllers
        
         public ActionResult Delete(int id)
         {
-            var clienteDAO = new ClienteDAO();
-            return View(clienteDAO.DAOGetCliente(id));
+            return this.GetView(id);
         }
        
         [HttpPost]
@@ -149,7 +148,7 @@ namespace SistemaBarbearia.Controllers
                     // TODO: Add update logic here
                     var bean = cliente.GetCliente(new Cliente());
                     var daoCliente = new ClienteDAO();
-                    daoCliente.DeleteCliente(cliente.IdModelPai);
+                    daoCliente.DeleteCliente(id);
 
                    
                     return RedirectToAction("index");

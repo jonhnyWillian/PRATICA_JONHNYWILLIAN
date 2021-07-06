@@ -22,29 +22,29 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                 Open();
                 string insertFornecedor = @"INSERT INTO FORNECEDOR  (  nmNome, dsNome, nrContato, nrTelefone, nrCelular, nrCEP, dsLogradouro
                                                                       ,nrResidencial, dsBairro, dsComplemento, dsEmail, nrCPFCNPJ, nrRGIE, dsSite
-                                                                      ,idCidade, IdCondPag, dtCadastro,  dtNasc, flTipo, flSexo )
+                                                                      ,idCidade,  dtCadastro,  dtNasc, flTipo, flSexo )
                                                            VALUES(  @nmNome, @dsNome, @nrContato, @nrTelefone, @nrCelular, @nrCEP, @dsLogradouro
                                                                     ,@nrResidencial, @dsBairro, @dsComplemento, @dsEmail, @nrCPFCNPJ, @nrRGIE, @dsSite
-                                                                    ,@idCidade, @IdCondPag, @dtCadastro, @dtNasc, @flTipo, @flSexo )";
+                                                                    ,@idCidade, @dtCadastro, @dtNasc, @flTipo, @flSexo )";
                 SqlCommand sql = new SqlCommand(insertFornecedor, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@nmNome", fornecedor.nmNome ?? (object)DBNull.Value);
-                sql.Parameters.AddWithValue("@dsNome", fornecedor.dsNome ?? (object)DBNull.Value);                
+                sql.Parameters.AddWithValue("@nmNome", fornecedor.nmNome.ToUpper() ?? (object)DBNull.Value);
+                sql.Parameters.AddWithValue("@dsNome", fornecedor.dsNome.ToUpper() ?? (object)DBNull.Value);                
                 sql.Parameters.AddWithValue("@nrContato", fornecedor.nrContato ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrTelefone", fornecedor.nrTelefone ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrCelular", fornecedor.nrCelular ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrCEP", fornecedor.nrCEP ?? (object)DBNull.Value);
-                sql.Parameters.AddWithValue("@dsLogradouro", fornecedor.dsLogradouro ?? (object)DBNull.Value);
+                sql.Parameters.AddWithValue("@dsLogradouro", fornecedor.dsLogradouro.ToUpper() ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrResidencial", fornecedor.nrResidencial ?? (object)DBNull.Value);
-                sql.Parameters.AddWithValue("@dsBairro", fornecedor.dsBairro ?? (object)DBNull.Value);
-                sql.Parameters.AddWithValue("@dsComplemento", fornecedor.dsComplemento ?? (object)DBNull.Value);
+                sql.Parameters.AddWithValue("@dsBairro", fornecedor.dsBairro.ToUpper() ?? (object)DBNull.Value);
+                sql.Parameters.AddWithValue("@dsComplemento", fornecedor.dsComplemento.ToUpper() ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@dsEmail", fornecedor.dsEmail ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrCPFCNPJ", fornecedor.nrCPFCNPJ ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@nrRGIE", fornecedor.nrRGIE ?? (object)DBNull.Value);                
                 sql.Parameters.AddWithValue("@dsSite", fornecedor.dsSite ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@idCidade", ((object)fornecedor.idCidade) ?? DBNull.Value);
-                sql.Parameters.AddWithValue("@IdCondPag", ((object)fornecedor.idCondPagamento) ?? DBNull.Value);
+                //sql.Parameters.AddWithValue("@idCondPagamento", fornecedor.idCondPagamento);
                 sql.Parameters.AddWithValue("@dtNasc", ((object)fornecedor.dtNasc) ?? DBNull.Value);
                 sql.Parameters.AddWithValue("@flTipo", fornecedor.flTipo ?? (object)DBNull.Value);
                 sql.Parameters.AddWithValue("@flSexo", fornecedor.flSexo ?? (object)DBNull.Value);
@@ -81,12 +81,12 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                 string updateCliente = @"UPDATE FORNECEDOR SET nmNome = @nmNome, dsNome = @dsNome, nrContato = @nrContato, nrTelefone = @nrTelefone, nrCelular = @nrCelular, 
                                                                nrCEP = @nrCEP, dsLogradouro = @dsLogradouro, nrResidencial = @nrResidencial, dsBairro = @dsBairro, dsComplemento = @dsComplemento,
                                                                dsEmail = @dsEmail, nrCPFCNPJ = @nrCPFCNPJ, nrRGIE = @nrRGIE, dsSite = @dsSite, idCidade = @idCidade, 
-                                                               idCondPagamento = @idCondPagamento,  dtNasc = @dtNasc, flTipo = @flTipo, dtUltAlteracao = @dtUltAlteracao  
+                                                               dtNasc = @dtNasc, flTipo = @flTipo, dtUltAlteracao = @dtUltAlteracao  
 
                                                                 WHERE idFornecedor = @idFornecedor";
                 SqlCommand sql = new SqlCommand(updateCliente, sqlconnection);
                 sql.CommandType = CommandType.Text;
-
+                sql.Parameters.AddWithValue("@IdFornecedor", fornecedor.IdFornecedor);
                 sql.Parameters.AddWithValue("@nmNome", fornecedor.nmNome.ToUpper());
                 sql.Parameters.AddWithValue("@dsNome", fornecedor.dsNome.ToUpper());
                 sql.Parameters.AddWithValue("@flTipo", fornecedor.flTipo);
@@ -103,8 +103,8 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                 sql.Parameters.AddWithValue("@nrRGIE", fornecedor.nrRGIE);
                 sql.Parameters.AddWithValue("@dtNasc", fornecedor.dtNasc);
                 sql.Parameters.AddWithValue("@dsSite", fornecedor.dsSite);
-                sql.Parameters.AddWithValue("@idCidade", fornecedor.cidade.Id);
-                sql.Parameters.AddWithValue("@idCondPagamento", fornecedor.CondPagamento.Id);
+                sql.Parameters.AddWithValue("@idCidade", fornecedor.idCidade);
+                //sql.Parameters.AddWithValue("@IdCondPagamento", fornecedor.idCondPagamento);
                 
                 sql.Parameters.AddWithValue("@dtUltAlteracao", fornecedor.dtUltAlteracao = DateTime.Now);
 
@@ -189,8 +189,7 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                         dsEmail = Convert.ToString(Dr["dsEmail"]),
                         nrCPFCNPJ = Convert.ToString(Dr["nrCPFCNPJ"]),
                         nrRGIE = Convert.ToString(Dr["nrRGIE"]),
-                        idCidade = Convert.ToInt32(Dr["idCidade"]),
-                        idCondPagamento = Convert.ToInt32(Dr["idCondPagamento"]),
+                        idCidade = Convert.ToInt32(Dr["idCidade"]),                        
                      
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
 
@@ -242,7 +241,7 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                     fornecedor.nrRGIE = Dr["nrRGIE"].ToString();
                     fornecedor.dsSite = Dr["dsSite"].ToString();
                     fornecedor.idCidade = Convert.ToInt32(Dr["IdCidade"]);
-                    fornecedor.idCondPagamento = Convert.ToInt32(Dr["IdCondPagamento"]);
+                    //fornecedor.idCondPagamento = Convert.ToInt32(Dr["idCondPagamento"]);
                     fornecedor.dtNasc = Dr["dtNasc"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtNasc"]);
                     fornecedor.flTipo = Dr["flTipo"].ToString();
                     fornecedor.flSexo = Dr["flSexo"].ToString();

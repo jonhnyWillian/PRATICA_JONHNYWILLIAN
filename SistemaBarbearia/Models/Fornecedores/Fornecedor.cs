@@ -59,7 +59,7 @@ namespace SistemaBarbearia.Models.Fornecedores
 
         public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM cidade { get; set; }
 
-        public SistemaBarbearia.ViewModels.CondPagamentos.SelectCondPagamentoVM CondPagamento { get; set;}
+        public SistemaBarbearia.ViewModels.CondPagamentos.SelectCondPagamentoVM CondPagamento { get; set; }
 
         public string flSexo { get; set; }
 

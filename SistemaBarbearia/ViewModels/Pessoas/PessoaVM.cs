@@ -30,6 +30,7 @@ namespace SistemaBarbearia.ViewModels.Pessoas
         public string flSituacao { get; set; }
 
         [Display(Name = "CEP")]
+        
         public string nrCEP { get; set; }
 
         [Display(Name = "Logradouro")]
@@ -48,7 +49,7 @@ namespace SistemaBarbearia.ViewModels.Pessoas
         public int idCidade { get; set; }
 
         [Display(Name = "Condição Pagamento")]
-        public int IdCondPag { get; set; }
+        public int idCondPagamento { get; set; }
 
         public SistemaBarbearia.ViewModels.Cidades.SelectCidadeVM Cidade { get; set; }
 

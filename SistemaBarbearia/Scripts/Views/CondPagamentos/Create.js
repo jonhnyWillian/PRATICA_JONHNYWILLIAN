@@ -1,101 +1,89 @@
-﻿
-$(function () {
-
-    Item.datatable = new tDataTable({
-
-        table: {
-
-            jsItem: "Itens_js",
-            name: "tblItens",
-            remove: true,
-            edit: false,
-            paginate: false,
-            order: [[1, "asc"]],
-            sortable: false,
-            data: null,
-            columns: [
-                { data: "nrParcela" },
-                { data: "qtDias" },
-                { data: "txPercentual" },
-                { data: "nmFormaPagto" },                
-            ]
-        }
-    });
-
-    $('#addItem').click(function () {
-
-        Item.adicionar(Item.datatable);
-        return false;
-    });
+﻿$(function () {
+    var cond = new CondicaoPagamento;
+    cond.init();
+    $("#addCondPagamento").click(function () {
+        cond.addItem();
+    })
 });
-let nr = 1;
 
-var Item = {
-    datatable: null,
 
-    validarForm: function (datatable) {
+CondicaoPagamento = function () {
+    self = this;
+    let nr = 1;
+    var dtCondicao = null;
+    this.init = function () {
+        dtCondicao = new tDataTable({
+            table: {
+                jsItem: "jsItens",
+                name: "tblCondicao",
+                remove: true,
+                order: [[1, "asc"]],
+                columns: [
+                    { data: "nrParcela" },
+                    { data: "qtDias" },
+                    { data: "txPercentual" },
+                    { data: "nomeFormaPagamento" },
+                ]
+            },
+        });
+    }
 
-        if (($("#qtDias").val() == "")) {
-            alert('Por favor, informe quantos dias para pagamento');
-            $("#qtDias").focus();
-            return false;
+    self.valid = function () {
+        let valid = true;
+        if (IsNullOrEmpty($("#qtDias").val())) {
+            $("#qtDias").blink({ msg: "Informe a quantidade de dias" });
+            valid = false;
         }
 
-        if (($("#txPercent").val() == "")) {
-            alert('Por favor, informe o percetual de cobrança');
-            $("#txPercent").focus();
-            return false;
+        if (IsNullOrEmpty($("#txPercentual").val())) {
+            $("#txPercentual").blink({ msg: "Informe o percentual" });
+            valid = false;
         }
 
-        if (($("#FormaPagto_id").val() == "")) {
-            alert('Por favor, informe a forma de pagamento');
-            $("#FormaPagto_id").focus();
-            return false;
+        if (IsNullOrEmpty($("#FormaPagamento_id").val())) {
+            $("#FormaPagamento_id").blink({ msg: "Informe a condição de pagamento" });
+            valid = false;
         }
 
-        return true;
-    },
+        return valid;
+    }
 
-    limparForm: function () {
-        $("#FormaPagto_id").val('');
-        $("#FormaPagto_text").val('');
+    self.getModel = function () {
+        var model = {
+            codFormaPagamento: $("#FormaPagamento_id").val(),
+            nomeFormaPagamento: $("#FormaPagamento_text").val(),
+            qtDias: $("#qtDias").val(),
+            txPercentual: $("#txPercentual").val()
+        }
+        return model;
+
+    }
+
+    self.clear = function () {
+        $("#FormaPagamento_id").val('');
+        $("#FormaPagamento_text").val('');
         $("#qtDias").val('');
-        $("#txPercent").val('');
-    },
+        $("#txPercentual").val('');
+    }
 
-    getForm: function () {
-
-        return {
-            idFormaPagto: $('#FormaPagto_id').val(),
-            nmFormaPagto: $('#FormaPagto_text').val(),
-            qtDias: $('#qtDias').val(),
-            txPercentual: $('#txPercent').val(),
-        };
-    },
-
-    adicionar: function (datatable) {
-
-
-        var form = Item.getForm();
-
-        if (Item.validarForm(datatable)) {
-
-            var item = {
-
+    self.addItem = function () {
+        if (self.valid()) {
+            var model = self.getModel();
+            let item = {
                 nrParcela: nr,
-                idFormaPagto: form.idFormaPagto,
-                nmFormaPagto: form.nmFormaPagto,
-                qtDias: form.qtDias,
-                txPercentual: form.txPercentual,
+                codFormaPagamento: model.codFormaPagamento,
+                nomeFormaPagamento: model.nomeFormaPagamento,
+                qtDias: model.qtDias,
+                txPercentual: model.txPercentual,
             }
             nr++;
-            console.log(item);
-            datatable.addItem(item);
-            Item.limparForm();
+            dtCondicao.addItem(item)
+            self.clear();
 
-            form.idFormaPagto.focus();
+
         }
-    },
+    }
+
 
 
 }

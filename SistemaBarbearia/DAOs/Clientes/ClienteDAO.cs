@@ -13,7 +13,7 @@ namespace SistemaBarbearia.DAOs.Clientes
     public class ClienteDAO : DataAccess
     {
         #region INSERT UPDATE DELETE
-        public void InsertCliente(Cliente cliente)
+        public bool InsertCliente(Cliente cliente)
         {
 
             try
@@ -42,21 +42,19 @@ namespace SistemaBarbearia.DAOs.Clientes
                 sql.Parameters.AddWithValue("@nrRG", cliente.nrRG);
                 sql.Parameters.AddWithValue("@IdCidade", cliente.idCidade);
                 sql.Parameters.AddWithValue("@IdCondPagamento", cliente.IdCondPag);
-                //SQL.Parameters.AddWithValue("@dsLogin", cliente.dsLogin);
-                //SQL.Parameters.AddWithValue("@senha", cliente.senha);
                 sql.Parameters.AddWithValue("@dtCadastro", cliente.dtCadastro = DateTime.Now);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", cliente.dtUltAlteracao = DateTime.Now);
 
-                //int i = sql.ExecuteNonQuery();
+                int i = sql.ExecuteNonQuery();
 
-                //if (i >= 1)
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    return false;
-                //}
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {
@@ -68,7 +66,7 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public void UpdateCliente(Cliente cliente)
+        public bool UpdateCliente(Cliente cliente)
         {
             try
             {
@@ -103,16 +101,16 @@ namespace SistemaBarbearia.DAOs.Clientes
 
                 sql.Parameters.AddWithValue("@dtUltAlteracao", cliente.dtUltAlteracao = DateTime.Now);
 
-                //int i = sql.ExecuteNonQuery();
+                int i = sql.ExecuteNonQuery();
 
-                //if (i >= 1)
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    return false;
-                //}
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {
@@ -124,18 +122,28 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
-        public void DeleteCliente(int Id)
+        public bool DeleteCliente(int Id)
         {
             try
             {
                 Open();
-                string deleteCliente = "DELETE FROM CLIENTE WHERE IdCliente = @IdCliente";
+                string deleteCliente = "DELETE FROM Cliente WHERE IdCliente = @IdCliente";
                 SqlCommand sql = new SqlCommand(deleteCliente, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdCliente", Id);
 
-               
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
             catch (Exception e)
             {
@@ -182,7 +190,7 @@ namespace SistemaBarbearia.DAOs.Clientes
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
 
-                };
+                    };
                     lista.Add(cliente);
                 }
                 return lista;
@@ -224,10 +232,10 @@ namespace SistemaBarbearia.DAOs.Clientes
                     clienteVM.dsEmail = Dr["dsEmail"].ToString();
                     clienteVM.nrCPF = Dr["nrCPF"].ToString();
                     clienteVM.nrRG = Dr["nrRG"].ToString();
-                    
+
                     clienteVM.idCidade = Convert.ToInt32(Dr["IdCidade"]);
                     clienteVM.IdCondPag = Convert.ToInt32(Dr["IdCondPagamento"]);
-                    
+
                     clienteVM.dataNasc = Dr["dataNasc"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dataNasc"]);
                     clienteVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     clienteVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);

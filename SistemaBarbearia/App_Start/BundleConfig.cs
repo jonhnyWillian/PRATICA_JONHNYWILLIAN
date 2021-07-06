@@ -33,25 +33,28 @@ namespace SistemaBarbearia
             // pronto para a produção, utilize a ferramenta de build em https://modernizr.com para escolher somente os testes que precisa.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*",
-                        "~/Scripts/jquery-3.6.0.js"
+                        "~/Scripts/jquery-3.6.0.js",
+                         "~/Scripts/tDataTable.js"
                         ));
 
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                       "~/Scripts/jquery.dataTables.min.js",
-                        "~/Scripts/dataTables.bootstrap4.min.js",
-                        "~/Scripts/tDataTable.js",
-                        "~/Scripts/bootstrap-datepicker.js",
+                      "~/Scripts/tDataTable.js",                      
+                      "~/Scripts/jquery.dataTables.min.js",
+                      "~/Scripts/dataTables.bootstrap4.min.js",
+                      "~/Scripts/bootstrap-datepicker.js",
 
-                       "~/Scripts/select2.js",
-                        "~/Scripts/select2_locale_pt_BR.js",
-                        "~/Scripts/sSelect.js",
-                        "~/Scripts/Functions.js",
-                        "~/Scripts/functionsb3.js"
-                        
+                      "~/Scripts/select2.js",
+                      "~/Scripts/select2_locale_pt_BR.js",
+                      "~/Scripts/sSelect.js",
+                      "~/Scripts/Functions.js",
+                      "~/Scripts/functionsb3.js",
+                      "~/Scripts/jquery.mask.js",
+                      "~/Scripts/bootstrap-notify.js",
+                      "~/Scripts/Sistema.js"
                       ));
-           
+
         }
     }
 }
