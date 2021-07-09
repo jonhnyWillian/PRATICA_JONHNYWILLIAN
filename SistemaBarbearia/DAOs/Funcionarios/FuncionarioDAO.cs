@@ -1,6 +1,5 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Funcionarios;
-using SistemaBarbearia.ViewModels.Funcionarios;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,35 +19,36 @@ namespace SistemaBarbearia.DAOs.Funcionarios
             {
                 Open();
                 string insertfuncionario = @"INSERT INTO Funcionario ( nmFuncionario, nmApelido, flSexo, nrTelefone, nrCelular, nrCEP, dsLogradouro, nrResidencial, dsBairro, dsComplemento 
-                                                                     ,dsEmail ,nrCPF ,nrRG, dtNasc ,vlSalario ,idCidade ,idCargo ,dsLogin ,senha ,dtAdimissao ,dtDemissao ,dtCadastro ,dtUltAlteracao )
+                                                                     ,dsEmail ,nrCPF ,nrRG, dtNasc ,vlSalario ,idCidade ,idCargo ,dsLogin ,senha ,dtAdimissao ,dtCadastro)
                                                                VALUES(@nmFuncionario, @nmApelido, @flSexo, @nrTelefone, @nrCelular, @nrCEP, @dsLogradouro, @nrResidencial, @dsBairro, @dsComplemento 
-                                                                     ,@dsEmail, @nrCPF, @nrRG, @dtNasc, @vlSalario, @idCidade, @idCargo, @dsLogin, @senha, @dtAdimissao, @dtCadastro, @dtUltAlteracao )";
-                SQL = new SqlCommand(insertfuncionario, sqlconnection);
-                SQL.CommandType = CommandType.Text;
+                                                                     ,@dsEmail, @nrCPF, @nrRG, @dtNasc, @vlSalario, @idCidade, @idCargo, @dsLogin, @senha, @dtAdimissao, @dtCadastro)";
+                SqlCommand sql = new SqlCommand(insertfuncionario, sqlconnection);
+                sql.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@nmFuncionario", funcionario.nmFuncionario.ToUpper());
-                SQL.Parameters.AddWithValue("@nmApelido", funcionario.nmApelido.ToUpper());
-                SQL.Parameters.AddWithValue("@flSexo", funcionario.flSexo);
-                SQL.Parameters.AddWithValue("@nrTelefone", funcionario.nrTelefone);
-                SQL.Parameters.AddWithValue("@nrCelular", funcionario.nrCelular);
-                SQL.Parameters.AddWithValue("@nrCEP", funcionario.nrCEP);
-                SQL.Parameters.AddWithValue("@dsLogradouro", funcionario.dsLogradouro.ToUpper());
-                SQL.Parameters.AddWithValue("@nrResidencial", funcionario.nrResidencial);
-                SQL.Parameters.AddWithValue("@dsBairro", funcionario.dsBairro.ToUpper());
-                SQL.Parameters.AddWithValue("@dsComplemento", funcionario.dsComplemento.ToUpper());
-                SQL.Parameters.AddWithValue("@dsEmail", funcionario.dsEmail.ToUpper());
-                SQL.Parameters.AddWithValue("@nrCPF", funcionario.nrCPF);
-                SQL.Parameters.AddWithValue("@nrRG", funcionario.nrRG);
-                SQL.Parameters.AddWithValue("@vlSalario", funcionario.vlSalario);
-                SQL.Parameters.AddWithValue("@IdCidade", funcionario.cidade.Id);
-                SQL.Parameters.AddWithValue("@IdCargo", funcionario.cargo.Id);
-                SQL.Parameters.AddWithValue("@dsLogin", funcionario.dsLogin);
-                SQL.Parameters.AddWithValue("@senha", funcionario.senha);
+                sql.Parameters.AddWithValue("@nmFuncionario", funcionario.nmFuncionario.ToUpper());
+                sql.Parameters.AddWithValue("@nmApelido", funcionario.nmApelido.ToUpper());
+                sql.Parameters.AddWithValue("@flSexo", funcionario.flSexo);
+                sql.Parameters.AddWithValue("@nrTelefone", funcionario.nrTelefone);
+                sql.Parameters.AddWithValue("@nrCelular", funcionario.nrCelular);
+                sql.Parameters.AddWithValue("@nrCEP", funcionario.nrCEP);
+                sql.Parameters.AddWithValue("@dsLogradouro", funcionario.dsLogradouro.ToUpper());
+                sql.Parameters.AddWithValue("@nrResidencial", funcionario.nrResidencial);
+                sql.Parameters.AddWithValue("@dsBairro", funcionario.dsBairro.ToUpper());
+                sql.Parameters.AddWithValue("@dsComplemento", funcionario.dsComplemento.ToUpper());
+                sql.Parameters.AddWithValue("@dsEmail", funcionario.dsEmail.ToUpper());
+                sql.Parameters.AddWithValue("@nrCPF", funcionario.nrCPF);
+                sql.Parameters.AddWithValue("@nrRG", funcionario.nrRG);
+                sql.Parameters.AddWithValue("@dtNasc", funcionario.dtNasc);
+                sql.Parameters.AddWithValue("@vlSalario", funcionario.vlSalario);
+                sql.Parameters.AddWithValue("@idCidade", funcionario.IdCidade);
+                sql.Parameters.AddWithValue("@idCargo", funcionario.IdCargo);
+                sql.Parameters.AddWithValue("@dsLogin", funcionario.dsLogin);
+                sql.Parameters.AddWithValue("@senha", funcionario.senha);
+                
+                sql.Parameters.AddWithValue("@dtAdimissao", funcionario.dtAdimissao = DateTime.Now);
+                sql.Parameters.AddWithValue("@dtCadastro", funcionario.dtCadastro = DateTime.Now);
 
-                SQL.Parameters.AddWithValue("@dtAdimissao", funcionario.dtAdimissao = DateTime.Now);
-                SQL.Parameters.AddWithValue("@dtCadastro", funcionario.dtCadastro = DateTime.Now);
-
-                int i = SQL.ExecuteNonQuery();
+                int i = sql.ExecuteNonQuery();
 
                 if (i >= 1)
                 {
@@ -77,35 +77,36 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                 string updateFuncionario = @"UPDATE Funcionario SET  nmFuncionario = @nmFuncionario, nmApelido = @nmApelido, flSexo = @flSexo, nrTelefone = @nrTelefone, nrCelular = @nrCelular, 
                                                                      nrCEP = @nrCEP, dsLogradouro = @dsLogradouro, nrResidencial = @nrResidencial, dsBairro = @dsBairro, dsComplemento = @dsComplemento, 
                                                                      dsEmail = @dsEmail, nrCPF = @nrCPF, nrRG = @nrRG, dtNasc = @dtNasc, vlSalario = @vlSalario, idCidade = @idCidade, idCargo = @idCargo, 
-                                                                     dsLogin = @dsLogin, senha = @senha, dtAdimissao = @dtAdimissao, dtDemissao = @dtDemissao, dtUltAlteracao = @dtUltAlteracao 
+                                                                     dsLogin = @dsLogin, senha = @senha, dtDemissao = @dtDemissao, dtUltAlteracao = @dtUltAlteracao 
 
                                                           WHERE IdFuncionario =  @IdFuncionario";
                 SqlCommand sql = new SqlCommand(updateFuncionario, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@IdFuncionario", funcionario.IdFuncionario);
-                SQL.Parameters.AddWithValue("@nmFuncionario", funcionario.nmFuncionario.ToUpper());
-                SQL.Parameters.AddWithValue("@nmApelido", funcionario.nmApelido.ToUpper());
-                SQL.Parameters.AddWithValue("@flSexo", funcionario.flSexo);
-                SQL.Parameters.AddWithValue("@nrTelefone", funcionario.nrTelefone);
-                SQL.Parameters.AddWithValue("@nrCelular", funcionario.nrCelular);
-                SQL.Parameters.AddWithValue("@nrCEP", funcionario.nrCEP);
-                SQL.Parameters.AddWithValue("@dsLogradouro", funcionario.dsLogradouro.ToUpper());
-                SQL.Parameters.AddWithValue("@nrResidencial", funcionario.nrResidencial);
-                SQL.Parameters.AddWithValue("@dsBairro", funcionario.dsBairro.ToUpper());
-                SQL.Parameters.AddWithValue("@dsComplemento", funcionario.dsComplemento.ToUpper());
-                SQL.Parameters.AddWithValue("@dsEmail", funcionario.dsEmail.ToUpper());
-                SQL.Parameters.AddWithValue("@nrCPF", funcionario.nrCPF);
-                SQL.Parameters.AddWithValue("@nrRG", funcionario.nrRG);
-                SQL.Parameters.AddWithValue("@vlSalario", funcionario.vlSalario);
-                SQL.Parameters.AddWithValue("@IdCidade", funcionario.cidade.Id);
-                SQL.Parameters.AddWithValue("@IdCargo", funcionario.cargo.Id);
-                SQL.Parameters.AddWithValue("@dsLogin", funcionario.dsLogin);
-                SQL.Parameters.AddWithValue("@senha", funcionario.senha);
+                sql.Parameters.AddWithValue("@IdFuncionario", funcionario.IdFuncionario);
+                sql.Parameters.AddWithValue("@nmFuncionario", funcionario.nmFuncionario.ToUpper());
+                sql.Parameters.AddWithValue("@nmApelido", funcionario.nmApelido.ToUpper());
+                sql.Parameters.AddWithValue("@flSexo", funcionario.flSexo);
+                sql.Parameters.AddWithValue("@nrTelefone", funcionario.nrTelefone);
+                sql.Parameters.AddWithValue("@nrCelular", funcionario.nrCelular);
+                sql.Parameters.AddWithValue("@nrCEP", funcionario.nrCEP);
+                sql.Parameters.AddWithValue("@dsLogradouro", funcionario.dsLogradouro.ToUpper());
+                sql.Parameters.AddWithValue("@nrResidencial", funcionario.nrResidencial);
+                sql.Parameters.AddWithValue("@dsBairro", funcionario.dsBairro.ToUpper());
+                sql.Parameters.AddWithValue("@dsComplemento", funcionario.dsComplemento.ToUpper());
+                sql.Parameters.AddWithValue("@dsEmail", funcionario.dsEmail.ToUpper());
+                sql.Parameters.AddWithValue("@nrCPF", funcionario.nrCPF);
+                sql.Parameters.AddWithValue("@nrRG", funcionario.nrRG);
+                sql.Parameters.AddWithValue("@dtNasc", funcionario.dtNasc);
+                sql.Parameters.AddWithValue("@vlSalario", funcionario.vlSalario);
+                sql.Parameters.AddWithValue("@IdCidade", funcionario.IdCidade);
+                sql.Parameters.AddWithValue("@IdCargo", funcionario.IdCargo);
+                sql.Parameters.AddWithValue("@dsLogin", funcionario.dsLogin);
+                sql.Parameters.AddWithValue("@senha", funcionario.senha);
+                
+                sql.Parameters.AddWithValue("@dtDemissao", funcionario.dtDemissao = DateTime.Now);
 
-                SQL.Parameters.AddWithValue("@dtDemissao", funcionario.dtDemissao = DateTime.Now);
-
-                sql.Parameters.AddWithValue("@dtUltAlteracao", funcionario.dtUltAlteracao = DateTime.Now);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", ((object)funcionario.dtDemissao) ?? DBNull.Value);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -137,7 +138,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                 SqlCommand sql = new SqlCommand(deleteCliente, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@Id", Id);
+                sql.Parameters.AddWithValue("@IdFuncionario", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -190,7 +191,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                         nrRG = Convert.ToString(Dr["nrRG"]),
                         IdCargo = Convert.ToInt32(Dr["IdCargo"]),
                         IdCidade = Convert.ToInt32(Dr["IdCidade"]),
-                        
+
                         dsLogin = Convert.ToString(Dr["dsLogin"]),
                         senha = Convert.ToString(Dr["senha"]),
                         dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
@@ -210,7 +211,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
             }
         }
 
-        public Funcionario GetFuncionario(int? Id)
+        public Funcionario DAOGetFuncionario(int Id)
         {
             try
             {
@@ -229,7 +230,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                     funcionarioVM.flSexo = Dr["flSexo"].ToString();
                     funcionarioVM.nrTelefone = Dr["nrTelefone"].ToString();
                     funcionarioVM.nrCelular = Dr["nrCelular"].ToString();
-                    funcionarioVM.nrCEP = Dr["nrCEP"].ToString();                    
+                    funcionarioVM.nrCEP = Dr["nrCEP"].ToString();
                     funcionarioVM.dsLogin = Dr["dsLogin"].ToString();
                     funcionarioVM.senha = Dr["senha"].ToString();
                     funcionarioVM.dsBairro = Dr["dsBairro"].ToString();
@@ -241,7 +242,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                     funcionarioVM.dsEmail = Dr["dsEmail"].ToString();
                     funcionarioVM.nrCPF = Dr["nrCPF"].ToString();
                     funcionarioVM.nrRG = Dr["nrRG"].ToString();
-                    funcionarioVM.vlSalario = Convert.ToDecimal( Dr["vlSalario"]);
+                    funcionarioVM.vlSalario = Convert.ToDecimal(Dr["vlSalario"]);
                     funcionarioVM.dtNasc = Dr["dtNasc"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtNasc"]);
                     funcionarioVM.dtAdimissao = Dr["dtAdimissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtAdimissao"]);
                     funcionarioVM.dtDemissao = Dr["dtDemissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtDemissao"]);
@@ -259,7 +260,5 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                 Close();
             }
         }
-
-
     }
 }

@@ -180,6 +180,7 @@ namespace SistemaBarbearia.Controllers
         public JsonResult JsInsert(Cidade cidade)
         {
             var cidadeDAO = new CidadeDAO();
+            
             cidadeDAO.InsertCidade(cidade);
             var result = new
             {

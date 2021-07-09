@@ -32,10 +32,7 @@ namespace SistemaBarbearia.Controllers
         [HttpPost]
         public ActionResult Create(Cargo cargo)
         {
-            if (string.IsNullOrWhiteSpace(cargo.dsCargo))
-            {
-                ModelState.AddModelError("dsCargo", "Informe um nome de cargo válido");
-            }
+           
             try
             {
                 if (ModelState.IsValid)

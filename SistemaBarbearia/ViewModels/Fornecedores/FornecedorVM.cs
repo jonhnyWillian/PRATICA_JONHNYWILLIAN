@@ -12,9 +12,7 @@ using System.Web.Mvc;
 namespace SistemaBarbearia.ViewModels.Fornecedores
 {
     public class FornecedorVM : PessoaVM
-    {
-
-      
+    {      
 
         public Fornecedor GetFornecedor(Fornecedor bean)
         {
@@ -45,20 +43,25 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
         public class PessoaFisicaVM
         {
             [Display(Name = "Apelido")]
+            //[Required(ErrorMessage = "Por favor, informe o Apelido!")]
             public string nmApelido { get; set; }
 
             [Display(Name = "CPF")]
+            //[Required(ErrorMessage = "Por favor, informe o CPF!")]
             public string nrCPF { get; set; }
 
             [Display(Name = "RG")]
+            //[Required(ErrorMessage = "Por favor, informe o RG!")]
             public string nrRG { get; set; }
 
             [Display(Name = "Data de Nascimento")]
+            //[Required(ErrorMessage = "Por favor, informe o Data Nascimento!")]
             [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime? dtNascimento { get; set; }
 
             [Display(Name = "Sexo")]
+            //[Required(ErrorMessage = "Por favor, informe o cliente!")]
             public string flSexo { get; set; }
 
             public Fornecedor GetFornecedorFisica(Fornecedor bean)
@@ -77,12 +80,15 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
         {
 
             [Display(Name = "Nome fantasia")]
+            //[Required(ErrorMessage = "Por favor, informe o Nome Fantasia!")]
             public string nmFantasia { get; set; }
 
             [Display(Name = "CNPJ")]
+            //[Required(ErrorMessage = "Por favor, informe o CNPJ!")]
             public string nrCNPJ { get; set; }
 
             [Display(Name = "Nº IE")]
+            //[Required(ErrorMessage = "Por favor, informe o EI!")]
             public string nrIE { get; set; }
 
             [Display(Name = "Site")]

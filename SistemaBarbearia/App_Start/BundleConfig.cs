@@ -37,6 +37,8 @@ namespace SistemaBarbearia
                          "~/Scripts/tDataTable.js"
                         ));
 
+            bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
+                        "~/Scripts/inputmask/jquery.inputmask.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",

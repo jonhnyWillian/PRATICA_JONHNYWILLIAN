@@ -232,10 +232,8 @@ namespace SistemaBarbearia.DAOs.Clientes
                     clienteVM.dsEmail = Dr["dsEmail"].ToString();
                     clienteVM.nrCPF = Dr["nrCPF"].ToString();
                     clienteVM.nrRG = Dr["nrRG"].ToString();
-
                     clienteVM.idCidade = Convert.ToInt32(Dr["IdCidade"]);
                     clienteVM.IdCondPag = Convert.ToInt32(Dr["IdCondPagamento"]);
-
                     clienteVM.dataNasc = Dr["dataNasc"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dataNasc"]);
                     clienteVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     clienteVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);

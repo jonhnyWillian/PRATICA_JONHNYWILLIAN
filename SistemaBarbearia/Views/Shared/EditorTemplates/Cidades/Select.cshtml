@@ -180,7 +180,7 @@
                 Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 nmCidade: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmCidade", Prefix)'),
                 ddd: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("DDD", Prefix)'),
-                idEstado : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)'),
+                IdEstado : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)'),
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -192,7 +192,7 @@
         form.Id.val("");
         form.nmCidade.val("");
         form.ddd.val("");
-        form.idEstado.val("");
+        form.IdEstado.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
         form.nmCidade.focus();
@@ -220,7 +220,7 @@
             Id: form.Id.val(),
             nmCidade: form.nmCidade.val(),
             ddd: form.ddd.val(),
-            idEstado: form.idEstado.val(),
+            IdEstado: form.IdEstado.val(),
         }
         return model;
     };
@@ -376,7 +376,7 @@
     function SelectCidade(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
         return false;
     };
 
@@ -397,7 +397,7 @@
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmCidade", Prefix)").val(data.nmCidade);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ddd", Prefix)").val(data.ddd);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)").val(data.idEstado);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)").val(data.IdEstado);
                 @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
 

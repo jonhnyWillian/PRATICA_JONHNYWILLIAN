@@ -38,21 +38,19 @@ namespace SistemaBarbearia.ViewModels.Clientes
 
             [Display(Name = "Apelido")]
             [StringLength(50, MinimumLength = 3)]
-            [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!", AllowEmptyStrings = false)]
+            [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!")]
             public string nmApelido { get; set; }
 
             [Display(Name = "CPF")]
-            [StringLength(14, MinimumLength = 0)]
-            [Required(ErrorMessage = "Campo CPF não Pode ser em Branco!", AllowEmptyStrings = false)]
+            [Required(ErrorMessage = "Campo CPF não Pode ser em Branco!")]
             public string nrCPF { get; set; }
 
             [Display(Name = "RG")]
-            [StringLength(11, MinimumLength = 0)]
-            [Required(ErrorMessage = "Campo RG não Pode ser em Branco!", AllowEmptyStrings = false)]
+            [Required(ErrorMessage = "Campo RG não Pode ser em Branco!")]
             public string nrRG { get; set; }
 
             [Display(Name = "Sexo")]
-            [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!", AllowEmptyStrings = false)]
+            [Required(ErrorMessage = "Campo Sexo não Pode ser em Branco!")]
             public string flSexo { get; set; }
 
             public SistemaBarbearia.ViewModels.CondPagamentos.CondPagamentoVM condPagamento { get; set; }
@@ -61,8 +59,6 @@ namespace SistemaBarbearia.ViewModels.Clientes
             [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
             public DateTime? dataNasc { get; set; }
-
-
 
             public Cliente GetCliente(Cliente cliente)
             {

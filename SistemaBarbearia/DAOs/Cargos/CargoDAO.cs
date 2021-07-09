@@ -225,10 +225,9 @@ namespace SistemaBarbearia.DAOs.Cargos
                         Id = Convert.ToInt32(Dr["IdCargo"]),
                         Text = Convert.ToString(Dr["dsCargo"]),
                         flSituacao = Convert.ToString(Dr["flSituacao"]),
-                        dtCadastro = Convert.ToDateTime(Dr["dtCadastro"]),
-                        dtUltAlteracao = Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        dtUltAlteracao = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                     };
-
                     list.Add(cargo);
                 }
 

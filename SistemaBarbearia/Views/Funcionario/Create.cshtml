@@ -1,4 +1,5 @@
-﻿@model SistemaBarbearia.ViewModels.Funcionarios.FuncionarioVM
+﻿
+@model SistemaBarbearia.ViewModels.Funcionarios.FuncionarioVM
 @using SistemaBarbearia.Helper;
 @{
     ViewBag.Title = "Novo registro";
@@ -29,3 +30,8 @@
 
     }
 </div>
+@section Scripts {
+    @Scripts.Render("~/Scripts/Views/Funcionarios/Create.js")
+
+
+}

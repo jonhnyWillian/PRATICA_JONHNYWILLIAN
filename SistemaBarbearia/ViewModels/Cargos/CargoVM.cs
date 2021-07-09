@@ -13,7 +13,8 @@ namespace SistemaBarbearia.ViewModels.Cargos
         public int IdCargo { get; set; }
 
         [Display(Name = "Cargo")]
-        [Required(ErrorMessage = "Campo nome do Cargo não pode ser em branco")]
+        
+        [Required(ErrorMessage = "Por favor, informe o Nome!")]
         public string dsCargo { get; set; }
 
         [Display(Name = "Situação")]
