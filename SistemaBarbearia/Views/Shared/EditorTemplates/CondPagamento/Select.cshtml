@@ -97,7 +97,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-row isEdit">
+                            @*<div class="form-row isEdit">
                                 <div class="@Helper.Input3">
                                     @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
                                     <div class="input-group-append">
@@ -113,7 +113,7 @@
                                         <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
 
@@ -270,8 +270,8 @@
         let lis = getTableCondPagamento();
         $("#TableCondPagamento").append(lis);
 
-        table = $('#lista').DataTable({
-            ajax: { url: $('#lista').attr('data-url') },
+        table = $('#listaCond').DataTable({
+            ajax: { url: $('#listaCond').attr('data-url') },
                 lengthMenu: false,
                 lengthChange: false,
                 language: {
@@ -319,7 +319,7 @@
     }
 
     function getTableCondPagamento() {
-        let tmp = `<table id="lista" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "CondPagamento")">
+        let tmp = `<table id="listaCond" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "CondPagamento")">
                         <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
@@ -358,7 +358,7 @@
     function SelectCondPagamento(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.Text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
         return false;
     };
 
@@ -377,11 +377,11 @@
                 }
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.dsCondPag);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.Text);
                 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
+                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },

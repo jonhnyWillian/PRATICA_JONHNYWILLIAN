@@ -6,8 +6,8 @@
         $("#contato").inputmask("mask", { "mask": "(99) 9999-99999" });
         $("#cpf").inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });
         $('#rg').inputmask("mask", { "mask": "99.999.999-9" }, { reverse: true });
-        $('#cnpj').inputmask("mask", { "mask": "999.999.999-99" }, { reverse: true });
-        $('#ei').inputmask("mask", { "mask": "999.999.999/9999" }, { reverse: true });
+        $('#cnpj').inputmask("mask", { "mask": "99.999.999/9999-99" }, { reverse: true });
+        $('#ei').inputmask("mask", { "mask": "999.99999-99" }, { reverse: true });
         $("#cep").inputmask("mask", { "mask": "99999-999" });
         $("#nascimento").inputmask("mask", { "mask": "99/99/9999" });
         $("#preco").inputmask("mask", { "mask": "999.999,99" }, { reverse: true });

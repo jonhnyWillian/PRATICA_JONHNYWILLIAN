@@ -60,17 +60,17 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             try
             {
                 Open();
-                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta, txDesconto = @txDesconto, IdFormaPagamento = @IdFormaPagamento 
-                                                                        ,dtUltAlteracao = @dtUltAlteracao  WHERE IdCondPag =" + condPagamento.IdCondPag;
+                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta,  IdFormaPagamento = @IdFormaPagamento 
+                                                                        ,dtUltAlteracao = @dtUltAlteracao  WHERE IdCondPag = @IdCondPag";
                 SqlCommand sql = new SqlCommand(updateCondPagamento, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                SQL.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
-                SQL.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
-                SQL.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
-                SQL.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
-                SQL.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
-                SQL.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
+                sql.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
+                sql.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
+                sql.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
+                sql.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
+                //sql.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
+                sql.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
                 //SQL.Parameters.AddWithValue("@IdCondicaoPagParc", condPagamento.CondPagamentoParcela.id);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", condPagamento.dtUltAlteracao = DateTime.Now);
 

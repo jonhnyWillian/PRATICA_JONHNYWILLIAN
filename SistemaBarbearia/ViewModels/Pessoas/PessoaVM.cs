@@ -1,4 +1,5 @@
-﻿using SistemaBarbearia.ViewModels.Model;
+﻿using SistemaBarbearia.Models.Fornecedores;
+using SistemaBarbearia.ViewModels.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -82,6 +83,15 @@ namespace SistemaBarbearia.ViewModels.Pessoas
                     new SelectListItem { Value = "J", Text = "JURÍDICA" }
                 };
             }
+        }
+        public static string dsTipo(string flTipo)
+        {
+            if (flTipo == Fornecedor.TIPO_FISICA)
+                return "FÍSICA";
+            if (flTipo == Fornecedor.TIPO_JURIDICA)
+                return "JURÍDICA";
+
+            return flTipo;
         }
 
         public static SelectListItem[] Sexo

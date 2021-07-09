@@ -64,7 +64,7 @@
     <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrResidencial, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-4", @autofocus = "autofocus", @placeholder = "Nº" })
+            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-6", @autofocus = "autofocus", @placeholder = "Nº" })
             @Html.ValidationMessageFor(model => model.nrResidencial, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -113,7 +113,7 @@
     <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsEmail, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control  col-md-12", @autofocus = "autofocus", @placeholder = "E-mail" })
+            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control  col-md-12", @autofocus = "autofocus", @placeholder = "E-mail", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsEmail, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -156,14 +156,14 @@
         <div class="form-group">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.LabelFor(model => model.Fisica.dsLogin, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Fisica.dsLogin, new { @class = "form-control col-md-10", @placeholder = "Login Funcionario" })
+            @Html.TextBoxFor(model => model.Fisica.dsLogin, new { @class = "form-control col-md-10", @placeholder = "Login Funcionario", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.Fisica.dsLogin, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group">
             @Html.LabelFor(model => model.Fisica.senha, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Fisica.senha, new { @class = "form-control col-md-10", @placeholder = "Senha" })
+            @Html.TextBoxFor(model => model.Fisica.senha, new { @class = "form-control col-md-10", @placeholder = "Senha", type = "password" })
             @Html.ValidationMessageFor(model => model.Fisica.senha, "", new { @class = "text-danger" })
         </div>
     </div>

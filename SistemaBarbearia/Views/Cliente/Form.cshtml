@@ -55,14 +55,14 @@
     <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsLogradouro, htmlAttributes: new { @class = "control-label required " })
-            @Html.TextBoxFor(model => model.dsLogradouro, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "Endereço" })
+            @Html.TextBoxFor(model => model.dsLogradouro, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "Endereço", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsLogradouro, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrResidencial, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-4", @autofocus = "autofocus", @placeholder = "Nº" })
+            @Html.TextBoxFor(model => model.nrResidencial, new { @class = "form-control  col-md-6", @autofocus = "autofocus", @placeholder = "Nº" })
             @Html.ValidationMessageFor(model => model.nrResidencial, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -72,14 +72,14 @@
     <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.dsComplemento, htmlAttributes: new { @class = "control-label required " })
-            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Complemento" })
+            @Html.TextBoxFor(model => model.dsComplemento, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Complemento", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsComplemento, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             @Html.LabelFor(model => model.dsBairro, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Bairro" })
+            @Html.TextBoxFor(model => model.dsBairro, new { @class = "form-control col-md-10", maxlength = "50", @autofocus = "autofocus", @placeholder = "Bairro", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsBairro, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -111,7 +111,7 @@
     <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsEmail, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "E-mail" })
+            @Html.TextBoxFor(model => model.dsEmail, new { @class = "form-control col-md-12", maxlength = "50", @autofocus = "autofocus", @placeholder = "E-mail", @style = "text-transform:uppercase" })
             @Html.ValidationMessageFor(model => model.dsEmail, "", new { @class = "text-danger" })
         </div>
     </div>

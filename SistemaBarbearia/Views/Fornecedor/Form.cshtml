@@ -37,7 +37,7 @@ else
         <div class="col-md-6">
             <div class="form-group">
                 @Html.LabelFor(model => model.flTipo, htmlAttributes: new { @class = "control-label required" })
-                @Html.DropDownListFor(model => model.flTipo, SistemaBarbearia.ViewModels.Pessoas.PessoaVM.Tipo, new { @datadrop = "select2", @class = "form-control form-control-sm col-md-6", readOnly = "readonly" })
+                @Html.DropDownListFor(model => model.flTipo, SistemaBarbearia.ViewModels.Pessoas.PessoaVM.Tipo, new {  @class = "form-control form-control-sm col-md-6", readOnly = "readonly" })
                 @Html.ValidationMessageFor(model => model.flTipo, "", new { @class = "text-danger" })
             </div>
         </div>

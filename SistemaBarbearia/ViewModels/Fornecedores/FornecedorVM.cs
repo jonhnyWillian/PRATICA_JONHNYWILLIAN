@@ -111,5 +111,6 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
             }
 
         }
+       
     }
 }

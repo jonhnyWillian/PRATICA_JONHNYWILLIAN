@@ -199,9 +199,7 @@ namespace SistemaBarbearia.Controllers
             var select = list.Select(u => new
             {
                 Id = u.Id,
-                Text = u.Text,
-               
-              
+                Text = u.Text,              
 
             }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();

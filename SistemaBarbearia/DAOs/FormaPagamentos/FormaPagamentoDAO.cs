@@ -54,7 +54,7 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             try
             {
                 Open();
-                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsCargo, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE IdFormaPag = @IdFormaPag";
+                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsFormaPagamento, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE IdFormaPag = @IdFormaPag";
                 SqlCommand sql = new SqlCommand(updateCargo, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
