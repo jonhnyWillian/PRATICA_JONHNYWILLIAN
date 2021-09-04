@@ -225,8 +225,8 @@ namespace SistemaBarbearia.DAOs.Paises
                 {
                     var pais = new SelectPaisVM
                     {
-                        Id = Convert.ToInt32(Dr["IdPais"]),
-                        Text = Convert.ToString(Dr["nmPais"]),                       
+                        IdPais = Convert.ToInt32(Dr["IdPais"]),
+                        nmPais = Convert.ToString(Dr["nmPais"]),                       
                         dsSigla = Convert.ToString(Dr["dsSigla"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),

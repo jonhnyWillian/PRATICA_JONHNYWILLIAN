@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -94,9 +95,125 @@ namespace SistemaBarbearia.Helper
         {
             return MvcHtmlString.Create(htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(ExpressionHelper.GetExpressionText(expression)));
         }
+        public static IDisposable BeginFormContainer<TModel, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TProperty>> expression, object htmlAttributes = null)
+        {
+            var attributes = AnonymousToDictionary(htmlAttributes);
+            if (!attributes.ContainsKey("class"))
+            {
+                attributes.Add("class", "form-container");
+            }
+            else if (attributes["class"].IndexOf("form-container") < 0)
+            {
+                attributes["class"] += " form-container";
+                attributes["class"] = attributes["class"].Trim();
+            }
 
+            if (helper.ViewData.ModelState.ContainsKey(ExpressionHelper.GetExpressionText(expression)))
+            {
+                var state = helper.ViewData.ModelState[ExpressionHelper.GetExpressionText(expression)];
+                if (state.Errors.Any())
+                {
+                    attributes["class"] += " has-error";
+                    attributes["class"] = attributes["class"].Trim();
+                }
+            }
+
+            return new CustomView(helper, "div", attributes);
+        }
+
+        public static IDisposable BeginFormContainer<TModel>(this HtmlHelper<TModel> helper, string expression, object htmlAttributes = null)
+        {
+            var attributes = AnonymousToDictionary(htmlAttributes);
+            if (!attributes.ContainsKey("class"))
+            {
+                attributes.Add("class", "form-container");
+            }
+            else if (attributes["class"].IndexOf("form-container") < 0)
+            {
+                attributes["class"] += " form-container";
+                attributes["class"] = attributes["class"].Trim();
+            }
+
+            if (helper.ViewData.ModelState.ContainsKey(ExpressionHelper.GetExpressionText(expression)))
+            {
+                var state = helper.ViewData.ModelState[ExpressionHelper.GetExpressionText(expression)];
+                if (state.Errors.Any())
+                {
+                    attributes["class"] += " has-error";
+                    attributes["class"] = attributes["class"].Trim();
+                }
+            }
+
+            return new CustomView(helper, "div", attributes);
+        }
+        public static Dictionary<string, string> AnonymousToDictionary(object data)
+        {
+            if (data == null) return new Dictionary<string, string>();
+
+            return (from x in data.GetType().GetProperties() select x).ToDictionary(x => x.Name, x => (x.GetGetMethod().Invoke(data, null) == null ? "" : x.GetGetMethod().Invoke(data, null).ToString()));
+        }
     }
-   
+    class CustomView : IDisposable
+    {
+        private HtmlHelper helper;
+        private string _tagName;
+
+        public CustomView(HtmlHelper helper, string tagName, Dictionary<string, string> htmlAttributes)
+        {
+            #region properties
+            TagBuilder div = new TagBuilder(tagName);
+
+            foreach (var prop in htmlAttributes)
+            {
+                div.Attributes.Add(prop.Key, prop.Value);
+            }
+            #endregion
+
+            _tagName = tagName;
+            this.helper = helper;
+            this.helper.ViewContext.Writer.Write(div.ToString().Replace(string.Format("</{0}>", tagName), string.Empty));
+        }
+
+        public void Dispose()
+        {
+            this.helper.ViewContext.Writer.Write(string.Format("</{0}>", _tagName));
+        }
+    }
+    public class DataTablesList<T>
+    {
+        public DataTablesList() { }
+        public DataTablesList(List<T> itens)
+        {
+            Set = itens;
+        }
+        public string js { get; set; }
+
+        public List<T> Get
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(js))
+                    return new List<T>();
+                try
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(js, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                }
+                catch (Exception)
+                {
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(js, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm" });
+                }
+            }
+        }
+
+        public List<T> Set
+        {
+            set
+            {
+                js = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+            }
+        }
+    }
+
 }
 public static class FatHtml
 {
@@ -165,4 +282,6 @@ public class JsonSelect<T>
     public int totalCount { get; set; }
     public int totalPages { get; set; }
     public bool more { get; set; }
+
 }
+

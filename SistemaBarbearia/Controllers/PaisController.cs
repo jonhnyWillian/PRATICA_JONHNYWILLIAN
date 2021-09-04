@@ -204,16 +204,12 @@ namespace SistemaBarbearia.Controllers
             var list = paisDAO.SelectPais(Id, Text);
             var select = list.Select(u => new
             {
-                Id = u.Id,
-                Text = u.Text,
+                IdPais = u.IdPais,
+                nmPais = u.nmPais,
                 dsSigla = u.dsSigla,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
-
-
-              
-
-            }).OrderBy(u => u.Text).ToList();
+            }).OrderBy(u => u.nmPais).ToList();
             return select.AsQueryable();
         }
 

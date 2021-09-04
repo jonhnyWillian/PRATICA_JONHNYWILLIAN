@@ -1,15 +1,11 @@
-﻿using SistemaBarbearia.Models.Paises;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System;
 
 namespace SistemaBarbearia.ViewModels.Paises
 {
     public class SelectPaisVM
     {
-        public int? Id { get; set; }
-        public string Text { get; set; }
+        public int? IdPais { get; set; }
+        public string nmPais { get; set; }
 
         public string dsSigla { get; set; }
 

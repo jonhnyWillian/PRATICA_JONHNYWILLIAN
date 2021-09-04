@@ -33,7 +33,7 @@ namespace SistemaBarbearia.Controllers
                 IdPais = obj.IdPais
             };
             var objPais = DAOPais.GetPais(result.IdPais);
-            result.Pais = new ViewModels.Paises.SelectPaisVM { Id = objPais.IdPais, Text = objPais.nmPais };
+            result.Pais = new ViewModels.Paises.SelectPaisVM { IdPais = objPais.IdPais, nmPais = objPais.nmPais };
             return View(result);
         }
         #endregion
@@ -67,7 +67,7 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "UF do Estado não pode ser em branco");
             }
-            if(estado.pais.Id == 0)
+            if(estado.pais.IdPais == 0)
             {
                 ModelState.AddModelError("", "Campo Pais não pode ser em branco");
             }
@@ -211,11 +211,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? id, string text)
+        public JsonResult JsDetails(int? IdEstado, string nmEstado)
         {
             try
             {
-                var result = this.Find(id, text).FirstOrDefault();
+                var result = this.Find(IdEstado, nmEstado).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -227,20 +227,20 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? IdEstado, string nmEstado)
         {
             var estadoDAO = new EstadoDAO();
-            var list = estadoDAO.SelectEstado(id, text);
+            var list = estadoDAO.SelectEstado(IdEstado, nmEstado);
             var select = list.Select(u => new
             {
-                Id = u.Id,
-                Text = u.Text,
+                IdEstado = u.IdEstado,
+                nmEstado = u.nmEstado,
                 dsUF = u.dsUF,
                 IdPais = u.IdPais,
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.Text).ToList();
+            }).OrderBy(u => u.nmEstado).ToList();
             return select.AsQueryable();
         }
 

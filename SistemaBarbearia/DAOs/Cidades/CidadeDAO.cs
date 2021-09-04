@@ -25,7 +25,7 @@ namespace SistemaBarbearia.DAOs.Cidades
 
                 SQL.Parameters.AddWithValue("@nmCidade", cidade.nmCidade.ToUpper());
                 SQL.Parameters.AddWithValue("@ddd", cidade.DDD.ToUpper());
-                SQL.Parameters.AddWithValue("@IdEstado", cidade.estado.Id);
+                SQL.Parameters.AddWithValue("@IdEstado", cidade.estado.IdEstado);
                 SQL.Parameters.AddWithValue("@dtCadastro", cidade.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -62,7 +62,7 @@ namespace SistemaBarbearia.DAOs.Cidades
                 sql.Parameters.AddWithValue("@IdCidade", cidade.IdCidade);
                 sql.Parameters.AddWithValue("@nmCidade", cidade.nmCidade.ToUpper());
                 sql.Parameters.AddWithValue("@ddd", cidade.DDD.ToUpper());
-                sql.Parameters.AddWithValue("@IdEstado", cidade.estado.Id);                
+                sql.Parameters.AddWithValue("@IdEstado", cidade.estado.IdEstado);                
                 sql.Parameters.AddWithValue("@dtUltAlteracao", cidade.dtUltAlteracao = DateTime.Now);
 
 

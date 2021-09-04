@@ -80,14 +80,14 @@
 
 
     <div class="table-wrapper">
-        @Html.HiddenFor(model => model.Itens)
-        @using (Html.BeginForm())
+        @Html.HiddenFor(model => model.Itens.js)
+        @using (Html.BeginFormContainer(model => model.Itens))
         {
             <table id="tblItens" class=" table display responsive nowrap" style="width:100%">
                 <thead>
                     <tr>
                         <th class="note-icon-orderedlist" style="width:50px"></th>
-                        <th class="wd-10p">Código</th>
+                        <th class="wd-10p">Nº Parcela</th>
                         <th class="wd-10p">Dias</th>
                         <th class="wd-10p">Percentual</th>
                         <th class="wd-70p">Forma de  Pagamento</th>

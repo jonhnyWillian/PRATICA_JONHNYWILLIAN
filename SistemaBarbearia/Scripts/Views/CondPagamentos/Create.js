@@ -1,89 +1,91 @@
-﻿$(function () {
-    var cond = new CondicaoPagamento;
-    cond.init();
-    $("#addCondPagamento").click(function () {
-        cond.addItem();
-    })
+﻿
+$(function () {
+
+    var condPag = new CondPagamento();
+    //condPag.init();
+
+
+    $('#addItem').click(function () {
+        condPag.adicionar();
+        return false;
+    });
+
 });
-
-
-CondicaoPagamento = function () {
-    self = this;
-    let nr = 1;
-    var dtCondicao = null;
+function CondPagamento() {
+    var self = this;
     this.init = function () {
-        dtCondicao = new tDataTable({
+        self.dataTable = new tDataTable({
             table: {
-                jsItem: "jsItens",
-                name: "tblCondicao",
+                jsItem: "Itens_js",
+                name: "tblItens",
                 remove: true,
-                order: [[1, "asc"]],
+                edit: true,
+                paginate: false,
                 columns: [
-                    { data: "nrParcela" },
-                    { data: "qtDias" },
-                    { data: "txPercentual" },
-                    { data: "nomeFormaPagamento" },
+                    {
+                        data: 'nrParcela',
+                        sortable: false,
+                        mRender: function (data) {
+                            return '<div style="text-align: right">' + data + '</div>';
+                        }
+                    },
+                    {
+                        data: 'qtDias',
+                        sortable: false,
+                        mRender: function (data) {
+                            return '<div style="text-align: right">' + data + '</div>';
+                        }
+                    },
+                    {
+                        data: 'txPercentual',
+                        sortable: false,
+                        mRender: function (data) {
+                            return '<div style="text-align: right">' + parseFloat(data) + '</div>';
+                        }
+                    },
+                    { data: "nmFormaPagto" },
+
+
                 ]
-            },
-        });
-    }
-
-    self.valid = function () {
-        let valid = true;
-        if (IsNullOrEmpty($("#qtDias").val())) {
-            $("#qtDias").blink({ msg: "Informe a quantidade de dias" });
-            valid = false;
-        }
-
-        if (IsNullOrEmpty($("#txPercentual").val())) {
-            $("#txPercentual").blink({ msg: "Informe o percentual" });
-            valid = false;
-        }
-
-        if (IsNullOrEmpty($("#FormaPagamento_id").val())) {
-            $("#FormaPagamento_id").blink({ msg: "Informe a condição de pagamento" });
-            valid = false;
-        }
-
-        return valid;
-    }
-
-    self.getModel = function () {
-        var model = {
-            codFormaPagamento: $("#FormaPagamento_id").val(),
-            nomeFormaPagamento: $("#FormaPagamento_text").val(),
-            qtDias: $("#qtDias").val(),
-            txPercentual: $("#txPercentual").val()
-        }
-        return model;
-
-    }
-
-    self.clear = function () {
-        $("#FormaPagamento_id").val('');
-        $("#FormaPagamento_text").val('');
-        $("#qtDias").val('');
-        $("#txPercentual").val('');
-    }
-
-    self.addItem = function () {
-        if (self.valid()) {
-            var model = self.getModel();
-            let item = {
-                nrParcela: nr,
-                codFormaPagamento: model.codFormaPagamento,
-                nomeFormaPagamento: model.nomeFormaPagamento,
-                qtDias: model.qtDias,
-                txPercentual: model.txPercentual,
             }
-            nr++;
-            dtCondicao.addItem(item)
-            self.clear();
+        });
+    };
+    this.getForm = function () {
+        var item = {
+            shared_function.CondPagamento.findById(data.item.idFormapg),
+        };
+        return item
+    };
 
+    this.adicionar = function () {
+        var form = self.getForm();
+            if (self.valid()) {
+                let CondPag = {
 
+                };
+             
+            }
         }
+    };
+
+    this.Edit = function (form, dt) {
+     
+        var item = {
+           
+        }
+        self.dataTable.editItem(item);
+        self.limpar(form);
     }
 
+    this.valid = function () {
+        let result = true;
 
+       
+        return result;
+    };
 
+    this.limpar = function () {
+     
+    }
 }
+

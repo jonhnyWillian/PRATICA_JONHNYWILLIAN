@@ -7,6 +7,8 @@ using System.Web;
 using Newtonsoft.Json;
 using System.Web.Mvc;
 using SistemaBarbearia.Models.CondPagamento;
+using SistemaBarbearia.Helper;
+
 
 namespace SistemaBarbearia.ViewModels.CondPagamentos
 {
@@ -44,7 +46,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 			bean.txMulta = this.txMulta;
 		
 
-			foreach (var item in Itens)
+			foreach (var item in Itens.Get)
 			{
 				bean.CondPagamentoParcela.Add(new CondPagamentoParcela
 				{
@@ -54,8 +56,6 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 					txPercentual = item.txPercentual ?? 0,
 					idFormaPagto = item.idFormaPagto ?? 0,
 					nmFormaPagto = item.nmFormaPagto
-
-
 				});
 
             }
@@ -64,7 +64,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
         }
 
 
-		public List<CondPagamentoParcelaVM> Itens { get; set; }
+		public SistemaBarbearia.Helper.DataTablesList<CondPagamentoParcelaVM> Itens { get; set; }
 		
 
 		public class CondPagamentoParcelaVM
