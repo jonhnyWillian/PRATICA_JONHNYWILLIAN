@@ -43,7 +43,11 @@ namespace SistemaBarbearia.Models.Produtos
         public int idCategoria { get; set; }
 
         public SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM categoria { get; set; }
-      
+
+        public int IdFornecedor { get; set; }
+
+        public SistemaBarbearia.ViewModels.Fornecedores.SelectFornecedorVM fornecedor { get; set; }
+
 
         public DateTime? dtCadastro { get; set; }
 

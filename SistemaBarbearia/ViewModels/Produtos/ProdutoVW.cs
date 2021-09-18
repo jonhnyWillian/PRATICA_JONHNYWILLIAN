@@ -22,18 +22,7 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Display(Name = "Unidade")]
         [Required(ErrorMessage = "Campo Unidade não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nrUnidade { get; set; }
-
-        public static SelectListItem[] Unidade
-        {
-            get
-            {
-                return new[]
-                {
-                    new SelectListItem { Text = "UN", Value = "UN" },
-
-                };
-            }
-        }
+       
 
 
         [Display(Name = "Quatidade")]
@@ -41,10 +30,6 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Required(ErrorMessage = "Campo Quatidade não Pode ser em Branco!", AllowEmptyStrings = false)]
         public int nrQtd { get; set; }
 
-        [Display(Name = "Quatidade no Estoque")]
-        [StringLength(10, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Quatidade no Estoque não Pode ser em Branco!", AllowEmptyStrings = false)]
-        public int qtdEstoque { get; set; }
 
 
         [Display(Name = "Codigo Barra")]
@@ -74,7 +59,15 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Display(Name = "Categoria")]
         [Required(ErrorMessage = "Campo categoria não Pode ser em Branco!", AllowEmptyStrings = false)]
         public SistemaBarbearia.ViewModels.Categorias.SelectCategoriaVM categoria { get; set; }
-       
+
+
+        public int IdFornecedor { get; set; }
+
+        [Display(Name = "Fornecedores")]
+        [Required(ErrorMessage = "Campo Fornecedores não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public SistemaBarbearia.ViewModels.Fornecedores.SelectFornecedorVM fornecedor { get; set; }
+
+
 
         [Display(Name = "Data de Cadastro")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]

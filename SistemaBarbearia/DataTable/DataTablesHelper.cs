@@ -29,9 +29,7 @@ namespace SistemaBarbearia.DataTables
                 if (column == null)
                 {
                     column = columns.FirstOrDefault();
-                }
-                //var expresionFixed = string.Format("{0} {1}, ", column.Data, "ascending");
-                //query = query.OrderBy(expresionFixed.TrimEnd(new char[] { ',', ' ' }));
+                }            
             }
 
             return query;
@@ -46,30 +44,6 @@ namespace SistemaBarbearia.DataTables
 
         public static IQueryable<T> OrderBy<T, TOrderBy>(this IQueryable<T> query, Expression<Func<T, TOrderBy>> order, int start, int length)
         {
-            //string orderExpression = string.Empty;
-
-            //foreach (var column in columns.GetSortedColumns().OrderBy(p => p.OrderNumber))
-            //{
-            //    if (column.SortDirection == Column.OrderDirection.Ascendant)
-            //        orderExpression += string.Format("{0} {1}, ", column.Data, "ascending");
-            //    else
-            //        orderExpression += string.Format("{0} {1}, ", column.Data, "descending");
-            //}
-            //if (!string.IsNullOrEmpty(orderExpression))
-            //{
-            //    query = query.OrderBy(orderExpression.TrimEnd(new char[] { ',', ' ' }));
-            //}
-            //else
-            //{
-            //    var column = columns.Where(u => u.Orderable == true).FirstOrDefault();
-            //    if (column == null)
-            //    {
-            //        column = columns.FirstOrDefault();
-            //    }
-            //    var expresionFixed = string.Format("{0} {1}, ", column.Data, "ascending");
-            //    query = query.OrderBy(expresionFixed.TrimEnd(new char[] { ',', ' ' }));
-            //}
-
             query = QueryCreator<T, TOrderBy>(query, order);
 
             //paginacao
@@ -82,30 +56,6 @@ namespace SistemaBarbearia.DataTables
 
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> query, ColumnCollection columns, int start, int length)
         {
-            //string orderExpression = string.Empty;
-
-            //foreach (var column in columns.GetSortedColumns().OrderBy(p => p.OrderNumber))
-            //{
-            //    if (column.SortDirection == Column.OrderDirection.Ascendant)
-            //        orderExpression += string.Format("{0} {1}, ", column.Data, "ascending");
-            //    else
-            //        orderExpression += string.Format("{0} {1}, ", column.Data, "descending");
-            //}
-            //if (!string.IsNullOrEmpty(orderExpression))
-            //{
-            //    query = query.OrderBy(orderExpression.TrimEnd(new char[] { ',', ' ' }));
-            //}
-            //else
-            //{
-            //    var column = columns.Where(u => u.Orderable == true).FirstOrDefault();
-            //    if (column == null)
-            //    {
-            //        column = columns.FirstOrDefault();
-            //    }
-            //    var expresionFixed = string.Format("{0} {1}, ", column.Data, "ascending");
-            //    query = query.OrderBy(expresionFixed.TrimEnd(new char[] { ',', ' ' }));
-            //}
-
             query = QueryCreator<T>(query, columns);
 
             //paginacao

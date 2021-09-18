@@ -260,5 +260,62 @@ namespace SistemaBarbearia.DAOs.Fornecedores
             }
         }
 
+        protected string BuscarFornecedor(int? id, string text)
+        {
+            var sqlSelectFornecedor = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdFornecedor = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR nmNome LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectFornecedor = @"SELECT * FROM Fornecedor " + where;
+            return sqlSelectFornecedor;
+        }
+
+        public List<SelectFornecedorVM> SelectFornecedor(int? id, string nmNome)
+        {
+            try
+            {
+
+                var sqlSelectFornecedor = this.BuscarFornecedor(id, nmNome);
+                Open();
+                SQL = new SqlCommand(sqlSelectFornecedor, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectFornecedorVM>();
+
+                while (Dr.Read())
+                {
+                    var fornecedor = new SelectFornecedorVM
+                    {
+                        IdFornecedor = Convert.ToInt32(Dr["idFornecedor"]),
+                        nmNome = Convert.ToString(Dr["nmNome"]),
+                      
+                    };
+
+                    list.Add(fornecedor);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
     }
 }

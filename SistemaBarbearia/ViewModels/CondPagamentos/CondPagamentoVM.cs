@@ -26,7 +26,11 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Multa")]
 		[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
-		public decimal txMulta { get; set; }			
+		public decimal txMulta { get; set; }
+
+		[Display(Name = "Desconto")]
+		[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
+		public decimal txDesconto { get; set; }
 
 		[Display(Name = "Dias")]
 		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
@@ -36,45 +40,61 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public short? txPercentual { get; set; }
 
+
+		[Display(Name = "Total (%)")]
+		public decimal? txPercentualTotal { get; set; }
+		public decimal? txPercentualTotalAux { get; set; }
+
 		[Display(Name = "Forma Pagamento")]
 		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
-
-		public CondPagamento GetCondPagamento (CondPagamento bean)
-        {
-			bean.dsCondPag = this.dsCondPag;
-			bean.txJuro = this.txJuro;
-			bean.txMulta = this.txMulta;
-		
-
-			foreach (var item in Itens.Get)
+		public static SelectListItem[] Juros
+		{
+			get
 			{
-				bean.CondPagamentoParcela.Add(new CondPagamentoParcela
+				return new[]
 				{
-					idCondicaoPagParc = item.idCondicaoPagParc ?? 0,
-					nrParcela = item.nrParcela ?? 0,
-					qtdDias = item.qtdDias ?? 0,
-					txPercentual = item.txPercentual ?? 0,
-					idFormaPagto = item.idFormaPagto ?? 0,
-					nmFormaPagto = item.nmFormaPagto
-				});
+					new SelectListItem { Value = "N", Text = "NÃO" },
+					new SelectListItem { Value = "S", Text = "SIM" },
 
-            }
-
-			return bean;
-        }
-
-
-		public SistemaBarbearia.Helper.DataTablesList<CondPagamentoParcelaVM> Itens { get; set; }
-		
-
+				};
+			}
+		}
+		public static SelectListItem[] Parcela
+		{
+			get
+			{
+				return new[]
+				{
+					new SelectListItem { Value = "N", Text = "NÃO" },
+					new SelectListItem { Value = "S", Text = "SIM" },
+				};
+			}
+		}
 		public class CondPagamentoParcelaVM
 		{
-			public int? idCondicaoPagParc { get; set; }
+		
 			public short? nrParcela { get; set; }
 			public short? qtdDias { get; set; }
 			public decimal? txPercentual { get; set; }
-			public int? idFormaPagto { get; set; }
+			public int? IdFormaPagto { get; set; }
 			public string nmFormaPagto { get; set; }
 		}
+
+
+		public string jsItens { get; set; }
+		public List<CondPagamentoParcelaVM> ListCondicao
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(jsItens))
+					return new List<CondPagamentoParcelaVM>();
+				return JsonConvert.DeserializeObject<List<CondPagamentoParcelaVM>>(jsItens);
+			}
+			set
+			{
+				jsItens = JsonConvert.SerializeObject(value);
+			}
+		}
+
 	}
 }

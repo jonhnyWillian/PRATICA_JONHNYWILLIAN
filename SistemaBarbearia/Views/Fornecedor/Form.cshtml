@@ -175,8 +175,7 @@ else
     </div>
     <div class="col-md-4">
         @Html.LabelFor(model => model.Fisica.dtNascimento, htmlAttributes: new { @class = "control-label required" })
-        @Html.TextBoxFor(model => model.Fisica.dtNascimento, "{0:dd/MM/yyyy}", new { id = "nascimento", @class = "form-control" })
-        @*@Html.TextBoxFor(model => model.Fisica.dtNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6" })*@
+        @Html.TextBoxFor(model => model.Fisica.dtNascimento, "{0:dd/MM/yyyy}", new { id = "nascimento", @class = "form-control" })     
         @Html.ValidationMessageFor(model => model.Fisica.dtNascimento, "", new { @class = "text-danger" })
     </div>
 </div>

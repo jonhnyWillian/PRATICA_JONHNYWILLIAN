@@ -29,8 +29,7 @@ namespace SistemaBarbearia.Controllers
                 nrUnidade = obj.nrUnidade,
                 vlCompra = obj.vlCompra,
                 vlCusto = obj.vlCusto,
-                vlVenda = obj.vlVenda,
-                qtdEstoque = obj.qtdEstoque,
+                vlVenda = obj.vlVenda,              
                 dtCadastro = obj.dtCadastro,
                 dtUltAlteracao = obj.dtUltAlteracao,
                 IdCategoria = obj.IdCategoria
@@ -39,8 +38,23 @@ namespace SistemaBarbearia.Controllers
             result.categoria = new ViewModels.Categorias.SelectCategoriaVM { Id = objCategoria.IdCategoria, Text = objCategoria.dsCategoria };
             return View(result);
         }
+
+        private IQueryable<dynamic> Find(int? Id, string Text)
+        {
+            var produtoDAO = new ProdutoDAO();
+            var list = produtoDAO.SelectProduto(Id, Text);
+            var select = list.Select(u => new
+            {
+                Id = u.IdProduto,
+                Text = u.dsProduto
+
+            }).OrderBy(u => u.Text).ToList();
+            return select.AsQueryable();
+        }
+
         #endregion
 
+        #region Action
         public ActionResult Index()
         {
             var produtoDAO = new ProdutoDAO();
@@ -149,6 +163,9 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
+        #endregion
+
+        #region Json
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
             try
@@ -175,7 +192,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var produtoDAO = new ProdutoDAO();
-                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { Id = u.idCategoria, Text = u.dsProduto }).AsQueryable();
+                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { IdProduto = u.IdProduto, dsProduto = u.dsProduto }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
@@ -231,19 +248,7 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? Id, string Text)
-        {
-            var produtoDAO = new ProdutoDAO();
-            var list = produtoDAO.SelectCategoria(Id, Text);
-            var select = list.Select(u => new
-            {
-                Id = u.Id,
-                Text = u.Text,              
-                dtCadastro = u.dtCadastro,
-                dtUltAlteracao = u.dtUltAlteracao
+        #endregion
 
-            }).OrderBy(u => u.Text).ToList();
-            return select.AsQueryable();
-        }
     }
 }

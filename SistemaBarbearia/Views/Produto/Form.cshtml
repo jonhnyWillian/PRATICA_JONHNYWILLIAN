@@ -27,8 +27,8 @@
         @Html.ValidationMessageFor(model => model.dsProduto, "", new { @class = "text-danger" })
     </div>
     <div class="col-md-2">
-        @Html.LabelFor(model => model.nrUnidade, htmlAttributes: new { @class = "control-label required" })     
-        @Html.DropDownListFor(model => model.nrUnidade, SistemaBarbearia.ViewModels.Produtos.ProdutoVW.Unidade, new { @datadrop = "select2", @class = "form-control  col-md-6"})
+        @Html.LabelFor(model => model.nrUnidade, htmlAttributes: new { @class = "control-label required" })
+        @Html.TextBoxFor(model => model.nrUnidade, new { @class = "form-control col-md-8", maxlength = "50", @autofocus = "autofocus", @placeholder = "UN" })
         @Html.ValidationMessageFor(model => model.nrUnidade, "", new { @class = "text-danger" })
     </div>
 </div>
@@ -49,14 +49,7 @@
             @Html.TextBoxFor(model => model.nrQtd, new { @class = "form-control col-md-4", maxlength = "50", @autofocus = "autofocus", @placeholder = "Qtd. Produtos" })
             @Html.ValidationMessageFor(model => model.nrQtd, "", new { @class = "text-danger" })
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            @Html.LabelFor(model => model.qtdEstoque, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.qtdEstoque, new { @class = "form-control col-md-4", maxlength = "50", @autofocus = "autofocus", @placeholder = "Qtd. Estoque" })
-            @Html.ValidationMessageFor(model => model.qtdEstoque, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    </div>    
 </div>
 <div class="row">
     <div class="col-md-4">
@@ -71,7 +64,7 @@
         @Html.LabelFor(model => model.vlCusto, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control col-md-8 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor de Custo" })
+            @Html.TextBoxFor(model => model.vlCusto, new { @readonly = "readonly", @class = "form-control col-md-8 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor de Custo" })
             @Html.ValidationMessageFor(model => model.vlCusto, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -85,13 +78,13 @@
     </div>
 </div>
 <br />
-@*<div class="row">
-        <div class="col-md-8">
-            <div class="form-group">
-                @Html.EditorFor(model => model.fornecedor, "Fornecedores/Select", new { @disabled = readOnly })
-            </div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.EditorFor(model => model.fornecedor, "Fornecedores/Select", new { @disabled = readOnly })
         </div>
-    </div>*@
+    </div>
+</div>
 <div class="row">
     <div class="col-md-8">
         <div class="form-group">

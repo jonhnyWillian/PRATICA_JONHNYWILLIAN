@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Funcionarios;
+using SistemaBarbearia.ViewModels.Funcionarios;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -254,6 +255,64 @@ namespace SistemaBarbearia.DAOs.Funcionarios
             catch (Exception e)
             {
                 throw new Exception("Erro ao selecionar o Funcionario: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+
+        protected string BuscarFuncionario(int? id, string text)
+        {
+            var sqlSelectFuncionario = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdFuncionario = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR nmFuncionario LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectFuncionario = @"SELECT * FROM Funcionario " + where;
+            return sqlSelectFuncionario;
+        }
+
+        public List<SelectFuncionarioVM> SelectFuncionario(int? id, string nmFuncionario)
+        {
+            try
+            {
+
+                var sqlSelectFuncionario = this.BuscarFuncionario(id, nmFuncionario);
+                Open();
+                SQL = new SqlCommand(sqlSelectFuncionario, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectFuncionarioVM>();
+
+                while (Dr.Read())
+                {
+                    var funcionario = new SelectFuncionarioVM
+                    {
+                        IdFuncionario = Convert.ToInt32(Dr["IdFuncionario"]),
+                        nmFuncionario = Convert.ToString(Dr["nmFuncionarionte"]),
+
+                    };
+
+                    list.Add(funcionario);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
             }
             finally
             {

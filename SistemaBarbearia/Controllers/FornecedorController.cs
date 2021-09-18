@@ -64,8 +64,21 @@ namespace SistemaBarbearia.Controllers
             result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
             return View(result);
         }
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var fornecedorDAO = new FornecedorDAO();
+            var list = fornecedorDAO.SelectFornecedor(id, text);
+            var select = list.Select(u => new
+            {
+                IdFornecedor = u.IdFornecedor,
+                nmNome = u.nmNome,
+
+            }).OrderBy(u => u.nmNome).ToList();
+            return select.AsQueryable();
+        }
         #endregion
 
+        #region Action
         public ActionResult Index()
         {
             var fornecedorDAO = new FornecedorDAO();
@@ -82,7 +95,6 @@ namespace SistemaBarbearia.Controllers
         {
             return View();
         }
-
      
         [HttpPost]
         public ActionResult Create(FornecedorVM fornecedor)
@@ -110,13 +122,11 @@ namespace SistemaBarbearia.Controllers
             return View(fornecedor);
         }
 
-      
         public ActionResult Edit(int id)
         {
             return this.GetView(id);
         }
 
-      
         [HttpPost]
         public ActionResult Edit(int id, FornecedorVM fornecedor)
         {
@@ -151,7 +161,6 @@ namespace SistemaBarbearia.Controllers
             return this.GetView(id);
         }
 
-       
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -167,23 +176,37 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region Json
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var fornecedorDAO = new FornecedorDAO();
-                var select = fornecedorDAO.SelecionarFornecedor().Select(u => new { Id = u.IdFornecedor, Text = u.nmNome });
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var fornecedorDAO = new FornecedorDAO();
+                IQueryable<dynamic> lista = fornecedorDAO.SelecionarFornecedor().Select(u => new { IdFornecedor = u.IdFornecedor, nmNome = u.nmNome }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -192,5 +215,53 @@ namespace SistemaBarbearia.Controllers
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult JsInsert(Fornecedor fornecedor)
+        {
+            var fornecedorDAO = new FornecedorDAO();
+
+            fornecedorDAO.InsertFornecedor(fornecedor);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = fornecedor
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Fornecedor fornecedor)
+        {
+            var fornecedorDAO = new FornecedorDAO();
+            fornecedorDAO.UpdateFornecedor(fornecedor);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = fornecedor
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? Id, string Text)
+        {
+            try
+            {
+                var result = this.Find(Id, Text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+       
     }
 }

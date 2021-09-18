@@ -250,5 +250,61 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
+        protected string BuscarCliente(int? id, string text)
+        {
+            var sqlSelectCliente = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdCliente = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR nmCLiente LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectCliente = @"SELECT * FROM Cliente " + where;
+            return sqlSelectCliente;
+        }
+
+        public List<SelectClienteVM> SelectCliente(int? id, string nmCliete)
+        {
+            try
+            {
+
+                var sqlSelectCliente = this.BuscarCliente(id, nmCliete);
+                Open();
+                SQL = new SqlCommand(sqlSelectCliente, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectClienteVM>();
+
+                while (Dr.Read())
+                {
+                    var cliente = new SelectClienteVM
+                    {
+                        IdCliente = Convert.ToInt32(Dr["IdCliente"]),
+                        nmCliente = Convert.ToString(Dr["nmCliente"]),
+
+                    };
+
+                    list.Add(cliente);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
     }
 }

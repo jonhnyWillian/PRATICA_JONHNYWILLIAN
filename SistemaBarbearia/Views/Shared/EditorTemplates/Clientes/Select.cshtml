@@ -1,0 +1,353 @@
+﻿@model SistemaBarbearia.ViewModels.Clientes.SelectClienteVM
+@using SistemaBarbearia.Helper;
+@{
+    bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
+    bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
+    bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
+    bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
+    string Label = Convert.ToString(ViewData["Label"] ?? "Cliente");
+    string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
+    string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
+    var Prefix = Html.ClientPrefixName().ToString();
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    
+}
+
+@Html.Hidden("isEdit")
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("", Label)
+            <div class="input-group">
+                <div class="input-group-btn" style="width:15%">
+                    @Html.TextBoxFor(model => model.IdCliente, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                </div>
+                <div class="input-group-btn" style="width:45%">
+                    @Html.TextBoxFor(model => model.nmCliente, new { @class = "form-control", Disabled = true })
+                </div>
+                <div class="input-group-btn">
+                    <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
+                </div>
+                @Html.ValidationMessageFor(model => model.IdCliente, null, new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>
+<div id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body no-padding">
+                <div class="panel panel-primary" style="margin-bottom: -1px;">
+                    <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
+                        <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
+                        <ul class="nav panel-tabs" style="width:400px">
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Cliente </b></a></li>
+                        </ul>
+                    </div>
+                    <div style="text-align:left">
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateCliente()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
+                    </div>
+                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                        <div class="container-fluid">
+                            <div id="TableCliente"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div style="text-align:right">
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalCliente()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body no-padding">
+                <div class="panel panel-primary" style="margin-bottom: -1px;">
+                    <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
+                        <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
+                        <ul class="nav panel-tabs" style="width:400px">
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Cliente </b></a></li>
+                        </ul>
+                    </div>
+                    <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
+                        <div class="container-fluid">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div style="text-align:right">
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateCliente()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AddScriptBlock(
+@<script type="text/javascript">
+
+    self = this;
+    $(function () {
+         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
+             InitModalCliente();
+         });
+
+         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
+                self.save();
+         });
+
+         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdClinte", Prefix)').change(function (data, e) {
+             var IdClinte = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdClinte", Prefix)').val();
+             if (IdClinte == "") {
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdClinte", Prefix)").val("");
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmClinte", Prefix)").val("");
+             } else {
+                 $.ajax({
+                     dataType: 'json',
+                     type: 'GET',
+                     url: '@Url.Action("JsDetails", "Cliente")',
+                     data: { 'Id': Id },
+                     success: function (data) {
+
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdClinte", Prefix)").val(data.IdClinte);
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmClinte", Prefix)").val(data.nmClinte);
+                     },
+                     error: function (err) {
+                         alert(err);
+                         alert("Erro ao buscar registro");
+                     }
+                 });
+             }
+         });
+
+     });
+
+    this.getFormCliente = function() {
+        var form = {
+                IdClinte : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdClinte", Prefix)'),
+                nmClinte: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmClinte", Prefix)'),
+              
+        }
+        return form;
+    };
+
+    this.clear = function () {
+        var form = self.getFormCliente();
+        form.IdClinte.val("");
+        form.nmClinte.val("");      
+        form.nmClinte.focus();
+    };
+
+    this.isValid = function () {
+        var valid = true;
+        var form = self.getFormCliente();
+
+        if (IsNullOrEmpty(form.nmCidade.val())) {
+            form.nmClinte.blink({ msg: "Campo Cliente é obrigatório" });
+            form.nmClinte.focus();
+            valid = false;
+        }
+       
+        return valid;
+    };
+
+    getModelCliente = function (form) {
+        var model = {
+            Id: form.Id.val(),
+            nmCidade: form.nmCidade.val(),
+            ddd: form.ddd.val(),
+            IdEstado: form.IdEstado.val(),
+        }
+        return model;
+    };
+
+    this.save = function () {
+        if ($('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
+            this.updateCliente();
+        } else {
+            this.insertCliente();
+        }
+    }
+
+    this.insertCliente = function () {
+        var form = self.getFormCliente();
+        var model = getModelCliente(form);
+
+        if (self.isValid(model)) {
+
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("jsInsert", "Cliente")',
+                data: model,
+                success: function (data) {
+                    self.clear();
+                    InitModalEstado();
+                    $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+                    $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+
+
+                },
+                error: function (request) {
+                    alert("Erro ao adicionar registro")
+                }
+            });
+        }
+    };
+
+    this.updateCliente = function () {
+        var form = self.getFormCliente();
+        var model = getModelCliente(form);
+
+        if (self.isValid(model)) {
+
+            $.ajax({
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("jsUpdate", "Cliente")',
+                data: model,
+                success: function (data) {
+                    console.log(data)
+                    self.clear();
+                    InitModalEstado();
+                    $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+                    $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+
+                },
+            });
+        }
+    };
+
+    function InitModalCliente() {
+        $("#TableCliente").empty();
+          let table = null
+        let lis = getTableCliente();
+        $("#TableCliente").append(lis);
+
+        table = $('#listaCliente').DataTable({
+            ajax: { url: $('#listaCliente').attr('data-url') },
+                lengthMenu: false,
+                lengthChange: false,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
+            },
+            columns: [
+                { data: "IdCliente" },
+                { data: "nmCliente" },
+                   {
+                    sortable: false,
+                    data: null,
+                    sClass: 'details-control center',
+                    mRender: function (data) {
+                        return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
+                    }
+                },
+                {
+                    sortable: false,
+                    data: null,
+                    mRender: function (data) {
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.Id + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                    }
+                },
+            ],
+        });
+
+
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("show");
+
+        $('#lista tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            if (row.child.isShown()) {
+                $('div.slider', row.child()).slideUp(function () {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                });
+            }
+            else {
+                row.child(SelectCliente(row.data())).show();
+                tr.addClass('shown');
+                $('div.slider', row.child()).slideDown();
+            }
+        });
+    }
+
+    function getTableCliente() {
+        let tmp = `<table id="listaCliente" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Cliente")">
+                        <thead class="table-dark">
+                            <tr>
+                                <th export="true" style="width:10%">Código</th>
+                                <th export="true" style="width:70%">Cliente</th>
+                                <th export="true" style="width:10%">Selecionar</th>
+                                <th export="true" style="width:10%">Alterar</th>
+                            </tr>
+                        </thead>
+                   </table>`;
+          return tmp;
+    };
+
+    function FecharModalCliente() {
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
+    };
+
+    function FecharModalCreateCliente() {
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+        self.clear();
+    };
+
+    function OpenModalCreateCliente() {
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("N");
+        if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "N") {
+            $(".isEdit").hide();
+        }
+
+    };
+
+    function SelectCliente(data) {
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCliente", Prefix)").val(data.IdCliente);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmCliente", Prefix)").val(data.nmCliente);
+        return false;
+    };
+
+    function OpenEdit(id) {
+        $.ajax({
+            dataType: 'json',
+            type: 'GET',
+            url: '@Url.Action("JsDetails", "Cliente")',
+            data: { 'id': id },
+            success: function (data) {
+                self.clear();
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
+                if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
+                    $(".isEdit").show();
+                }
+
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCliente", Prefix)").val(data.IdCliente);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmCliente", Prefix)").val(data.nmCliente);
+
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+            },
+            error: function (request) {
+                alert("Erro ao buscar registro");
+            }
+        });
+        return false;
+    }
+
+</script>
+)

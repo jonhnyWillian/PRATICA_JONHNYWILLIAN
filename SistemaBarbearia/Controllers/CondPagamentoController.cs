@@ -35,8 +35,7 @@ namespace SistemaBarbearia.Controllers
             if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
             {
                 ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
-            }
-           
+            }       
             try
             {
                 if (ModelState.IsValid)
@@ -191,7 +190,6 @@ namespace SistemaBarbearia.Controllers
                 throw new Exception(ex.Message);
             }
         }
-
         private IQueryable<dynamic> Find(int? id, string text)
         {
             var condPag = new CondPagamentoDAO();

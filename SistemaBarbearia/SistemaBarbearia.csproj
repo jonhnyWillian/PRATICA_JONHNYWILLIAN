@@ -144,12 +144,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BinderConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AgendamentoController.cs" />
     <Compile Include="Controllers\CargoController.cs" />
     <Compile Include="Controllers\CidadeController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\CompraController.cs" />
     <Compile Include="Controllers\CondPagamentoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
@@ -176,7 +179,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Agendamentos\Agendamento.cs" />
     <Compile Include="Models\Cargos\Cargo.cs" />
+    <Compile Include="Models\Compras\Compra.cs" />
     <Compile Include="Models\CondPagamentos\CondPagamentoParcela.cs" />
     <Compile Include="Models\FormaPagamentos\FormaPagamento.cs" />
     <Compile Include="Models\Fornecedores\Fornecedor.cs" />
@@ -189,6 +194,8 @@
     <Compile Include="Models\Produtos\Produto.cs" />
     <Compile Include="Models\Servicos\Servico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Agendamentos\AgendamentoVW.cs" />
+    <Compile Include="ViewModels\Clientes\SelectClienteVM.cs" />
     <Compile Include="ViewModels\Cargos\CargoVM.cs" />
     <Compile Include="ViewModels\Cargos\SelectCargoVM.cs" />
     <Compile Include="ViewModels\Categorias\SelectCategoriaVM.cs" />
@@ -202,6 +209,7 @@
     <Compile Include="ViewModels\FormaPagamentos\SelectFormaPagamentoVM.cs" />
     <Compile Include="ViewModels\Fornecedores\FornecedorVM.cs" />
     <Compile Include="ViewModels\Fornecedores\SelectFornecedorVM.cs" />
+    <Compile Include="ViewModels\Funcionarios\SelectFornecedorVM.cs" />
     <Compile Include="ViewModels\Model\ModelPaiVM.cs" />
     <Compile Include="ViewModels\Paises\SelectPaisVM.cs" />
     <Compile Include="ViewModels\Paises\PaisVM.cs" />
@@ -210,6 +218,7 @@
     <Compile Include="ViewModels\Funcionarios\FuncionarioVM.cs" />
     <Compile Include="ViewModels\Pessoas\PessoaVM.cs" />
     <Compile Include="ViewModels\Produtos\ProdutoVW.cs" />
+    <Compile Include="ViewModels\Produtos\SelectProdutoVM.cs" />
     <Compile Include="ViewModels\Servicos\ServicoVM.cs" />
     <Compile Include="DataTable\Column.cs" />
     <Compile Include="DataTable\ColumnCollection.cs" />
@@ -222,6 +231,7 @@
     <Compile Include="DataTable\NameValueCollectionExtensions.cs" />
     <Compile Include="DataTable\Search.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="ViewModels\Compras\CompraVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -447,11 +457,15 @@
     <Content Include="Scripts\plugins\sortable.min.js" />
     <Content Include="Scripts\runtime.js" />
     <Content Include="Scripts\tDataTable.js" />
+    <Content Include="Scripts\Views\Agendamentos\Agendamento.js" />
+    <Content Include="Scripts\Views\Agendamentos\Create.js" />
     <Content Include="Scripts\Views\Cargos\Cargo.js" />
     <Content Include="Scripts\Views\Categorias\Categoria.js" />
     <Content Include="Scripts\Views\Cidades\Cidade.js" />
     <Content Include="Scripts\Views\Clientes\Cliente.js" />
     <Content Include="Scripts\Views\Clientes\Create.js" />
+    <Content Include="Scripts\Views\Compras\Compra.js" />
+    <Content Include="Scripts\Views\Compras\Create.js" />
     <Content Include="Scripts\Views\CondPagamentos\CondPagamento.js" />
     <Content Include="Scripts\Views\CondPagamentos\Create.js" />
     <Content Include="Scripts\Views\Estados\Estado.js" />
@@ -536,6 +550,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\Views\Produtos\Create.js" />
     <Content Include="Scripts\Views\Produtos\Produto.js" />
     <Content Include="Scripts\Views\Servicos\Servico.js" />
     <Content Include="Web.config" />
@@ -642,6 +657,22 @@
     <Content Include="Views\Funcionario\Details.cshtml" />
     <Content Include="Views\Funcionario\Edit.cshtml" />
     <Content Include="Views\Funcionario\Form.cshtml" />
+    <Content Include="Views\Compra\Form.cshtml" />
+    <Content Include="Views\Compra\Create.cshtml" />
+    <Content Include="Views\Compra\Edit.cshtml" />
+    <Content Include="Views\Compra\Details.cshtml" />
+    <Content Include="Views\Compra\Index.cshtml" />
+    <Content Include="Views\Compra\Delete.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Fornecedores\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Produtos\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Clientes\Select.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Funcionarios\Select.cshtml" />
+    <Content Include="Views\Agendamento\Index.cshtml" />
+    <Content Include="Views\Agendamento\Create.cshtml" />
+    <Content Include="Views\Agendamento\Edit.cshtml" />
+    <Content Include="Views\Agendamento\Details.cshtml" />
+    <Content Include="Views\Agendamento\Delete.cshtml" />
+    <Content Include="Views\Agendamento\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

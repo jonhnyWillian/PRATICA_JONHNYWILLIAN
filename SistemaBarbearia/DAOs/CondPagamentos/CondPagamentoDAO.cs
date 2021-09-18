@@ -18,32 +18,55 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
 
             try
             {
-                Open();                                                                                //IdCondicaoPagParc,
-                string insertCondPagamento = @"INSERT INTO CondPagamento (dsCondPag,txJuro,txMulta,txDesconto,IdFormaPagamento,dtCadastro) 
-                                                    VALUES(@dsCondPag, @txJuro, @txMulta, @txDesconto, @IdFormaPagamento,  @dtCadastro)";
-                SQL = new SqlCommand(insertCondPagamento, sqlconnection);
-                SQL.CommandType = CommandType.Text;
+               
 
-                SQL.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
-                SQL.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
-                SQL.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
-                SQL.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
-                SQL.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
-                //SQL.Parameters.AddWithValue("@IdCondicaoPagParc", condPagamento.CondPagamentoParcela.id);
+                string insertCondPagamento = @"INSERT INTO CondPagamento (dsCondPag,txJuro,txMulta,txDesconto,dtCadastro) 
+                                                                  VALUES(@dsCondPag, @txJuro, @txMulta, @txDesconto, @dtCadastro)";
 
-
-                SQL.Parameters.AddWithValue("@dtCadastro", condPagamento.dtCadastro = DateTime.Now);
-
-                int i = SQL.ExecuteNonQuery();
-
-                if (i >= 1)
+                string insertCondParcela = @"INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual,txDesconto) 
+                                                                       VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual, @txDesconto)";
+                using (sqlconnection)
                 {
-                    return true;
+
+                    Open();
+
+                    SQL = new SqlCommand(insertCondPagamento, sqlconnection);
+                    SQL.CommandType = CommandType.Text;
+                    SQL.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
+                    SQL.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
+                    SQL.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
+                    SQL.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
+                    SQL.Parameters.AddWithValue("@dtCadastro", condPagamento.dtCadastro = DateTime.Now);
+
+  
+                    SqlTransaction sqlTransaction = sqlconnection.BeginTransaction();
+                    SqlCommand sqlCommand = sqlconnection.CreateCommand();
+                    sqlCommand.Transaction = sqlTransaction;
+                    try
+                    {
+                        sqlCommand.CommandText = insertCondParcela;
+
+                        var IdCondPag = Convert.ToInt32(sqlCommand.ExecuteScalar());
+                        foreach (var item in condPagamento.ListCondicao)
+                        {
+                            var itemsql = string.Format(insertCondParcela, condPagamento.IdCondPag, item.IdFormaPagto, item.nrParcela, item.qtdDias, item.txPercentual.ToString().Replace(",", "."));
+                            sqlCommand.CommandText = itemsql;
+                            sqlCommand.ExecuteNonQuery();
+                        }
+                        sqlTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        sqlTransaction.Rollback();
+                        throw new Exception(ex.Message);
+                    }
+                    finally
+                    {
+                        sqlconnection.Close();
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                return true;
+               
             }
             catch (Exception e)
             {
@@ -60,7 +83,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             try
             {
                 Open();
-                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta,  IdFormaPagamento = @IdFormaPagamento 
+                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta
                                                                         ,dtUltAlteracao = @dtUltAlteracao  WHERE IdCondPag = @IdCondPag";
                 SqlCommand sql = new SqlCommand(updateCondPagamento, sqlconnection);
                 sql.CommandType = CommandType.Text;
@@ -70,7 +93,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 sql.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
                 sql.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
                 //sql.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
-                sql.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
+                //sql.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
                 //SQL.Parameters.AddWithValue("@IdCondicaoPagParc", condPagamento.CondPagamentoParcela.id);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", condPagamento.dtUltAlteracao = DateTime.Now);
 
@@ -128,8 +151,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
         }
 
         #endregion
-
-
         public IEnumerable<CondPagamento> SelecionarCondPagamento()
         {
             try
@@ -149,9 +170,9 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                         txDesconto = Convert.ToDecimal(Dr["txDesconto"]),
                         txMulta = Convert.ToDecimal(Dr["txMulta"]),
                         txJuro = Convert.ToDecimal(Dr["txJuro"]),
-                      
 
-                        idFormaPagamento = Convert.ToInt32(Dr["idFormaPagamento"]),
+
+
 
 
 
@@ -187,16 +208,16 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     condPagamentoVM.dsCondPag = Convert.ToString(Dr["dsCondPag"]);
                     condPagamentoVM.txJuro = Convert.ToDecimal(Dr["txJuro"]);
                     condPagamentoVM.txMulta = Convert.ToDecimal(Dr["txMulta"]);
-                    
+
                     condPagamentoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     condPagamentoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
-                    condPagamentoVM.formaPagamento = new SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM
-                    {
-                        Id = Convert.ToInt32(Dr["IdCondPag"]),
-                        //Text = Convert.ToString(Dr["nmPais"]),
+                    //condPagamentoVM.formaPagamento = new SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM
+                    //{
+                    //    Id = Convert.ToInt32(Dr["IdCondPag"]),
+                    //    //Text = Convert.ToString(Dr["nmPais"]),
 
-                    };
+                    //};
 
 
                 }
@@ -211,7 +232,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 Close();
             }
         }
-
 
         protected string BuscarCondPagamento(int? id, string text)
         {
@@ -252,7 +272,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     {
                         Id = Convert.ToInt32(Dr["IdCondPag"]),
                         Text = Convert.ToString(Dr["dsCondPag"]),
-                       
+
                     };
 
                     list.Add(cond);
@@ -269,5 +289,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 Close();
             }
         }
+
     }
 }

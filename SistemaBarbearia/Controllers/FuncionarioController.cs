@@ -69,12 +69,10 @@ namespace SistemaBarbearia.Controllers
             return View(funcionarioDAO.SelecionarFuncionario());
         }
 
-
         public ActionResult Details(int id)
         {
             return GetView(id);
         }
-
 
         public ActionResult Create()
         {
@@ -107,12 +105,10 @@ namespace SistemaBarbearia.Controllers
             //return View(model);
         }
 
-
         public ActionResult Edit(int id)
         {
             return GetView(id);
         }
-
 
         [HttpPost]
         public ActionResult Edit(int id, FuncionarioVM model)
@@ -141,12 +137,10 @@ namespace SistemaBarbearia.Controllers
             //return View(model);
         }
 
-
         public ActionResult Delete(int id)
         {
             return GetView(id);
         }
-
 
         [HttpPost]
         public ActionResult Delete(int id, Funcionario funcionario)
@@ -168,18 +162,30 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
+                var select = this.Find(null, requestModel.Search.Value);
 
-                var funcionarioDAO = new FuncionarioDAO();
-                var select = funcionarioDAO.SelecionarFuncionario().Select(u => new { IdFuncionario = u.IdFuncionario, nmFuncionario = u.nmFuncionario, nrTelefone = u.nrTelefone });
+                var totalResult = select.Count();
 
-                IQueryable<dynamic> query = select.AsQueryable();
-
-
-                var totalResult = query.Count();
-
-                var result = query.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var funcionarioDAO = new FuncionarioDAO();
+                IQueryable<dynamic> lista = funcionarioDAO.SelecionarFuncionario().Select(u => new { IdFuncionario = u.IdFuncionario, nmFuncionario = u.nmFuncionario }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -187,6 +193,66 @@ namespace SistemaBarbearia.Controllers
                 Response.StatusCode = 500;
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult JsInsert(Funcionario funcionario)
+        {
+            var funcionarioDAO = new FuncionarioDAO();
+
+            funcionarioDAO.InsertFuncionario(funcionario);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = funcionario
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Funcionario funcionario)
+        {
+            var funcionarioDAO = new FuncionarioDAO();
+            funcionarioDAO.UpdateFuncionario(funcionario);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = funcionario
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? Id, string Text)
+        {
+            try
+            {
+                var result = this.Find(Id, Text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var funcionarioDAO = new FuncionarioDAO();
+            var list = funcionarioDAO.SelectFuncionario(id, text);
+            var select = list.Select(u => new
+            {
+                IdFuncionario = u.IdFuncionario,
+                nmFuncionario = u.nmFuncionario,
+
+
+            }).OrderBy(u => u.nmFuncionario).ToList();
+            return select.AsQueryable();
         }
 
     }

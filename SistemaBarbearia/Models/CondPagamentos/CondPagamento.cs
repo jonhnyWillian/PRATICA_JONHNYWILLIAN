@@ -1,4 +1,5 @@
-﻿using SistemaBarbearia.Models.FormaPagamentos;
+﻿using Newtonsoft.Json;
+using SistemaBarbearia.Models.FormaPagamentos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,15 +22,30 @@ namespace SistemaBarbearia.Models.CondPagamento
 
 		public decimal txDesconto { get; set; }
 
-		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
-		public int idFormaPagamento { get; set; }
+		public class CondPagamentoParcelaVM
+		{		
+			public short? nrParcela { get; set; }
+			public short? qtdDias { get; set; }
+			public decimal? txPercentual { get; set; }
+			public int? IdFormaPagto { get; set; }
+			public string nmFormaPagto { get; set; }
+		}
 
-		public CondPagamento()
-        {
-			this.CondPagamentoParcela = new List<CondPagamentoParcela>();
-        }
-		
-		public ICollection<CondPagamentoParcela> CondPagamentoParcela { get; set; }
+
+		public string jsItens { get; set; }
+		public List<CondPagamentoParcelaVM> ListCondicao
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(jsItens))
+					return new List<CondPagamentoParcelaVM>();
+				return JsonConvert.DeserializeObject<List<CondPagamentoParcelaVM>>(jsItens);
+			}
+			set
+			{
+				jsItens = JsonConvert.SerializeObject(value);
+			}
+		}
 
 
 		public DateTime? dtCadastro { get; set; }

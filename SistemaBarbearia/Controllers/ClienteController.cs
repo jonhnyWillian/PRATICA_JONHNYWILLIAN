@@ -162,26 +162,102 @@ namespace SistemaBarbearia.Controllers
             return View(cliente);
         }
 
-        //public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
-        //{
-        //    try
-        //    {
-        //        var select = this.Find(null, requestModel.Search.Value);
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            try
+            {
+                var select = this.Find(null, requestModel.Search.Value);
 
-        //        var totalResult = select.Count();
+                var totalResult = select.Count();
 
-        //        var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
 
-        //        return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
 
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.StatusCode = 500;
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public JsonResult JsSelect(string q, int? page, int? pageSize)
+        {
+            try
+            {
+                var clienteDAO = new ClienteDAO();
+                IQueryable<dynamic> lista = clienteDAO.SelecionarCliente().Select(u => new { IdCliente = u.IdCliente, nmCliente = u.nmCliente }).AsQueryable();
+                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult JsInsert(Cliente cliente)
+        {
+            var clienteDAO = new ClienteDAO();
+
+            clienteDAO.InsertCliente(cliente);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro adicionado com sucesso!",
+                model = cliente
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsUpdate(Cliente cliente)
+        {
+            var clienteDAO = new ClienteDAO();
+            clienteDAO.UpdateCliente(cliente);
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro alterado com sucesso!",
+                model = cliente
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult JsDetails(int? Id, string Text)
+        {
+            try
+            {
+                var result = this.Find(Id, Text).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var clienteDAO = new ClienteDAO();
+            var list = clienteDAO.SelectCliente(id, text);
+            var select = list.Select(u => new
+            {
+                IdCliente = u.IdCliente,
+                nmCliente = u.nmCliente,
+               
+
+            }).OrderBy(u => u.nmCliente).ToList();
+            return select.AsQueryable();
+        }
 
     }
 }

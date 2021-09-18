@@ -23,14 +23,16 @@
     </div>
 }
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <div class="form-group">
             @Html.LabelFor(model => model.dsCondPag, htmlAttributes: new { @class = "control-label required" })
             @Html.TextBoxFor(model => model.dsCondPag, new { @class = "form-control col-md-10", maxlength = "50", @style = "text-transform:uppercase ", @autofocus = "autofocus", @placeholder = "Condição Pagamento" })
             @Html.ValidationMessageFor(model => model.dsCondPag, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="col-md-4">
+</div>
+<div class="row">
+    <div class="col-md-3">
         @Html.LabelFor(model => model.txJuro, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             @Html.TextBoxFor(model => model.txJuro, new { @class = "form-control col-md-4 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Juro" })
@@ -46,8 +48,16 @@
             <span class="input-group-text">%</span>
         </div>
     </div>
+    <div class="col-md-4">
+        @Html.LabelFor(model => model.txDesconto, htmlAttributes: new { @class = "control-label required" })
+        <div class="input-group-append">
+            @Html.TextBoxFor(model => model.txDesconto, new { @class = "form-control col-md-4 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Desconto" })
+            @Html.ValidationMessageFor(model => model.txDesconto, "", new { @class = "text-danger" })
+            <span class="input-group-text">%</span>
+        </div>
+    </div>
 </div>
-<div class="bs-callout bs-callout-primary">
+<div class="bs-callout bs-callout-default">
     <h4 class="heading no-margin">Pagamentos</h4>
     <div class="row">
         <div class="col-lg-6">
@@ -69,6 +79,14 @@
                 @Html.ValidationMessageFor(model => model.txPercentual, null, new { @class = "text-danger" })
             </div>
         </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                @Html.HiddenFor(model => model.txPercentualTotalAux)
+                @Html.LabelFor(model => model.txPercentualTotal, new { @class = "no-required" })
+                @Html.TextBoxFor(model => model.txPercentualTotal, new { @class = "form-control money", disabled = false, style = "text-align: right" })
+                @Html.ValidationMessageFor(model => model.txPercentualTotal, null, new { @class = "text-danger" })
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-3">
@@ -80,8 +98,8 @@
 
 
     <div class="table-wrapper">
-        @Html.HiddenFor(model => model.Itens.js)
-        @using (Html.BeginFormContainer(model => model.Itens))
+        @Html.HiddenFor(model => model.jsItens)
+        @using (Html.BeginFormContainer(model => model.jsItens))
         {
             <table id="tblItens" class=" table display responsive nowrap" style="width:100%">
                 <thead>
@@ -94,26 +112,7 @@
                     </tr>
                 </thead>
             </table>
-            @Html.ValidationMessageFor(model => model.Itens, null, new { @class = "help-block no-required" })
+            @Html.ValidationMessageFor(model => model.jsItens, null, new { @class = "help-block no-required" })
         }
     </div>
 </div>
-
-@*<div class="row">
-    <div class="col-md-6">
-        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
-        <div class="input-group-append">
-            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
-            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-md-6">
-        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
-        <div class="input-group-append">
-            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
-            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
-        </div>
-    </div>
-</div>*@

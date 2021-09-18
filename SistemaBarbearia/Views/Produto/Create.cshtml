@@ -1,5 +1,4 @@
 ﻿@model SistemaBarbearia.ViewModels.Produtos.ProdutoVW
-@using SistemaBarbearia.Helper;
 @{
     ViewBag.Title = "Novo registro";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -30,3 +29,6 @@
 
     }
 </div>
+@section scripts {
+    @Scripts.Render("~/Scripts/Views/Produtos/Create.js")
+}

@@ -116,7 +116,7 @@
             bPaginate: paginate,
             data: dataSet,
             order: order,
-            language: ((self.settings.table.language == "undefined" || self.settings.table.language == false) ? null : self.settings.table.language),
+            language: ((self.settings.table.language == "undefined" || self.settings.table.language == false) ? null : ({ url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json' })),
             info: ((self.settings.table.info == "undefined" || self.settings.table.info == false) ? false : true),
             rowReorder: rowReorder,
             pageLength: self.settings.table.pageLength == null ? 25 : self.settings.table.pageLength,
@@ -491,15 +491,15 @@
 
 
     //  Getters  e Setters
-    this._defineGetter_("length", function () {
+    this.__defineGetter__("length", function () {
         return self.currentDataTable.fnGetData().length;
     });
 
-    this._defineGetter_("data", function () {
+    this.__defineGetter__("data", function () {
         return self.currentDataTable.fnGetData();
     });
 
-    this._defineSetter_("data", function (item) {
+    this.__defineSetter__("data", function (item) {
         self.clear();
         self.addItens(item);
     });

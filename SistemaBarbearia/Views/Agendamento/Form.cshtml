@@ -1,0 +1,36 @@
+﻿@model SistemaBarbearia.ViewModels.Agendamentos.AgendamentoVW
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+}
+@if (action != "create")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                    @Html.LabelFor(e => e.IdModelPai, new { @class = "control-label required" })
+                    @Html.TextBoxFor(model => model.IdModelPai, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { @disabled = readOnly })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { @disabled = readOnly })
+        </div>
+    </div>
+</div>
