@@ -154,6 +154,7 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\CompraController.cs" />
     <Compile Include="Controllers\CondPagamentoController.cs" />
+    <Compile Include="Controllers\ContaPagarController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\FormaPagamentoController.cs" />
     <Compile Include="Controllers\FornecedorController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Models\Cargos\Cargo.cs" />
     <Compile Include="Models\Compras\Compra.cs" />
     <Compile Include="Models\CondPagamentos\CondPagamentoParcela.cs" />
+    <Compile Include="Models\ContaPagar\ContaPagar.cs" />
     <Compile Include="Models\FormaPagamentos\FormaPagamento.cs" />
     <Compile Include="Models\Fornecedores\Fornecedor.cs" />
     <Compile Include="Models\Cidades\Cidade.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="ViewModels\Cidades\SelectCidadeVM.cs" />
     <Compile Include="ViewModels\CondPagamentos\CondPagamentoVM.cs" />
     <Compile Include="ViewModels\CondPagamentos\SelectCondPagamentoVM.cs" />
+    <Compile Include="ViewModels\ContasPagar\ContaPagarVM.cs" />
     <Compile Include="ViewModels\Estados\EstadoVM.cs" />
     <Compile Include="ViewModels\Estados\SelectEstadoVM.cs" />
     <Compile Include="ViewModels\FormaPagamentos\FormaPagamentoVM.cs" />
@@ -219,6 +222,7 @@
     <Compile Include="ViewModels\Pessoas\PessoaVM.cs" />
     <Compile Include="ViewModels\Produtos\ProdutoVW.cs" />
     <Compile Include="ViewModels\Produtos\SelectProdutoVM.cs" />
+    <Compile Include="ViewModels\Servicos\SelectServicoVM.cs" />
     <Compile Include="ViewModels\Servicos\ServicoVM.cs" />
     <Compile Include="DataTable\Column.cs" />
     <Compile Include="DataTable\ColumnCollection.cs" />
@@ -468,6 +472,7 @@
     <Content Include="Scripts\Views\Compras\Create.js" />
     <Content Include="Scripts\Views\CondPagamentos\CondPagamento.js" />
     <Content Include="Scripts\Views\CondPagamentos\Create.js" />
+    <Content Include="Scripts\Views\ContasPagar\ContaPagar.js" />
     <Content Include="Scripts\Views\Estados\Estado.js" />
     <Content Include="Scripts\Views\FormaPagamentos\FormaPagamento.js" />
     <Content Include="Scripts\Views\Fornecedores\Create.js" />
@@ -673,6 +678,13 @@
     <Content Include="Views\Agendamento\Details.cshtml" />
     <Content Include="Views\Agendamento\Delete.cshtml" />
     <Content Include="Views\Agendamento\Form.cshtml" />
+    <Content Include="Views\ContaPagar\Form.cshtml" />
+    <Content Include="Views\ContaPagar\Index.cshtml" />
+    <Content Include="Views\ContaPagar\Create.cshtml" />
+    <Content Include="Views\ContaPagar\Delete.cshtml" />
+    <Content Include="Views\ContaPagar\Details.cshtml" />
+    <Content Include="Views\ContaPagar\Edit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Servicos\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -45,7 +45,7 @@ namespace SistemaBarbearia.ViewModels.Produtos
 
         [Display(Name = "Valor Custo")]
         [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Valor Custo  não Pode ser em Branco!", AllowEmptyStrings = false)]
+       // [Required(ErrorMessage = "Campo Valor Custo  não Pode ser em Branco!", AllowEmptyStrings = false)]
         public decimal? vlCusto { get; set; }
 
         [Display(Name = "Valor Venda")]

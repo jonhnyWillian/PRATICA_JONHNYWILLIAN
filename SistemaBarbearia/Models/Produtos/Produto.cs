@@ -14,30 +14,25 @@ namespace SistemaBarbearia.Models.Produtos
         [Key]
         public int IdProduto { get; set; }
 
-        [Required]
+   
         public string dsProduto { get; set; }
 
-        [Required]
+      
         public string nrUnidade { get; set; }
 
-        
-
-        [Required]
+      
         public int nrQtd { get; set; }
 
-        [Required]
-        public int qtdEstoque { get; set; }
-
-        [Required]
+       
         public string codBarra { get; set; }
 
-        [Required]
+      
         public Decimal? vlCompra { get; set; }
 
-        [Required]
+       
         public Decimal? vlCusto { get; set; }
 
-        [Required]
+      
         public Decimal? vlVenda { get; set; }
 
         public int idCategoria { get; set; }

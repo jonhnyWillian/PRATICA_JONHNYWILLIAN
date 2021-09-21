@@ -186,6 +186,63 @@ namespace SistemaBarbearia.DAOs.Servicos
             }
         }
 
-       
+
+        protected string BuscarServico(int? id, string text)
+        {
+            var sqlSelectPais = string.Empty;
+            var where = string.Empty;
+
+            if (id != null)
+            {
+                where = "WHERE IdServico = " + id;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                var query = text.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR dsServico LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectPais = @"SELECT * FROM Servico " + where;
+            return sqlSelectPais;
+        }
+
+        public List<SelectServicoVM> SelectServico(int? idServico, string dsServico)
+        {
+            try
+            {
+
+                var sqlSelectServico = this.BuscarServico(idServico, dsServico);
+                Open();
+                SQL = new SqlCommand(sqlSelectServico, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectServicoVM>();
+
+                while (Dr.Read())
+                {
+                    var servico = new SelectServicoVM
+                    {
+                        IdServico = Convert.ToInt32(Dr["IdServico"]),
+                        dsServico = Convert.ToString(Dr["dsServico"]),
+
+                    };
+
+                    list.Add(servico);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
     }
 }

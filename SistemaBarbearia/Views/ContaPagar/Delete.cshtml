@@ -1,14 +1,11 @@
-﻿@model SistemaBarbearia.ViewModels.Produtos.ProdutoVW
+﻿@model SistemaBarbearia.ViewModels.ContasPagar.ContaPagarVM
 @using SistemaBarbearia.Helper;
-
 @{
-    ViewBag.Title = "Detalhes do Produto";
+    ViewBag.Title = "Remover registro";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
     ViewBag.readOnly = true;
-
-
 }
 <div class="container-fluid">
 
@@ -17,17 +14,17 @@
         <div class="container">
             <ul class="breadcrumb breadcrumb-arrow">
                 <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
-                <li class="active">Detalhes do Produto</li>
+                <li class="active">Excluir Contas a Pagar</li>
             </ul>
-            <div class="form-horizontal" >
-                <h6 class="text-right">Campos obrigatório *</h6>
-                <fieldset disabled>
-                    @Html.Partial("Form", Model)
-                </fieldset>
+            <div class="form-horizontal">
+                @Html.Partial("Form", Model)
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-danger"> <i class="fa fa-trash-o"></i> Excluir</button>
                 <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+
             </div>
         </div>
+
     }
 </div>

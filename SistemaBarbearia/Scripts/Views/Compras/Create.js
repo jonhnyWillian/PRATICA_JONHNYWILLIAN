@@ -16,65 +16,6 @@
     $(document).on("tblProdutoOpenEdit", compra.openEditProduto);
     $(document).on("tblProdutoCancelEdit", compra.clearProduto);
 
-    if (IsNullOrEmpty($("#finalizar").val())) {
-        $("#divValida").hide();
-        $("#flFinalizar").prop("checked", true)
-    } else {
-        $("#flFinalizar").prop("checked", false);
-        $("#divValida").show();
-    }
-
-
-    if (!$("#flFinalizar").is(":checked")) {
-        $("#divFinaliza").slideUp();
-        $("#vlTotal").val("");
-    } else {
-        $("#divFinaliza").slideDown();
-    }
-
-    $("#flFinalizar").click(function () {
-        if (!dtProdutos.length || IsNullOrEmpty($("#dtEmissao").val())) {
-            let msg = "";
-            if (!dtProdutos.length) {
-                msg += "- Informe ao menos um produto para finalizar<br/>";
-            }
-            if (IsNullOrEmpty($("#dtEmissao").val())) {
-                msg += "- Informe a data de emissão"
-            }
-            $.notify({ message: msg, icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-            $("#flFinalizar").prop("checked", false)
-        } else {
-            if ($(this).is(":checked")) {
-                $('input[name="dtEmissao"]').prop('disabled', true)
-                let dtEmissao = $("#dtEmissao").val()
-                console.log(dtEmissao)
-                $("#dtEmissaoAux").val(dtEmissao)
-                compra.calcTotalProduto();
-                $("#divParcelas").hide();
-                $("#divFinaliza").slideDown();
-                let total = vlTotalCompra;
-                let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                $("#vlTotal").val(totalFormat);
-                dtProdutos.atualizarGrid();
-                $("#divAddProduto").slideUp();
-            } else {
-                $("#divFinaliza").slideUp();
-
-                dtProdutos.atualizarGrid();
-                dtParcelas.clear();
-                $("#divAddProduto").slideDown();
-                $("#CondicaoPagamento_id").val("")
-                $("#CondicaoPagamento_text").val("")
-                $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true);
-                $('input[name="dtEmissao"]').prop('disabled', false)
-            }
-        }
-    });
-
-    $("#CondicaoPagamento_btnGerarParcela").click(function () {
-        compra.getparcelas();
-    });
-
     $(document).on('tblProdutoRowCallback', function (e, data) {
         if ($("#flFinalizar").is(":checked")) {
             let btn = $('td a[data-event=remove]', data.nRow);
@@ -121,25 +62,15 @@ Compra = function () {
                 jsItem: "jsProdutos",
                 name: "tblProduto",
                 remove: true,
-                edit: true,
+                edit: false,
                 order: [[1, "asc"]],
                 columns: [
-                    { data: "codProduto" },
-                    { data: "nomeProduto" },
+                    { data: "IdProduto" },
+                    { data: "dsProduto" },                   
                     {
                         data: null,
                         mRender: function (data) {
-                            let resut = "";
-                            if (data.unidade == "M")
-                                result = "METRO";
-
-                            return result;
-                        }
-                    },
-                    {
-                        data: null,
-                        mRender: function (data) {
-                            return data.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return data.nrQtd.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                     {
@@ -156,14 +87,14 @@ Compra = function () {
                             return data.txDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
-                    {
-                        data: null,
-                        mRender: function (data) {
-                            let vlTotalCompra = (data.txDesconto * data.vlCompra) / 100;
-                            vlTotalCompra = (data.vlCompra - vlTotalCompra) * data.qtProduto;
-                            return vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        }
-                    },
+                    //{
+                    //    data: null,
+                    //    mRender: function (data) {
+                    //        let vlTotalCompra = (data.txDesconto * data.vlCompra) / 100;
+                    //        vlTotalCompra = (data.vlCompra - vlTotalCompra) * data.nrQtd;
+                    //        return vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    //    }
+                    //},
                 ]
             },
         });
@@ -204,13 +135,13 @@ Compra = function () {
 
     //Produto
     self.getModelProduto = function () {
-        let vlVendaProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
-        let vlVendaProdutoAux = parseFloat(vlVendaProduto);
+        //let vlVendaProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
+        //let vlVendaProdutoAux = parseFloat(vlVendaProduto);
 
         let vlCompraProduto = $("#vlCompra").val().replace(".", "").replace(",", ".");
         let vlCompraProdutoAux = parseFloat(vlCompraProduto);
 
-        let qtProdutoAux = $("#qtProduto").val().replace(".", "").replace(",", ".");
+        let qtProdutoAux = $("#nrQtd").val().replace(".", "").replace(",", ".");
         qtProdutoAux = parseFloat(qtProdutoAux);
 
 
@@ -218,17 +149,15 @@ Compra = function () {
         let txDescontoAux = 0;
 
         if (!IsNullOrEmpty(txDesconto)) {
-            txDescontoAux += parseFloat(txDesconto);
-            //let calcDesc = (txDescontoAux * vlCompraProdutoAux) / 100;
-            //vlCompraProdutoAux = vlCompraProdutoAux - calcDesc;
+            txDescontoAux += parseFloat(txDesconto);        
         }
         var model = {
-            codProduto: $("#Produto_id").val(),
-            nomeProduto: $("#Produto_text").val(),
+            IdProduto: $("#Produto_IdProduto").val(),
+            dsProduto: $("#Produto_dsProduto").val(),
             unidade: $("#unidade").val(),
-            vlVenda: vlVendaProdutoAux,
+        /*    vlVenda: vlVendaProdutoAux,*/
             vlCompra: vlCompraProdutoAux,
-            qtProduto: qtProdutoAux,
+            nrQtd: qtProdutoAux,
             vlTotal: vlCompraProdutoAux * qtProdutoAux,
             txDesconto: txDescontoAux,
         };
@@ -238,15 +167,15 @@ Compra = function () {
     self.validProduto = function () {
         let valid = true;
 
-        if (IsNullOrEmpty($("#Produto_id").val()) || $("#Produto_id").val() == "") {
-            $("#Produto_id").blink({ msg: "Informe o produto" });
-            $("#Produto_id").focus();
+        if (IsNullOrEmpty($("#Produto_IdProduto").val()) || $("#Produto_IdProduto").val() == "") {
+            $("#Produto_IdProduto").blink({ msg: "Informe o produto" });
+            $("#Produto_IdProduto").focus();
             valid = false;
         }
 
-        else if (IsNullOrEmpty($("#qtProduto").val()) || $("#qtProduto").val() == "" || $("#qtProduto").val() == 0) {
-            $("#qtProduto").blink({ msg: "Informe a quantidade" });
-            $("#qtProduto").focus();
+        else if (IsNullOrEmpty($("#nrQtd").val()) || $("#nrQtd").val() == "" || $("#nrQtd").val() == 0) {
+            $("#nrQtd").blink({ msg: "Informe a quantidade" });
+            $("#nrQtd").focus();
             valid = false;
         }
 
@@ -257,8 +186,8 @@ Compra = function () {
         }
 
         if (!dtProdutos.isEdit) {
-            if (dtProdutos.exists("codProduto", $("#Produto_id").val())) {
-                $("#Produto_id").blink({ msg: "Produto já informado, verifique!" });
+            if (dtProdutos.exists("IdProduto", $("#Produto_IdProduto").val())) {
+                $("#Produto_IdProduto").blink({ msg: "Produto já informado, verifique!" });
                 valid = false;
             }
         }
@@ -267,26 +196,25 @@ Compra = function () {
     }
 
     self.clearProduto = function () {
-        $("#Produto_id").val("");
-        $("#Produto_text").val("");
+        $("#Produto_IdProduto").val("");
+        $("#Produto_dsProduto").val("");
         $("#Produto_vlVenda").val("");
         $("#unidade").val("M");
-        $("#qtProduto").val("");
+        $("#nrQtd").val("");
         $("#vlCompra").val("");
         $("#txDesconto").val("");
         $("#Produto_vlVenda").val("");
-        $('input[name="Produto.id"]').prop('disabled', false)
+        $('input[name="Produto_IdProduto"]').prop('disabled', false)
     }
 
     self.addProduto = function () {
         if (self.validProduto()) {
             let model = self.getModelProduto();
             let item = {
-                codProduto: model.codProduto,
-                nomeProduto: model.nomeProduto,
-                unidade: model.unidade,
-                qtProduto: model.qtProduto,
-                vlVenda: model.vlVenda,
+                idProduto: model.IdProduto,
+                dsProduto: model.dsProduto,             
+                nrQtd: model.nrQtd,
+            /*    vlVenda: model.vlVenda,*/
                 vlCompra: model.vlCompra,
                 txDesconto: model.txDesconto,
                 vlTotal: model.vlTotal
@@ -303,7 +231,7 @@ Compra = function () {
             for (var i = 0; i < dtProdutos.length; i++) {
                 let vlCompraDesconto = (dtProdutos.data[i].vlCompra * dtProdutos.data[i].txDesconto) / 100;
                 vlCompraDesconto = dtProdutos.data[i].vlCompra - vlCompraDesconto;
-                let totalProduto = vlCompraDesconto * dtProdutos.data[i].qtProduto;
+                let totalProduto = vlCompraDesconto * dtProdutos.data[i].nrQtd;
                 total += totalProduto;
             }
         }
@@ -314,14 +242,14 @@ Compra = function () {
 
     self.openEditProduto = function (e, data) {
         let item = dtProdutos.dataSelected.item;
-        $("#Produto_id").val(item.codProduto);
-        $("#Produto_text").val(item.nomeProduto);
-        $("#Produto_vlVenda").val(item.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#Produto_IdProduto").val(item.IdProduto);
+        $("#Produto_dsProduto").val(item.dsProduto);
+        /*$("#Produto_vlVenda").val(item.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));*/
         $("#unidade").val(item.unidade);
-        $("#qtProduto").val(item.qtProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        $("#nrQtd").val(item.nrQtd.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#vlCompra").val(item.vlCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         $("#txDesconto").val(item.txDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-        $('input[name="Produto.id"]').prop('disabled', true)
+        $('input[name="Produto_IdProduto"]').prop('disabled', true)
     }
 
     self.saveProduto = function (data) {

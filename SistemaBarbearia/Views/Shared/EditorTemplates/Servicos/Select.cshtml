@@ -1,11 +1,11 @@
-﻿@model SistemaBarbearia.ViewModels.Produtos.SelectProdutoVM
+﻿@model SistemaBarbearia.ViewModels.Servicos.SelectServicoVM
 @using SistemaBarbearia.Helper;
 @{
     bool Disabled = Convert.ToBoolean(ViewData["Disabled"]);
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Produtos");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Serviços");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
@@ -17,15 +17,15 @@
             @Html.Label("", Label)
             <div class="input-group">
                 <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.IdProduto, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                    @Html.TextBoxFor(model => model.IdServico, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.dsProduto, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.dsServico, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.IdProduto, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.IdServico, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -38,17 +38,17 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Produtos</b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Serviços</b></a></li>
                         </ul>
                     </div>
 
                     <div style="text-align:left">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateProduto()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateServico()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
                     </div>
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableProduto">
+                            <div id="TableServico">
 
                             </div>
                         </div>
@@ -56,7 +56,7 @@
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalProduto()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalServico()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
                         </div>
                     </div>
 
@@ -73,20 +73,20 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Categoria </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Serviços </b></a></li>
                         </ul>
                     </div>
                     <div style="text-align:right">
-                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateProduto()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
+                        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateServico()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
-                            <div id="TableProduto"></div>
+                            <div id="TableServico"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalProduto()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalServico()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i> Fechar</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Produtos </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Serviço </b></a></li>
                         </ul>
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
@@ -110,8 +110,30 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("IdProduto", "Código")
-                                    @Html.TextBox("IdProduto", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("IdServico", "Código")
+                                    @Html.TextBox("IdServico", null, new { @class = "form-control", disabled = true })
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="@Helper.Input8">
+                                    @Html.Label("dsServico", "Serviço", new { @class = "required" })
+                                    @Html.TextBox("dsServico", null, new { @class = "form-control col-md-12", maxlength = "50", style = "text-transform:uppercase" })
+                                    @Html.ValidationMessage("dsServico", null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="@Helper.Input4">
+                                    @Html.Label("vlServico", "Valor Serviço", new { @class = "required" })
+                                    @Html.TextBox("vlServico", null, new { @class = "form-control col-md-12", maxlength = "50" })
+                                    @Html.ValidationMessage("vlServico", null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="@Helper.Input4">
+                                    @Html.Label("flSituacao", "Situação", new { @class = "required" })
+                                    @Html.DropDownList("flSituacao", SistemaBarbearia.ViewModels.Categorias.CategoriaVM.Situacao, new { @class = "form-control" })
+                                    @Html.ValidationMessage("flSituacao", null, new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -119,8 +141,8 @@
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateProduto()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-saveServico"></i>  Salvar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -135,30 +157,30 @@
     self = this;
     $(function () {
          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)").on("click", function () {
-             InitModalProduto();
+             InitModalServico();
          });
 
          $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.saveServico();
          });
 
-         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)').change(function (data, e) {
-             var IdProduto = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)').val();
-             if (IdProduto == "") {
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)").val("");
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsProduto", Prefix)").val("");
+         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)').change(function (data, e) {
+             var IdServico = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)').val();
+             if (IdServico == "") {
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)").val("");
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsServico", Prefix)").val("");
              } else {
                  $.ajax({
                      dataType: 'json',
                      type: 'GET',
-                     url: '@Url.Action("JsDetails", "Produto")',
-                     data: { 'IdProduto': IdProduto },
+                     url: '@Url.Action("JsDetails", "Servico")',
+                     data: { 'IdServico': IdServico },
                      success: function (data) {
                          if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' } );
                          }
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)").val(data.IdProduto);
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsProduto", Prefix)").val(data.dsProduto);
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)").val(data.IdServico);
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsServico", Prefix)").val(data.dsServico);
                      },
                      error: function (err) {
                          alert(err);
@@ -170,67 +192,72 @@
 
      });
 
-    this.getFormProduto = function() {
+    this.getFormServico = function() {
         var form = {
-                IdProduto : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)'),
-                dsProduto: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsProduto", Prefix)'),              
-               
+                IdServico : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)'),
+                dsServico: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsServico", Prefix)'),
+                vlServico: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("vlServico", Prefix)'),
+                flSituacao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)'),
         }
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getFormProduto();
-        form.IdProduto.val("");
-        form.dsProduto.val("");      
-        form.dsProduto.focus();
+    this.clearServico = function () {
+        var form = self.getFormServico();
+        form.IdServico.val("");
+        form.dsServico.val("");
+        form.vlServico.val("");
+        form.flSituacao.val("");
+        form.dsServico.focus();
     };
 
     this.isValid = function () {
         var valid = true;
-        var form = self.getFormProduto();
+        var form = self.getFormServico();
 
-        if (IsNullOrEmpty(form.dsProduto.val())) {
-            form.dsProduto.blink({ msg: "Campo produto é obrigatório" });
-            form.dsProduto.focus();
+        if (IsNullOrEmpty(form.dsServico.val())) {
+            form.dsServico.blink({ msg: "Campo Serviço é obrigatório" });
+            form.dsServico.focus();
             valid = false;
         }
         return valid;
     };
 
-    getModelProduto = function (form) {
+    getModelServico = function (form) {
         var model = {
-            Id: form.Id.val(),
-            dsProduto: form.dsProduto.val(),
-           
+            IdServico: form.IdServico.val(),
+            dsServico: form.dsServico.val(),
+            flSituacao: form.flSituacao.val(),
         }
         return model;
     };
 
-    this.save = function () {
+    this.saveServico = function () {
         if ($('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.updateProduto();
+            this.updateServico();
         } else {
-            this.insertProduto();
+            this.insertServico();
         }
     }
 
-    this.insertProduto = function () {
-        var form = self.getFormProduto();
-        var model = getModelProduto(form);
+    this.insertServico = function () {
+        var form = self.getFormServico();
+        var model = getModelServico(form);
 
         if (self.isValid(model)) {
 
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsInsert", "Produto")',
+                url: '@Url.Action("jsInsert", "Servico")',
                 data: model,
                 success: function (data) {
-                    self.clear();
-                    InitModalProduto();
+                    self.clearServico();
+                    InitModalServico();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
+
+
                 },
                 error: function (request) {
                     alert("Erro ao adicionar registro")
@@ -239,21 +266,21 @@
         }
     };
 
-    this.updateProduto = function () {
-        var form = self.getFormProduto();
-        var model = getModelProduto(form);
+    this.updateServico = function () {
+        var form = self.getFormServico();
+        var model = getModelServico(form);
 
         if (self.isValid(model)) {
 
             $.ajax({
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("jsUpdate", "Produto")',
+                url: '@Url.Action("jsUpdate", "Servico")',
                 data: model,
                 success: function (data) {
                     console.log(data)
-                    self.clear();
-                    InitModalProduto();
+                    self.clearServico();
+                    InitModalServico();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
 
@@ -262,22 +289,22 @@
         }
     };
 
-    function InitModalProduto() {
-          $("#TableProduto").empty();
+    function InitModalServico() {
+          $("#TableServico").empty();
           let table = null
-          let lis = getTableProduto();
-          $("#TableProduto").append(lis);
+          let lis = getTableCategoria();
+          $("#TableServico").append(lis);
 
-        table = $('#listaProduto').DataTable({
-            ajax: { url: $('#listaProduto').attr('data-url') },
+        table = $('#listaServico').DataTable({
+            ajax: { url: $('#listaServico').attr('data-url') },
                 lengthMenu: false,
                 lengthChange: false,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
-                { data: "IdProduto" },
-                { data: "dsProduto" },
+                { data: "IdServico" },
+                { data: "dsServico" },
                  {
                     sortable: false,
                     data: null,
@@ -290,7 +317,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditProduto(' + data.IdProduto + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.IdServico + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
             ],
@@ -309,19 +336,19 @@
                 });
             }
             else {
-                row.child(SelectProduto(row.data())).show();
+                row.child(SelectServico(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
         });
     }
 
-    function getTableProduto() {
-        let tmp = `<table id="listaProduto" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Produto")">
+    function getTableCategoria() {
+        let tmp = `<table id="listaServico" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Servico")">
                         <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:70%">Produto</th>
+                                <th export="true" style="width:70%">Serviços</th>
                                 <th export="true" style="width:10%">Selecionar</th>
                                 <th export="true" style="width:10%">Alterar</th>
                             </tr>
@@ -330,18 +357,18 @@
           return tmp;
     };
 
-    function FecharModalProduto() {
+    function FecharModalServico() {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
 
-    function FecharModalCreateProduto() {
+    function FecharModalCreate() {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearServico();
     };
 
-    function OpenModalCreateProduto() {
+    function OpenModalCreateServico() {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnUpdate", Prefix)").hide();
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "hidden");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "auto");
@@ -353,28 +380,32 @@
 
     };
 
-    function SelectProduto(data) {
+    function SelectServico(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)").val(data.IdProduto);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsProduto", Prefix)").val(data.dsProduto);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)").val(data.IdServico);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsServico", Prefix)").val(data.dsServico);
         return false;
     };
 
-    function OpenEditProduto(IdProduto) {
+    function OpenEdit(IdServico) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
-            url: '@Url.Action("JsDetails", "Produto")',
-            data: { 'IdProduto': IdProduto },
+            url: '@Url.Action("JsDetails", "Categoria")',
+            data: { 'IdServico': IdServico },
             success: function (data) {
-                self.clear();
+                self.clearServico();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdProduto", Prefix)").val(data.IdProduto);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsProduto", Prefix)").val(data.dsProduto);
+
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdServico", Prefix)").val(data.IdServico);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsServico", Prefix)").val(data.dsServico);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("vlServico", Prefix)").val(data.vlServico);
+
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

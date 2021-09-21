@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SistemaBarbearia.Models.ContaPagar.ContaPagar>
+
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Conta a Pagar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div class="container">
+    <div class="form-group">
+        <div class="row">
+            <h1 class="container">Consultar Contas a Pagar</h1>
+        </div>
+        <a class="btn btn-primary " href="@Url.Action("Create", "ContaPagar")"><i class="fa fa-plus">Adicionar</i></a>
+    </div>
+
+    <table id="listaContaPagar" class="table table-striped table-bordered" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th export="true" style="width:10%">Codigo</th>
+                <th export="true" style="width:10%">Emissao</th>
+                <th export="true" style="width:60%">fornecedor</th>
+                <th export="true" style="width:10%">Opções</th>
+            </tr>
+        </thead>
+        @*@foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-right" style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.IdContaPagar)
+                </td>
+                <td style="width:60%;">
+                    @Html.DisplayFor(modelItem => item.dtEmissao)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.Fornecedor.nmNome)
+                </td>
+                <td>
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdContaPagar }))"><i class="fa fa-eye"></i></a>
+                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdContaPagar }))"><i class="fa fa-pencil-square-o"></i></a>
+                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdContaPagar }))"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }*@
+
+    </table>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Views/ContasPagar/ContaPagar.js")
+    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
+    @Styles.Render("~/Content/bootstrap.css")
+
+}

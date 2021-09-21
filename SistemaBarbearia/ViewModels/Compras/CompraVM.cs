@@ -42,20 +42,15 @@ namespace SistemaBarbearia.ViewModels.Compras
         public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
 
 
-        [Display(Name = "Unidade")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Unidade não Pode ser em Branco!")]
-        public string unidade { get; set; }
+     
 
-        public string finalizar { get; set; }
         public decimal? vlTotal { get; set; }
 
         public class ProdutosVM
         {
-            public int? idProduto { get; set; }
-            public string nmProduto { get; set; }
-            public string unidade { get; set; }
-            public decimal? qtProduto { get; set; }
+            public int? IdProduto { get; set; }
+            public string nmProduto { get; set; }   
+            public decimal? nrQtd { get; set; }
             public decimal? vlVenda { get; set; }
             public decimal? vlCompra { get; set; }
             public decimal? txDesconto { get; set; }

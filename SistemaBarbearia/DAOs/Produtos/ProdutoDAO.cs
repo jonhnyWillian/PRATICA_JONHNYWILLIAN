@@ -28,8 +28,7 @@ namespace SistemaBarbearia.DAOs.Produtos
 
                 SQL.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
                 SQL.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade);
-                SQL.Parameters.AddWithValue("@nrQtd", produto.nrQtd);
-                SQL.Parameters.AddWithValue("@qtdEstoque", produto.qtdEstoque);
+                SQL.Parameters.AddWithValue("@nrQtd", produto.nrQtd);            
                 SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
                 SQL.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
@@ -65,7 +64,7 @@ namespace SistemaBarbearia.DAOs.Produtos
             try
             {
                 Open();
-                string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd, qtdEstoque = @qtdEstoque,
+                string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd,
                                                             codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto, vlVenda = @vlVenda,
                                                             IdCategoria = @IdCategoria, idFornecedor = @idFornecedor dtUltAlteracao = @dtUltAlteracao  
 
@@ -76,8 +75,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                 sql.Parameters.AddWithValue("@IdProduto", produto.IdProduto);
                 sql.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
                 sql.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade.ToUpper());                
-                sql.Parameters.AddWithValue("@nrQtd", produto.nrQtd);
-                sql.Parameters.AddWithValue("@qtdEstoque", produto.qtdEstoque);
+                sql.Parameters.AddWithValue("@nrQtd", produto.nrQtd);               
                 sql.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 sql.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
                 sql.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
@@ -161,8 +159,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                         IdProduto = Convert.ToInt32(Dr["IdProduto"]),
                         dsProduto = Convert.ToString(Dr["dsProduto"]),
                         nrUnidade = Convert.ToString(Dr["nrUnidade"]),
-                        nrQtd = Convert.ToInt32(Dr["nrQtd"]),
-                        qtdEstoque = Convert.ToInt32(Dr["qtdEstoque"]),
+                        nrQtd = Convert.ToInt32(Dr["nrQtd"]),                    
                         codBarra = Convert.ToString(Dr["codBarra"]),
                         vlCompra = Convert.ToDecimal(Dr["vlCompra"]),
                         vlCusto = Convert.ToDecimal(Dr["vlCusto"]),

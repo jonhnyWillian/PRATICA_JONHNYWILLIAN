@@ -1,4 +1,5 @@
 ﻿using SistemaBarbearia.DAOs.Categorias;
+using SistemaBarbearia.DAOs.Fornecedores;
 using SistemaBarbearia.DAOs.Produtos;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Produtos;
@@ -19,6 +20,7 @@ namespace SistemaBarbearia.Controllers
         {
             ProdutoDAO produto = new ProdutoDAO();
             CategoriaDAO categoria = new CategoriaDAO();
+            FornecedorDAO fornecedor = new FornecedorDAO();
             var obj = produto.GetProduto(id);
             var result = new ProdutoVW
             {
@@ -32,10 +34,14 @@ namespace SistemaBarbearia.Controllers
                 vlVenda = obj.vlVenda,              
                 dtCadastro = obj.dtCadastro,
                 dtUltAlteracao = obj.dtUltAlteracao,
-                IdCategoria = obj.IdCategoria
+                IdCategoria = obj.IdCategoria,
+                IdFornecedor = obj.IdFornecedor
+               
             };
             var objCategoria = categoria.GetCategoria(result.IdCategoria);
             result.categoria = new ViewModels.Categorias.SelectCategoriaVM { Id = objCategoria.IdCategoria, Text = objCategoria.dsCategoria };
+            var objFornecedor = fornecedor.GetFornecedor(result.IdFornecedor);
+            result.fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM { IdFornecedor = objCategoria.IdCategoria, nmNome = objFornecedor.nmNome };
             return View(result);
         }
 
@@ -45,10 +51,10 @@ namespace SistemaBarbearia.Controllers
             var list = produtoDAO.SelectProduto(Id, Text);
             var select = list.Select(u => new
             {
-                Id = u.IdProduto,
-                Text = u.dsProduto
+                IdProduto = u.IdProduto,
+                dsProduto = u.dsProduto
 
-            }).OrderBy(u => u.Text).ToList();
+            }).OrderBy(u => u.dsProduto).ToList();
             return select.AsQueryable();
         }
 
