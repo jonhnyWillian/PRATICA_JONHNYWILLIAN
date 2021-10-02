@@ -1,6 +1,7 @@
 ﻿using SistemaBarbearia.DAOs.CondPagamentos;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.CondPagamento;
+using SistemaBarbearia.ViewModels.CondPagamentos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,29 +31,52 @@ namespace SistemaBarbearia.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CondPagamento condPagamento)
+        public ActionResult Create(CondPagamentoVM condPagamento)
         {
             if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
             {
                 ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
-            }       
-            try
+            }
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    var condPag = new CondPagamentoDAO();
+                    var bean = condPagamento.GetPagamento(new CondPagamento());
+                    var dao = new CondPagamentoDAO();
+                    bean.dtCadastro = DateTime.Now;
 
-                    condPag.InsertCondPagamento(condPagamento);
+                    dao.InsertCondPagamento(bean);
 
-                    return RedirectToAction("Index");
 
+                    return RedirectToAction("index");
                 }
-                return View();
+                catch (Exception ex)
+                {
+                    return View(condPagamento);
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(condPagamento);
+            //if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
+            //{
+            //    ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
+            //}       
+            //try
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        var condPag = new CondPagamentoDAO();
+
+            //        condPag.InsertCondPagamento(condPagamento);
+
+            //        return RedirectToAction("Index");
+
+            //    }
+            //    return View();
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
 
         public ActionResult Edit(int id)

@@ -25,7 +25,7 @@ namespace SistemaBarbearia.Models.Compras
 
         public ViewModels.Fornecedores.SelectFornecedorVM Fornecedor { get; set; }
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
-       // public ViewModels.Produtos.SelectProdutoVW Produto { get; set; }
+       public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
 
 
         public class ProdutosVM

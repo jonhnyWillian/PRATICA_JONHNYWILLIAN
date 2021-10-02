@@ -26,7 +26,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Multa")]
 		[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
-		public decimal txMulta { get; set; }
+		public decimal? txMulta { get; set; }
 
 		[Display(Name = "Desconto")]
 		[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
@@ -38,7 +38,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Porcentagem (%)")]
 		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
-		public short? txPercentual { get; set; }
+		public decimal? txPercentual { get; set; }
 
 
 		[Display(Name = "Total (%)")]
@@ -47,54 +47,67 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Forma Pagamento")]
 		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
-		public static SelectListItem[] Juros
-		{
-			get
-			{
-				return new[]
-				{
-					new SelectListItem { Value = "N", Text = "NÃO" },
-					new SelectListItem { Value = "S", Text = "SIM" },
 
-				};
-			}
-		}
-		public static SelectListItem[] Parcela
+		public DataTablesList<CodicaoFormaVM> Itens { get; set; }
+
+		public class CodicaoFormaVM
 		{
-			get
-			{
-				return new[]
-				{
-					new SelectListItem { Value = "N", Text = "NÃO" },
-					new SelectListItem { Value = "S", Text = "SIM" },
-				};
-			}
-		}
-		public class CondPagamentoParcelaVM
-		{
-		
+			public int? IdCondPag { get; set; }
 			public short? nrParcela { get; set; }
-			public short? qtdDias { get; set; }
+			public short? qtDias { get; set; }
 			public decimal? txPercentual { get; set; }
-			public int? IdFormaPagto { get; set; }
-			public string nmFormaPagto { get; set; }
+			public int? idFormaPagamento { get; set; }
+			public string dsFormaPagamento { get; set; }
 		}
-
-
-		public string jsItens { get; set; }
-		public List<CondPagamentoParcelaVM> ListCondicao
+		public CondPagamento GetPagamento(CondPagamento bean)
 		{
-			get
+
+			bean.dsCondPag = this.dsCondPag;		
+			bean.txJuro = this.txJuro ;
+			bean.txMulta = this.txMulta ?? 0;
+
+
+			foreach (var item in Itens.Get)
 			{
-				if (string.IsNullOrEmpty(jsItens))
-					return new List<CondPagamentoParcelaVM>();
-				return JsonConvert.DeserializeObject<List<CondPagamentoParcelaVM>>(jsItens);
+				bean.CondicaoForma.Add(new CondPagamentoParcela
+				{
+					IdCondPag = item.IdCondPag ?? 0,
+					nrParcela = item.nrParcela ?? 0,
+					qtdDias = item.qtDias ?? 0,
+					txPercentual = item.txPercentual ?? 0,
+					IdFormaPagamento = item.idFormaPagamento ?? 0
+				});
 			}
-			set
-			{
-				jsItens = JsonConvert.SerializeObject(value);
-			}
+
+			return bean;
 		}
+
+
+		//public class CondPagamentoParcelaVM
+		//{
+
+		//	public short? nrParcela { get; set; }
+		//	public short? qtdDias { get; set; }
+		//	public decimal? txPercentual { get; set; }
+		//	public int? IdFormaPagamento { get; set; }
+		//	public string dsFormaPagamento { get; set; }
+		//}
+
+
+		//public string jsItens { get; set; }
+		//public List<CondPagamentoParcelaVM> ListCondicao
+		//{
+		//	get
+		//	{
+		//		if (string.IsNullOrEmpty(jsItens))
+		//			return new List<CondPagamentoParcelaVM>();
+		//		return JsonConvert.DeserializeObject<List<CondPagamentoParcelaVM>>(jsItens);
+		//	}
+		//	set
+		//	{
+		//		jsItens = JsonConvert.SerializeObject(value);
+		//	}
+		//}
 
 	}
 }

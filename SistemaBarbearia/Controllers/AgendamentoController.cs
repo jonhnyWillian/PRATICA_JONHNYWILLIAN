@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SistemaBarbearia.DAOs.Agendamentos;
+using SistemaBarbearia.DataTables;
+using SistemaBarbearia.Models.Agendamentos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -85,5 +88,71 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
+
+        public JsonResult GetEvents([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        {
+            try
+            {
+                var select = this.Find(null, requestModel.Search.Value);
+
+                var totalResult = select.Count();
+
+                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
+
+                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+       
+
+        public JsonResult DeleteEvent(Agenda agendamento)
+        {
+
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro Removido com sucesso!",
+                model = agendamento
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveEvent(Agenda agendamento)
+        {
+            var agendamentosDAO = new AgendamentosDAO();
+            agendamentosDAO.InsertAgendamento(agendamento);
+            var result = new
+            {
+                type = "success",
+                field = "",
+                message = "Registro Removido com sucesso!",
+                model = agendamento
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        private IQueryable<dynamic> Find(int? id, string text)
+        {
+            var agendaDAO = new AgendamentosDAO();
+            var list = agendaDAO.SelecionarAgendamento();
+            var select = list.Select(u => new
+            {
+                IdAgendamento = u.IdAgenda,
+
+              
+                dtCadastro = u.dtCadastro,
+                dtUltAlteracao = u.dtUltAlteracao
+
+            }).ToList();
+            return select.AsQueryable();
+        }
+
     }
 }

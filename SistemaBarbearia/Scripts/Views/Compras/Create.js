@@ -100,36 +100,35 @@ Compra = function () {
         });
         self.calcTotalProduto();
 
-        //dtParcelas = new tDataTable({
-        //    table: {
-        //        jsItem: "jsParcelas",
-        //        name: "tblParcelas",
-        //        order: [[0, "asc"]],
-        //        columns: [
-        //            { data: "nrParcela" },
-        //            {
-        //                data: null,
-        //                mRender: function (data) {
-        //                    return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        //                }
-        //            },
-        //            {
-        //                data: null,
-        //                mRender: function (data) {
-        //                    return JSONDate(data.dtVencimento);
-        //                }
-        //            },
-        //            { data: "nmFormaPagamento" },
-        //        ]
-        //    },
-        //});
+        dtParcelas = new tDataTable({
+            table: {
+                jsItem: "jsParcelas",
+                name: "tblParcelas",
+                order: [[0, "asc"]],
+                columns: [
+                    { data: "nrParcela" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return JSONDate(data.dtVencimento);
+                        }
+                    },
+                    { data: "nmFormaPagamento" },
+                ]
+            },
+        });
 
-        //if (dtParcelas.length > 0) {
-        //    $("#flFinalizar").prop("checked", true)
-        //    let total = vlTotalCompra;
-        //    let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        //    $("#vlTotal").val(totalFormat);
-        //}
+        if (dtParcelas.length > 0) {          
+            let total = vlTotalCompra;
+            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#vlTotal").val(totalFormat);
+        }
 
     }
 

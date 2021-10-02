@@ -13,64 +13,52 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
     public class CondPagamentoDAO : DataAccess
     {
         #region INSERT UPDATE DELETE
-        public bool InsertCondPagamento(CondPagamento condPagamento)
+        public void InsertCondPagamento(CondPagamento condPagamento)
         {
 
+            Open();
+            SqlTransaction sqlTransaction = sqlconnection.BeginTransaction();
+            SqlCommand command;
             try
             {
-               
+                command = sqlconnection.CreateCommand();
+                command.Transaction = sqlTransaction;
+                command.CommandText = "INSERT INTO CondPagamento (dsCondPag,txJuro,txMulta,dtCadastro)" + " VALUES(@dsCondPag, @txJuro, @txMulta, @dtCadastro)";
 
-                string insertCondPagamento = @"INSERT INTO CondPagamento (dsCondPag,txJuro,txMulta,txDesconto,dtCadastro) 
-                                                                  VALUES(@dsCondPag, @txJuro, @txMulta, @txDesconto, @dtCadastro)";
+                command.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag);
+                command.Parameters.AddWithValue("@txJuro", ((object)condPagamento.txJuro) != DBNull.Value ? ((object)condPagamento.txJuro) : 0);
+                command.Parameters.AddWithValue("@txMulta", ((object)condPagamento.txMulta) != DBNull.Value ? ((object)condPagamento.txMulta) : 0);
+                command.Parameters.AddWithValue("@dtcadastro", ((object)condPagamento.dtCadastro) ?? DBNull.Value);
+                command.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
 
-                string insertCondParcela = @"INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual,txDesconto) 
-                                                                       VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual, @txDesconto)";
-                using (sqlconnection)
+
+                // string sql = "INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual) VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual)";
+
+                var IdCondPag = Convert.ToInt32(command.ExecuteScalar());
+                foreach (var item in condPagamento.CondicaoForma)
                 {
 
-                    Open();
+                    //var insert = string.Format(sql, IdCondPag, item.IdFormaPagamento, item.nrParcela, item.qtdDias, item.txPercentual.ToString().Replace(",", "."));
+                    //command.CommandText = insert;
+                    //command.ExecuteNonQuery();
+                    command = sqlconnection.CreateCommand();
+                    command.Transaction = sqlTransaction;
+                    command.CommandText = "INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual)" + " VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual)";
 
-                    SQL = new SqlCommand(insertCondPagamento, sqlconnection);
-                    SQL.CommandType = CommandType.Text;
-                    SQL.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
-                    SQL.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
-                    SQL.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
-                    SQL.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
-                    SQL.Parameters.AddWithValue("@dtCadastro", condPagamento.dtCadastro = DateTime.Now);
+                    command.Parameters.AddWithValue("@IdCondPag", IdCondPag);
+                    command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);
+                    command.Parameters.AddWithValue("@nrParcela", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
+                    command.Parameters.AddWithValue("@qtdDias", ((object)item.qtdDias) != DBNull.Value ? ((object)item.qtdDias) : 0);
+                    command.Parameters.AddWithValue("@txPercentual", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
 
-  
-                    SqlTransaction sqlTransaction = sqlconnection.BeginTransaction();
-                    SqlCommand sqlCommand = sqlconnection.CreateCommand();
-                    sqlCommand.Transaction = sqlTransaction;
-                    try
-                    {
-                        sqlCommand.CommandText = insertCondParcela;
 
-                        var IdCondPag = Convert.ToInt32(sqlCommand.ExecuteScalar());
-                        foreach (var item in condPagamento.ListCondicao)
-                        {
-                            var itemsql = string.Format(insertCondParcela, condPagamento.IdCondPag, item.IdFormaPagto, item.nrParcela, item.qtdDias, item.txPercentual.ToString().Replace(",", "."));
-                            sqlCommand.CommandText = itemsql;
-                            sqlCommand.ExecuteNonQuery();
-                        }
-                        sqlTransaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        sqlTransaction.Rollback();
-                        throw new Exception(ex.Message);
-                    }
-                    finally
-                    {
-                        sqlconnection.Close();
-                    }
                 }
-                return true;
-               
+                sqlTransaction.Commit();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception("Erro ao Adicionar Novo Condição de Pagamento: " + e.Message);
+                sqlTransaction.Rollback();
+                throw new Exception("Erro ao inserir o Condicao de pagamento: " + ex.Message);
             }
             finally
             {
@@ -89,9 +77,9 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
-                sql.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag.ToUpper());
-                sql.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
-                sql.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
+                //sql.Parameters.AddWithValue( condPagamento.dsCondPag.ToUpper());
+                //sql.Parameters.AddWithValue(ndPagamento.txJuro);
+                //sql.Parameters.AddWithValue(ondPagamento.txMulta);
                 //sql.Parameters.AddWithValue("@txDesconto", condPagamento.txDesconto);
                 //sql.Parameters.AddWithValue("@IdFormaPagamento", condPagamento.formaPagamento.Id);
                 //SQL.Parameters.AddWithValue("@IdCondicaoPagParc", condPagamento.CondPagamentoParcela.id);
@@ -167,15 +155,9 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     {
                         IdCondPag = Convert.ToInt32(Dr["IdCondPag"]),
                         dsCondPag = Convert.ToString(Dr["dsCondPag"]),
-                        txDesconto = Convert.ToDecimal(Dr["txDesconto"]),
-                        txMulta = Convert.ToDecimal(Dr["txMulta"]),
+                        //txDesconto = Convert.ToDecimal(Dr["txDesconto"]),
+                        //txMulta = Convert.ToDecimal(Dr["txMulta"]),
                         txJuro = Convert.ToDecimal(Dr["txJuro"]),
-
-
-
-
-
-
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
@@ -290,5 +272,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             }
         }
 
+
+       
     }
 }

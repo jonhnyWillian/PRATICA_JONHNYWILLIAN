@@ -15,18 +15,16 @@ namespace SistemaBarbearia.DataBase
         protected void Open()
         {
             try
-            {
-                //Outra maneira de criar uma connection string (usando o Web.Config
+            {              
                 sqlconnection = new SqlConnection(WebConfigurationManager.ConnectionStrings["ConString"].ConnectionString);
                 sqlconnection.Open();
             }
             catch (Exception e)
-            {
-                // Caso dê algum problema, enviar uma mensagem informando o erro:
+            {               
                 throw new Exception("Erro ao abrir a conexão: " + e.Message);
             }
         }
-        //Método para fechar a conexão:
+     
         protected void Close()
         {
             try
@@ -37,10 +35,18 @@ namespace SistemaBarbearia.DataBase
                 }
             }
             catch (Exception e)
-            {
-                // Caso dê algum problema, enviar uma mensagem informando o erro:
+            {              
                 throw new Exception("Erro ao fechar a conexão: " + e.Message);
             }
+        }
+
+        protected string FormatString(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = text.ToUpper().Trim();
+            }
+            return text;
         }
     }
 }

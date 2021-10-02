@@ -1,5 +1,4 @@
-﻿
-$(function () {
+﻿$(function () {
 
     var cond = new CondPagamento;
     cond.init();
@@ -25,7 +24,7 @@ CondPagamento = function () {
     this.init = function () {
         dtCondicao = new tDataTable({
             table: {
-                jsItem: "jsItens",
+                jsItem: "Itens_js",
                 name: "tblItens",
                 remove: false,
                 edit: true,

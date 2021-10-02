@@ -71,19 +71,29 @@ namespace SistemaBarbearia.ViewModels.Compras
                 jsProdutos = JsonConvert.SerializeObject(value);
             }
         }
+        public class ParcelasVM
+        {
+            public int? idFormaPag { get; set; }
+            public string dsFormaPagamento { get; set; }
+            public DateTime? dtVencimento { get; set; }
+            public decimal vlParcela { get; set; }
+            public double? nrParcela { get; set; }
+            public string flSituacao { get; set; }
+            public DateTime? dtPagamento { get; set; }
+        }
         public string jsParcelas { get; set; }
-        //public List<Shared.ParcelasVM> ParcelasCompra
-        //{
-        //    get
-        //    {
-        //        if (string.IsNullOrEmpty(jsParcelas))
-        //            return new List<Shared.ParcelasVM>();
-        //        return JsonConvert.DeserializeObject<List<Shared.ParcelasVM>>(jsParcelas);
-        //    }
-        //    set
-        //    {
-        //        jsParcelas = JsonConvert.SerializeObject(value);
-        //    }
-        //}
+        public List<ParcelasVM> ParcelasCompra
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsParcelas))
+                    return new List<ParcelasVM>();
+                return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+            }
+            set
+            {
+                jsParcelas = JsonConvert.SerializeObject(value);
+            }
+        }
     }
 }

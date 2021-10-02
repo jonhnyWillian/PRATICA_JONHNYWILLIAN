@@ -35,12 +35,18 @@ namespace SistemaBarbearia
 
                         ));
 
+            bundles.Add(new ScriptBundle("~/Libs/fullcalendar-5.9.0").Include(
+                        "~/Lib/main.js"
+
+                        ));
+
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
                         "~/Scripts/inputmask/jquery.inputmask.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       
                       "~/Scripts/bootstrap.js",
+                      
                       "~/Scripts/tDataTable.js",
 
                       "~/Scripts/jquery.dataTables.min.js",

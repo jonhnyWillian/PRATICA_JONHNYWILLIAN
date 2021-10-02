@@ -158,7 +158,9 @@
                     url: '@Url.Action("JsDetails", "FormaPagamento")',
                     data: { 'Id': Id },
                     success: function (data) {
-                      
+                        if (!data) {
+                            $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                        }
                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                     },
@@ -385,11 +387,7 @@
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.id);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsFormaPagamento", Prefix)").val(data.dsFormaPagamento);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));
-
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("flSituacao", Prefix)").val(data.flSituacao);               
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {
