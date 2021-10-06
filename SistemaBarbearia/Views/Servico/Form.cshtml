@@ -33,7 +33,7 @@
         @Html.LabelFor(model => model.vlServico, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlServico, "" ,new { @class = "form-control col-md-4 text-right ", @autofocus = "autofocus", @placeholder = "Valor do Serviço" })
+            @Html.TextBoxFor(model => model.vlServico, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
             @Html.ValidationMessageFor(model => model.vlServico, "", new { @class = "text-danger" })
         </div>
     </div>

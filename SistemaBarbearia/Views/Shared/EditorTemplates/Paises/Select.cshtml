@@ -5,7 +5,7 @@
     bool Required = Convert.ToBoolean(ViewData["Required"] ?? true);
     bool OnlySelect = Convert.ToBoolean(ViewData["onlySelect"] ?? true);
     bool LabelVertical = Convert.ToBoolean(ViewData["LabelVertical"]);
-    string Label = Convert.ToString(ViewData["Label"] ?? "Pais");
+    string Label = Convert.ToString(ViewData["Label"] ?? "Países");
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
@@ -20,16 +20,16 @@
                 @Html.Label("", Label)
                 <div class="input-group">
                     <div class="input-group-btn" style="width:15%">
-                        @Html.TextBoxFor(model => model.IdPais, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
+                        @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                     </div>
                     <div class="input-group-btn" style="width:45%">
-                        @Html.TextBoxFor(model => model.nmPais, new { @class = "form-control", Disabled = true })
+                        @Html.TextBoxFor(model => model.text, new { @class = "form-control", Disabled = true })
                     </div>
                     <div class="input-group-btn">
                         <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" 
                           id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                     </div>
-                    @Html.ValidationMessageFor(model => model.IdPais, null, new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i>Países </b></a></li>
                         </ul>
                     </div>
                     <div style="text-align:left">
@@ -72,7 +72,7 @@
                     <div class="panel-heading" style="height: 41px; padding-left:2px;font-weight: bold;">
                         <h3 class="panel-title pull-right"><button type="button" style="opacity: inherit;color: #fff;" class="close" data-dismiss="modal">&times;</button></h3>
                         <ul class="nav panel-tabs" style="width:400px">
-                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Paises </b></a></li>
+                            <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Países </b></a></li>
                         </ul>
                     </div>
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
@@ -93,23 +93,7 @@
                                     @Html.Label("dsSigla", "Sigla", new { @class = "required" })
                                     @Html.TextBox("dsSigla", null, new { @class = "form-control", maxlength = "2", style = "text-transform:uppercase" })
                                 </div>
-                            </div>
-                            @*<div class="form-row isEdit">
-                                    <div class="@Helper.Input3">
-                                        @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
-                                        <div class="input-group-append">
-                                            @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
-                                            <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="@Helper.Input3 ">
-                                        @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
-                                        <div class="input-group">
-                                            @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
-                                            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                            </div>                
                         </div>
                     </div>
 
@@ -148,9 +132,11 @@
                      dataType: 'json',
                      type: 'GET',
                      url: '@Url.Action("JsDetails", "Pais")',
-                     data: { 'Id': IdPais },
+                     data: { 'IdPais': IdPais },
                      success: function (data) {
-
+                         if (!data) {
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+                         }
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)").val(data.IdPais);
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.nmPais);
                      },
@@ -166,11 +152,9 @@
 
     this.getForm = function() {
         var form = {
-                IdPais : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)'),
-                nmPais: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)'),
-                dsSigla: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)'),
-                dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
-                dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
+            IdPais : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)'),
+            nmPais: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)'),
+            dsSigla: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)'),
         }
         return form;
     };
@@ -180,8 +164,6 @@
         form.IdPais.val("");
         form.nmPais.val("");
         form.dsSigla.val("");
-        form.dtCadastro.val("");
-        form.dtUltAlteracao.val("");
         form.nmPais.focus();
     };
 
@@ -279,7 +261,7 @@
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json',
             },
             columns: [
-                { data: "IdPais" },
+                { sClass: "right",data: "IdPais" },
                 { data: "nmPais" },
                 {
                     sortable: false,
@@ -368,20 +350,19 @@
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Pais")',
-            data: { 'IdP': Id },
+            data: { 'IdPais': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
-                if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
+               if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.Text);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)").val(data.IdPais);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmPais", Prefix)").val(data.nmPais);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsSigla", Prefix)").val(data.dsSigla);
-                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
+
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

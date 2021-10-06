@@ -60,8 +60,8 @@ namespace SistemaBarbearia
                       "~/Scripts/Functions.js",
                       "~/Scripts/functionsb3.js",
                       "~/Scripts/jquery.mask.js",
-                      "~/Scripts/bootstrap-notify.js"
-
+                      "~/Scripts/bootstrap-notify.js",
+                      "~/Scripts/scriptsMain.js"
                       ));
 
         }

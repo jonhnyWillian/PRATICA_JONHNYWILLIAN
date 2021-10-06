@@ -188,7 +188,7 @@ namespace SistemaBarbearia.DAOs.Paises
             }
         }
 
-        protected string BuscarPais(int? IdPais, string nmPais)
+        protected string BuscarPais(int? IdPais, string text)
         {
             var sqlSelectPais = string.Empty;
             var where = string.Empty;
@@ -197,9 +197,9 @@ namespace SistemaBarbearia.DAOs.Paises
             {
                 where = "WHERE IdPais = " + IdPais;
             }
-            if (!string.IsNullOrEmpty(nmPais))
+            if (!string.IsNullOrEmpty(text))
             {
-                var query = nmPais.Split(' ');
+                var query = text.Split(' ');
                 foreach (var item in query)
                 {
                     where += "OR nmPais LIKE '%'" + item + "'%'";
@@ -210,12 +210,12 @@ namespace SistemaBarbearia.DAOs.Paises
             return sqlSelectPais;
         }
 
-        public List<SelectPaisVM> SelectPais(int? Id, string Text)
+        public List<SelectPaisVM> SelectPais(int? Id, string text)
         {
             try
             {
 
-                var sqlSelectPais = this.BuscarPais(Id, Text);
+                var sqlSelectPais = this.BuscarPais(Id, text);
                 Open();
                 SQL = new SqlCommand(sqlSelectPais, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -225,11 +225,11 @@ namespace SistemaBarbearia.DAOs.Paises
                 {
                     var pais = new SelectPaisVM
                     {
-                        IdPais = Convert.ToInt32(Dr["IdPais"]),
-                        nmPais = Convert.ToString(Dr["nmPais"]),                       
-                        dsSigla = Convert.ToString(Dr["dsSigla"]),
-                        dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
-                        dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        Id = Convert.ToInt32(Dr["IdPais"]),
+                        text = Convert.ToString(Dr["nmPais"]),                       
+                        dsSigla = Convert.ToString(Dr["dsSigla"])
+                        //dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
+                        //dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
 
                     list.Add(pais);

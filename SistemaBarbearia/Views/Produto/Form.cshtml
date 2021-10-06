@@ -56,7 +56,7 @@
         @Html.LabelFor(model => model.vlCompra, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlCompra, new { @class = "form-control col-md-8 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor de Compra" })
+            @Html.TextBoxFor(model => model.vlCompra, new { @class = "form-control money", placeholder = "0,00" })
             @Html.ValidationMessageFor(model => model.vlCompra, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -64,7 +64,7 @@
         @Html.LabelFor(model => model.vlCusto, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control col-md-8 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor de Custo" })
+            @Html.TextBoxFor(model => model.vlCusto, new { @class = "form-control money", placeholder = "0,00" })
             @Html.ValidationMessageFor(model => model.vlCusto, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -72,7 +72,7 @@
         @Html.LabelFor(model => model.vlVenda, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control col-md-8 text-right", maxlength = "50", @autofocus = "autofocus", @placeholder = "Valor de venda" })
+            @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control money", placeholder = "0,00" })
             @Html.ValidationMessageFor(model => model.vlVenda, "", new { @class = "text-danger" })
         </div>
     </div>

@@ -7,18 +7,17 @@
 
 }
 <div class="container">
-    <div class="form-group">
-        <div class="row">
-            <h1 class="container">Consultar Condição Pagamento</h1>
-        </div>
-        <a class="btn btn-primary " href="@Url.Action("Create", "CondPagamento")"><i class="fa fa-plus">Adicionar</i></a>
-    </div>
 
+    <ul class="breadcrumb breadcrumb-arrow">
+        <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+        <li class="active">Consultar Condições de Pagamento</li>
+    </ul>
+    <a href="@Url.Action("Create", "CondPagamento" )" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-plus"></i> Adicionar</a>
     <table id="listaCondPagamento" class="table table-striped table-bordered" style="width:100%">
         <thead class="table-dark">
             <tr>
                 <th export="true" style="width:10%">Codigo</th>
-                <th export="true" style="width:60%">Condição Pagamento</th>                
+                <th export="true" style="width:60%">Condição Pagamento</th>
                 <th export="true" style="width:10%">Opções</th>
             </tr>
         </thead>
@@ -45,9 +44,9 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/Views/CondPagamentos/CondPagamento.js")
-    @Scripts.Render("~/Scripts/jquery.dataTables.min.js")
+    @*@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
     @Styles.Render("~/Content/bootstrap.min.css")
     @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
-    @Styles.Render("~/Content/bootstrap.css")
+    @Styles.Render("~/Content/bootstrap.css")*@
 
 }

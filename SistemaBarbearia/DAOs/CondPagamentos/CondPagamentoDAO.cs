@@ -30,22 +30,16 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 command.Parameters.AddWithValue("@txMulta", ((object)condPagamento.txMulta) != DBNull.Value ? ((object)condPagamento.txMulta) : 0);
                 command.Parameters.AddWithValue("@dtcadastro", ((object)condPagamento.dtCadastro) ?? DBNull.Value);
                 command.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
-
-
-                // string sql = "INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual) VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual)";
-
-                var IdCondPag = Convert.ToInt32(command.ExecuteScalar());
+                
+                int idRetorno = Convert.ToInt32(command.ExecuteScalar());
                 foreach (var item in condPagamento.CondicaoForma)
                 {
-
-                    //var insert = string.Format(sql, IdCondPag, item.IdFormaPagamento, item.nrParcela, item.qtdDias, item.txPercentual.ToString().Replace(",", "."));
-                    //command.CommandText = insert;
-                    //command.ExecuteNonQuery();
+                    
                     command = sqlconnection.CreateCommand();
                     command.Transaction = sqlTransaction;
                     command.CommandText = "INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual)" + " VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual)";
 
-                    command.Parameters.AddWithValue("@IdCondPag", IdCondPag);
+                    command.Parameters.AddWithValue("@IdCondPag", idRetorno);
                     command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);
                     command.Parameters.AddWithValue("@nrParcela", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
                     command.Parameters.AddWithValue("@qtdDias", ((object)item.qtdDias) != DBNull.Value ? ((object)item.qtdDias) : 0);

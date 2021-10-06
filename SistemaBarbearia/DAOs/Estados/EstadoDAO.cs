@@ -25,7 +25,7 @@ namespace SistemaBarbearia.DAOs.Estados
 
                 SQL.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 SQL.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                SQL.Parameters.AddWithValue("@IdPais", estado.pais.IdPais);
+                SQL.Parameters.AddWithValue("@IdPais", estado.pais.Id);
                 SQL.Parameters.AddWithValue("@dtCadastro", estado.dtCadastro = DateTime.Now);
 
                 int i = SQL.ExecuteNonQuery();
@@ -61,7 +61,7 @@ namespace SistemaBarbearia.DAOs.Estados
                 sql.Parameters.AddWithValue("@IdEstado", estado.IdEstado);
                 sql.Parameters.AddWithValue("@nmEstado", estado.nmEstado.ToUpper());
                 sql.Parameters.AddWithValue("@dsUF", estado.dsUF.ToUpper());
-                sql.Parameters.AddWithValue("@IdPais", estado.pais.IdPais);
+                sql.Parameters.AddWithValue("@IdPais", estado.pais.Id);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", estado.dtUltAlteracao = DateTime.Now);
 
                 int i = sql.ExecuteNonQuery();

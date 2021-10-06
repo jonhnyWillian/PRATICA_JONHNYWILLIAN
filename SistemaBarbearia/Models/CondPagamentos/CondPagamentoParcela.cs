@@ -14,7 +14,7 @@ namespace SistemaBarbearia.Models.CondPagamento
         public int? IdFormaPagamento { get; set; }
         public string dsFormaPagamento { get; set; }
 
-        public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM FormaPagatento { get; set; }
+        public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM FormaPagamento { get; set; }
 
         public CondPagamento CondicaoPagamento { get; set; }
     }

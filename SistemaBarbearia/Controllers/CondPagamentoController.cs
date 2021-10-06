@@ -50,7 +50,7 @@ namespace SistemaBarbearia.Controllers
 
                     return RedirectToAction("index");
                 }
-                catch (Exception ex)
+                catch 
                 {
                     return View(condPagamento);
                 }

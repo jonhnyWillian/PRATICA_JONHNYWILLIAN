@@ -54,7 +54,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 		{
 			public int? IdCondPag { get; set; }
 			public short? nrParcela { get; set; }
-			public short? qtDias { get; set; }
+			public short? qtdDias { get; set; }
 			public decimal? txPercentual { get; set; }
 			public int? idFormaPagamento { get; set; }
 			public string dsFormaPagamento { get; set; }
@@ -71,11 +71,11 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 			{
 				bean.CondicaoForma.Add(new CondPagamentoParcela
 				{
-					IdCondPag = item.IdCondPag ?? 0,
-					nrParcela = item.nrParcela ?? 0,
-					qtdDias = item.qtDias ?? 0,
-					txPercentual = item.txPercentual ?? 0,
-					IdFormaPagamento = item.idFormaPagamento ?? 0
+					IdCondPag = item.IdCondPag ,
+					nrParcela = item.nrParcela ,
+					qtdDias = item.qtdDias ,
+					txPercentual = item.txPercentual ,
+					IdFormaPagamento = item.idFormaPagamento 
 				});
 			}
 

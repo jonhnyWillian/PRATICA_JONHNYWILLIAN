@@ -118,9 +118,9 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <div class="col-md-4"  >
+        <div class="col-md-4 fisica"  >
             @Html.LabelFor(model => model.Fisica.nrCPF, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Fisica.nrCPF, new { id = "cpf", @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "CPF", @mask = "999.999.999-99" })
+            @Html.TextBoxFor(model => model.Fisica.nrCPF, new { id = "cpf", @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "CPF" })
             @Html.ValidationMessageFor(model => model.Fisica.nrCPF, "", new { @class = "text-danger", maxlength = "14" })
         </div>
         <div class="col-md-4">
@@ -148,7 +148,7 @@
         @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
         <div class="input-group-append">
             <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.dtCadastro, new { @class = "form-control datepicker date", disabled = true })
             @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -156,7 +156,7 @@
         @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
         <div class="input-group-append">
             <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.TextBoxFor(model => model.dtUltAlteracao, new { @class = "form-control datepicker date", disabled = true })
             @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
         </div>
     </div>

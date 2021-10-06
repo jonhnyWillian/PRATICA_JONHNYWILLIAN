@@ -33,7 +33,7 @@ namespace SistemaBarbearia.Controllers
                 IdPais = obj.IdPais
             };
             var objPais = DAOPais.GetPais(result.IdPais);
-            result.Pais = new ViewModels.Paises.SelectPaisVM { IdPais = objPais.IdPais, nmPais = objPais.nmPais };
+            result.Pais = new ViewModels.Paises.SelectPaisVM { Id = objPais.IdPais, text = objPais.nmPais };
             return View(result);
         }
         #endregion
@@ -67,7 +67,7 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "UF do Estado não pode ser em branco");
             }
-            if(estado.pais.IdPais == 0)
+            if(estado.pais.Id == 0)
             {
                 ModelState.AddModelError("", "Campo Pais não pode ser em branco");
             }

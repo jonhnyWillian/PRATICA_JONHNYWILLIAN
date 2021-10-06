@@ -182,11 +182,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? Id, string Text)
+        public JsonResult JsDetails(int? IdPais, string nmPais)
         {
             try
             {
-                var result = this.Find(Id, Text).FirstOrDefault();
+                var result = this.Find(IdPais, nmPais).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -198,17 +198,16 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? Id, string Text)
+        private IQueryable<dynamic> Find(int? IdPais, string text)
         {
             var paisDAO = new PaisDAO();
-            var list = paisDAO.SelectPais(Id, Text);
+            var list = paisDAO.SelectPais(IdPais, text);
             var select = list.Select(u => new
             {
-                IdPais = u.IdPais,
-                nmPais = u.nmPais,
+                IdPais = u.Id,
+                nmPais = u.text,
                 dsSigla = u.dsSigla,
-                dtCadastro = u.dtCadastro,
-                dtUltAlteracao = u.dtUltAlteracao
+               
             }).OrderBy(u => u.nmPais).ToList();
             return select.AsQueryable();
         }
