@@ -3,33 +3,44 @@
 @{
     ViewBag.Title = "Novo registro";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
     ViewBag.readOnly = false;
 }
-<div class="container-fluid">
+@using (Html.BeginForm())
+{
+    <div class="container-fluid">
 
-    @using (Html.BeginForm())
-    {
-        <div class="container">
-            <ul class="breadcrumb breadcrumb-arrow">
-                <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
-                <li class="active">Cadastro de Compras</li>
-            </ul>
-            <div class="form-horizontal">
-                <h6 class="text-right">Campos obrigatório *</h6>
-                @Html.Partial("Form", Model)
+        @using (Html.BeginForm())
+        {
+            <div class="container">
+                <ul class="breadcrumb breadcrumb-arrow">
+                    <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+                    <li class="active">Cadastro de Compras</li>
+                </ul>
+                <div class="form-horizontal">
+                    @Html.RenderFlashMessage()
+                    @Html.CustomValidationSummary(true, true, SistemaBarbearia.Helper.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
+                    <h6 class="text-right">Campos obrigatório *</h6>
+                    @Html.Partial("Form", Model)
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
+                </div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Salvar</button>
-                <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>
-            </div>
-        </div>
 
 
-    }
-</div>
+        }
+    </div>
+
+}
 @section Scripts {
+    <script type="text/javascript">
+        var Action = {
+            verificaNF: "@Url.Action("JsVerificaNF", "Compra")",
+            getParcelas: "@Url.Action("JsGetParcelas", "CondPagamento")"
+        }
+    </script>
     @Scripts.Render("~/Scripts/Views/Compras/Create.js")
 
 }

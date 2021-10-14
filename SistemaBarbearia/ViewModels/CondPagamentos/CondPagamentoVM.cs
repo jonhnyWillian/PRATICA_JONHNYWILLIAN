@@ -17,27 +17,27 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Condição Pagamento")]
 		[StringLength(50, MinimumLength = 3)]
-		[Required(ErrorMessage = "Campo Condição Pagamento não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Condição Pagamento não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public string dsCondPag { get; set; }
 
 		[Display(Name = "Juro")]		
-		[Required(ErrorMessage = "Campo Juro não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Juro não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal txJuro { get; set; }
 
 		[Display(Name = "Multa")]
-		[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal? txMulta { get; set; }
 
 		[Display(Name = "Desconto")]
-		[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal txDesconto { get; set; }
 
 		[Display(Name = "Dias")]
-		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public short? qtdDias { get; set; }
 
 		[Display(Name = "Porcentagem (%)")]
-		[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		//[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal? txPercentual { get; set; }
 
 
@@ -65,49 +65,53 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 			bean.dsCondPag = this.dsCondPag;		
 			bean.txJuro = this.txJuro ;
 			bean.txMulta = this.txMulta ?? 0;
+			bean.dtCadastro = Convert.ToDateTime(this.dtCadastro);
+			bean.dtUltAlteracao = Convert.ToDateTime(this.dtUltAlteracao);
+			bean.CondicaoForma = this.ListCondicao;
 
-
-			foreach (var item in Itens.Get)
-			{
-				bean.CondicaoForma.Add(new CondPagamentoParcela
-				{
-					IdCondPag = item.IdCondPag ,
-					nrParcela = item.nrParcela ,
-					qtdDias = item.qtdDias ,
-					txPercentual = item.txPercentual ,
-					IdFormaPagamento = item.idFormaPagamento 
-				});
-			}
 
 			return bean;
 		}
+      
 
+        public string jsItens { get; set; }
+        public List<CondPagamentoParcela> ListCondicao
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsItens))
+                    return new List<CondPagamentoParcela>();
+                return JsonConvert.DeserializeObject<List<CondPagamentoParcela>>(jsItens);
+            }
+            set
+            {
+                jsItens = JsonConvert.SerializeObject(value);
+            }
+        }
 
-		//public class CondPagamentoParcelaVM
-		//{
-
-		//	public short? nrParcela { get; set; }
-		//	public short? qtdDias { get; set; }
-		//	public decimal? txPercentual { get; set; }
-		//	public int? IdFormaPagamento { get; set; }
-		//	public string dsFormaPagamento { get; set; }
-		//}
-
-
-		//public string jsItens { get; set; }
-		//public List<CondPagamentoParcelaVM> ListCondicao
-		//{
-		//	get
-		//	{
-		//		if (string.IsNullOrEmpty(jsItens))
-		//			return new List<CondPagamentoParcelaVM>();
-		//		return JsonConvert.DeserializeObject<List<CondPagamentoParcelaVM>>(jsItens);
-		//	}
-		//	set
-		//	{
-		//		jsItens = JsonConvert.SerializeObject(value);
-		//	}
-		//}
+		public class ParcelasVM
+		{
+			public int? idFormaPag { get; set; }
+			public string dsFormaPagamento { get; set; }
+			public DateTime? dtVencimento { get; set; }
+			public decimal vlParcela { get; set; }
+			public double? nrParcela { get; set; }
+			public DateTime? dtPagamento { get; set; }
+		}
+		public string jsParcelas { get; set; }
+		public List<ParcelasVM> ParcelasCompra
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(jsParcelas))
+					return new List<ParcelasVM>();
+				return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+			}
+			set
+			{
+				jsParcelas = JsonConvert.SerializeObject(value);
+			}
+		}
 
 	}
 }

@@ -54,7 +54,7 @@ namespace SistemaBarbearia.Controllers
             var objCidade = DAOCidade.GetCidade(result.idCidade);
             result.Cidade = new ViewModels.Cidades.SelectCidadeVM { Id = objCidade.IdCidade, Text = objCidade.nmCidade };
             var objCondPag = condPagamentoDAO.GetCondPagamento(result.idCondPagamento);
-            result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdModelPai, Text = objCondPag.dsCondPag };
+            result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdCondPag, Text = objCondPag.dsCondPag };
             return View(result);
         }
         #endregion

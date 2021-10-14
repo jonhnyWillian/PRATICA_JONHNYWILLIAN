@@ -12,6 +12,31 @@ namespace SistemaBarbearia.Controllers
 {
     public class CondPagamentoController : Controller
     {
+
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            var condPag = new CondPagamentoDAO();
+            
+            var obj = condPag.GetCondPagamento(id);
+            var result = new CondPagamentoVM
+            {
+                IdModelPai = obj.IdCondPag,
+                dsCondPag = obj.dsCondPag,
+                txJuro = obj.txJuro,
+                txMulta = obj.txMulta,
+
+                ListCondicao = obj.CondicaoForma,
+
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao,
+            };          
+            return View(result);
+        }
+        #endregion
+
+
         public ActionResult Index()
         {
             var condPag = new CondPagamentoDAO();
@@ -21,8 +46,8 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Details(int id)
         {
-            var condPag = new CondPagamentoDAO();
-            return View(condPag.GetCondPagamento(id));
+           
+            return this.GetView(id);
         }
 
         public ActionResult Create()
@@ -55,38 +80,17 @@ namespace SistemaBarbearia.Controllers
                     return View(condPagamento);
                 }
             }
-            return View(condPagamento);
-            //if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
-            //{
-            //    ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
-            //}       
-            //try
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var condPag = new CondPagamentoDAO();
-
-            //        condPag.InsertCondPagamento(condPagamento);
-
-            //        return RedirectToAction("Index");
-
-            //    }
-            //    return View();
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            return View(condPagamento);            
         }
 
         public ActionResult Edit(int id)
         {
-            var condPag = new CondPagamentoDAO();
-            return View(condPag.GetCondPagamento(id));
+
+            return this.GetView(id);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, CondPagamento condPagamento)
+        public ActionResult Edit(int id, CondPagamentoVM condPagamento)
         {
             if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
             {
@@ -97,9 +101,13 @@ namespace SistemaBarbearia.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var condPag = new CondPagamentoDAO();
+                    var dao = new CondPagamentoDAO();
+                    var obj = dao.GetCondPagamento(id);
 
-                    condPag.UpdateCondPagamento(condPagamento);
+                    var bean = condPagamento.GetPagamento(obj);
+                    
+                    bean.dtUltAlteracao = DateTime.Now;
+                    dao.UpdateCondPagamento(bean);
 
                     return RedirectToAction("Index");
 
@@ -114,17 +122,20 @@ namespace SistemaBarbearia.Controllers
 
         public ActionResult Delete(int id)
         {
-            var condPag = new CondPagamentoDAO();
-            return View(condPag.GetCondPagamento(id));
+          
+            return this.GetView(id);
         }
 
         [HttpPost]
-        public ActionResult Delete(int id, CondPagamento condPagamento)
+        public ActionResult Delete(int id, CondPagamentoVM condPagamento)
         {
             try
             {
-                var condPag = new CondPagamentoDAO();
-                condPag.DeleteCondPagamento(id);
+                var bean = condPagamento.GetPagamento(new CondPagamento());
+                var dao = new CondPagamentoDAO();
+                dao.DeleteCondPagamento(condPagamento.IdModelPai);
+
+
                 return RedirectToAction("Index");
             }
             catch
@@ -225,6 +236,58 @@ namespace SistemaBarbearia.Controllers
 
             }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
+        }
+
+
+        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal vlTotal, DateTime? dtIiniParcela)
+        {
+            var dao = new CondPagamentoDAO();
+            var cond = dao.GetCondPagamento(idCondicaoPagamento);
+            var lista = cond.CondicaoForma.OrderBy(k => k.nrParcela);
+
+            var parcelas = new List<CondPagamentoVM.ParcelasVM>();
+            var dtinicio = DateTime.Now;
+            if(dtIiniParcela != null)
+            {
+                dtinicio = dtIiniParcela.GetValueOrDefault();
+            }
+            foreach (var item in lista)
+            {
+                var itemParcelas = new CondPagamentoVM.ParcelasVM
+                {
+                    nrParcela = item.nrParcela,
+                    dtVencimento = dtinicio.AddDays((double)item.qtdDias),
+                    idFormaPag = item.IdFormaPagamento,
+                    dsFormaPagamento = item.dsFormaPagamento,
+                    vlParcela = decimal.Round(((item.txPercentual / 100) * vlTotal), 2)
+                };
+                parcelas.Add(itemParcelas);
+            }
+            var totalParcelas = parcelas.Sum(k => k.vlParcela);
+            if(totalParcelas != vlTotal)
+            {
+                if(totalParcelas < vlTotal)
+                {
+                    var dif = vlTotal - totalParcelas;
+                    var list = parcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela + dif;
+                    parcelas = list.ToList();
+                }
+                if (totalParcelas > vlTotal)
+                {
+                    var dif = totalParcelas - vlTotal;
+                    var list = parcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela - dif;
+                    parcelas = list.ToList();
+                }
+            }
+            var result = new
+            {
+                type = "success",
+                message = "Parcelas geradas com sucesso!",
+                parcelas = parcelas
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

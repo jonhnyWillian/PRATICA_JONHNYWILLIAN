@@ -10,7 +10,7 @@ namespace SistemaBarbearia.ViewModels.Fornecedores
 {
     public class SelectFornecedorVM
     {
-        public int IdFornecedor { get; set; }
+        public int? IdFornecedor { get; set; }
 
         public string nmNome { get; set; }
      

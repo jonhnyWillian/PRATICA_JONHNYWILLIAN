@@ -168,6 +168,7 @@
     <Compile Include="DAOs\Cargos\CargoDAO.cs" />
     <Compile Include="DAOs\Cidades\CidadeDAO.cs" />
     <Compile Include="DAOs\Clientes\ClienteDAO.cs" />
+    <Compile Include="DAOs\Compras\CompraDAO.cs" />
     <Compile Include="DAOs\CondPagamentos\CondPagamentoDAO.cs" />
     <Compile Include="DAOs\Estados\EstadoDAO.cs" />
     <Compile Include="DAOs\FormaPagamentos\FormaPagamentoDAO.cs" />

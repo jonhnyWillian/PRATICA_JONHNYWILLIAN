@@ -66,7 +66,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                 Open();
                 string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd,
                                                             codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto, vlVenda = @vlVenda,
-                                                            IdCategoria = @IdCategoria, idFornecedor = @idFornecedor dtUltAlteracao = @dtUltAlteracao  
+                                                            IdCategoria = @IdCategoria, idFornecedor = @idFornecedor, dtUltAlteracao = @dtUltAlteracao  
 
                                                            WHERE IdProduto = " + produto.IdProduto;
                 SqlCommand sql = new SqlCommand(updateProduto, sqlconnection);
@@ -226,7 +226,7 @@ namespace SistemaBarbearia.DAOs.Produtos
 
 
 
-        protected string BuscarProduto(int? id, string text)
+        protected string BuscarProduto(int? id, string text, int? idFornecedor)
         {
             var sqlSelectProduto = string.Empty;
             var where = string.Empty;
@@ -242,18 +242,36 @@ namespace SistemaBarbearia.DAOs.Produtos
                 {
                     where += "OR dsProduto LIKE '%'" + item + "'%'";
                 }
-                where = "WHERE" + where.Remove(0, 3);
+               
             }
-            sqlSelectProduto = @"SELECT * FROM Produto " + where;
+            if (idFornecedor != null)
+            {
+                where += " AND Fornecedor.IdFornecedor = " + idFornecedor;
+            }
+            if (!string.IsNullOrEmpty(where))
+                where = " WHERE " + where.Remove(0, 4);
+            sqlSelectProduto = @"SELECT 					                       
+			                        Produto.IdProduto as ID_Produto,
+                                    Produto.dsProduto as nome_produto,
+			                        Produto.nrQtd as qtd_produto,
+			                        Produto.vlCusto as vlCusto_Produto,
+			                        Produto.vlVenda as vlVenda_Produto,
+			                        Produto.dtCadastro as dtCadastro,
+			                        Produto.dtUltAlteracao as dtUltAlteracao,
+			                        Fornecedor.IdFornecedor as ID_fornecedor,
+			                        Fornecedor.nmNome as nome_fornecedor	
+	                        FROM Produto
+		                        INNER JOIN Fornecedor on Produto.idFornecedor = Fornecedor.IdFornecedor " + where;
+
             return sqlSelectProduto;
         }
 
-        public List<SelectProdutoVM> SelectProduto(int? id, string nmNome)
+        public List<SelectProdutoVM> SelectProduto(int? id, string text, int? idFornecedor)
         {
             try
             {
 
-                var sqlSelectProduto = this.BuscarProduto(id, nmNome);
+                var sqlSelectProduto = this.BuscarProduto(id, text, idFornecedor);
                 Open();
                 SQL = new SqlCommand(sqlSelectProduto, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -263,8 +281,9 @@ namespace SistemaBarbearia.DAOs.Produtos
                 {
                     var produto = new SelectProdutoVM
                     {
-                        IdProduto = Convert.ToInt32(Dr["idProduto"]),
-                        dsProduto = Convert.ToString(Dr["dsProduto"]),
+                        IdProduto = Convert.ToInt32(Dr["ID_Produto"]),
+                        dsProduto = Convert.ToString(Dr["nome_produto"]),
+                        vlVenda = Convert.ToDecimal(Dr["vlVenda_Produto"])
                     };
 
                     list.Add(produto);

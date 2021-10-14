@@ -48,5 +48,14 @@ namespace SistemaBarbearia.DataBase
             }
             return text;
         }
+        protected string FormatDate(DateTime? data)
+        {
+            var result = string.Empty;
+            if (data != null)
+            {
+                result = "'" + data.Value.ToString("yyyy-MM-dd") + "'";
+            }
+            return result;
+        }
     }
 }

@@ -9,29 +9,39 @@
     string classLabel = Convert.ToString(ViewData["classLabel"] ?? Helper.Input12);
     string classForm = Convert.ToString(ViewData["classForm"] ?? Helper.Input12);
     var Prefix = Html.ClientPrefixName().ToString();
+    var flParcela = Convert.ToString(ViewData["flParcela"]);
 }
 
 @Html.Hidden("isEdit")
 
-<div class="row">
+<div class="form-row">
     <div class="col-md-12">
-        <div class="form-group">
-            @Html.Label("", Label)
-            <div class="input-group">
-                <div class="input-group-btn" style="width:15%">
-                    @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
-                </div>
-                <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
-                </div>
-                <div class="input-group-btn">
-                    <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
-                </div>
-                @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
+
+        @Html.Label("", Label)
+        <div class="input-group">
+            <div class="input-group-btn" style="width:15%">
+                @Html.TextBoxFor(model => model.Id, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
             </div>
+            <div class="input-group-btn" style="width:45%">
+                @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
+            </div>
+            <div class="input-group-btn">
+                <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
+            </div>
+            @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
+
+
         </div>
     </div>
 </div>
+@if (flParcela == "S")
+{
+    @Html.Hidden("flParcela")
+    <div class="@Helper.Input2">
+        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)" type="button" class="btn btn-dark btn-lg" style="margin-top:34px; font-size:14px; width:150px; height:38px" title="Gerar parcelas"><b> Gerar parcelas</b> <i class="fa fa-search"></i></button>
+    </div>
+}
+
 <div id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -97,23 +107,6 @@
                                 </div>
                             </div>
 
-                            @*<div class="form-row isEdit">
-                                <div class="@Helper.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
-                                    <div class="input-group-append">
-                                        @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
-                                        <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="@Helper.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data Ult. Alteração", new { @class = "required" })
-                                    <div class="input-group">
-                                        @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
-                                        <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
-                                </div>
-                            </div>*@
                         </div>
                     </div>
 
@@ -128,6 +121,7 @@
         </div>
     </div>
 </div>
+@Scripts.Render("~/Scripts/bootstrap-notify.js")
 @Html.AddScriptBlock(
 @<script type="text/javascript">
 
@@ -146,6 +140,7 @@
             if (Id == "") {
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
             } else {
                 $.ajax({
                     dataType: 'json',
@@ -153,9 +148,13 @@
                     url: '@Url.Action("JsDetails", "CondPagamento")',
                     data: { 'Id': Id },
                     success: function (data) {
-
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
+                        if (!data) {
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                             $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', true)
+                        }
+                        SelectCondPagamento(data)
+                        @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);*@
                     },
                     error: function (err) {
                         alert(err);
@@ -171,7 +170,7 @@
         var form = {
                 Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
                 dsCondPag: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)'),
-                
+
                 dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
                 dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
         }
@@ -202,7 +201,7 @@
         var model = {
             Id: form.Id.val(),
             dsCondPag: form.dsCondPag.val(),
-           
+
         }
         return model;
     };
@@ -355,10 +354,17 @@
 
     };
 
+
+    function loadCondicaoPagamento(data) {
+        $(document).trigger('@SistemaBarbearia.Helper.SelectFunctions.getInputId(Prefix, "AfterLoad")', data);
+    };
+
     function SelectCondPagamento(data) {
+        loadCondicaoPagamento(data)
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)").attr('disabled', false);
         return false;
     };
 
@@ -378,7 +384,7 @@
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.Text);
-                
+
                 @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
 
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@

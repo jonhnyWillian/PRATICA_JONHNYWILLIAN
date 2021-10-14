@@ -14,8 +14,6 @@
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-
-
         },
        
        /* initialDate: '2020-09-25',*/
@@ -31,7 +29,7 @@
         selectable: true,
         select: function (start, end) {
             selectedEvent = {
-                idAgenda: 0,
+                IdModelPai: 0,
                 dtAgendamento: start,
                 title: '',
                 description: '',
@@ -61,7 +59,7 @@
         editable: true,
         eventDrop: function (event) {
             var data = {
-                idAgenda: event.idAgenda,
+                IdModelPai: event.IdModelPai,
            
                 Subject: event.title,
                 Start: event.start.format('DD/MM/YYYY HH:mm A'),
@@ -85,7 +83,7 @@
             $.ajax({
                 type: "POST",
                 url: '/Agendamento/DeleteEvent',
-                data: { 'idAgenda': selectedEvent.idAgenda },
+                data: { 'IdModelPai': selectedEvent.IdModelPai },
                 success: function (data) {
                     if (data.status) {
                         //Refresh the calender
@@ -115,7 +113,7 @@
 
     function openAddEditForm() {
         if (selectedEvent != null) {
-            $('#idAgenda').val(selectedEvent.idAgenda);          
+            $('#IdModelPai').val(selectedEvent.IdModelPai);          
             //$('#txtStart').val(selectedEvent.start.format('DD/MM/YYYY HH:mm A'));     
             $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('DD/MM/YYYY HH:mm A') : '');
             $('#txtDescription').val(selectedEvent.description);

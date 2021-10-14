@@ -41,18 +41,19 @@ namespace SistemaBarbearia.Controllers
             var objCategoria = categoria.GetCategoria(result.IdCategoria);
             result.categoria = new ViewModels.Categorias.SelectCategoriaVM { Id = objCategoria.IdCategoria, Text = objCategoria.dsCategoria };
             var objFornecedor = fornecedor.GetFornecedor(result.IdFornecedor);
-            result.fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM { IdFornecedor = objCategoria.IdCategoria, nmNome = objFornecedor.nmNome };
+            result.fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM { IdFornecedor = objFornecedor.IdFornecedor, nmNome = objFornecedor.nmNome };
             return View(result);
         }
 
-        private IQueryable<dynamic> Find(int? Id, string Text)
+        private IQueryable<dynamic> Find(int? Id, string Text, int? IdFornecedor)
         {
             var produtoDAO = new ProdutoDAO();
-            var list = produtoDAO.SelectProduto(Id, Text);
+            var list = produtoDAO.SelectProduto(Id, Text, IdFornecedor);
             var select = list.Select(u => new
             {
                 IdProduto = u.IdProduto,
-                dsProduto = u.dsProduto
+                dsProduto = u.dsProduto,
+                vlVenda = u.vlVenda
 
             }).OrderBy(u => u.dsProduto).ToList();
             return select.AsQueryable();
@@ -172,11 +173,12 @@ namespace SistemaBarbearia.Controllers
         #endregion
 
         #region Json
-        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel, int? IdFornecedor)
         {
             try
             {
-                var select = this.Find(null, requestModel.Search.Value);
+                IdFornecedor = IdFornecedor == 0 ? null : IdFornecedor;
+                var select = this.Find(null, requestModel.Search.Value, IdFornecedor);
 
                 var totalResult = select.Count();
 
@@ -197,9 +199,9 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
-                var produtoDAO = new ProdutoDAO();
-                IQueryable<dynamic> lista = produtoDAO.SelecionarProduto().Select(u => new { IdProduto = u.IdProduto, dsProduto = u.dsProduto }).AsQueryable();
-                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
+                
+                var select = this.Find(null, q, null);
+                return Json(new JsonSelect<object>(select, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -238,11 +240,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? Id, string Text)
+        public JsonResult JsDetails(int? Id, string Text, int? IdFornecedor)
         {
             try
             {
-                var result = this.Find(Id, Text).FirstOrDefault();
+                var result = this.Find(Id, Text, IdFornecedor).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);

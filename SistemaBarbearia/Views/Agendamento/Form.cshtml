@@ -55,7 +55,20 @@
                 </div>
                 <div class="modal-body">
                     <form class="col-md-12 form-horizontal">
-                        <input type="hidden" id="idAgenda" value="0" />
+                        @if (action != "create")
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm())
+                                        {
+                                            @Html.LabelFor(e => e.IdModelPai, new { @class = "control-label required" })
+                                            @Html.TextBoxFor(model => model.IdModelPai, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }                       
                         <div class="row">
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.dtAgendamento, htmlAttributes: new { @class = "control-label" })

@@ -24,7 +24,7 @@ CondPagamento = function () {
     this.init = function () {
         dtCondicao = new tDataTable({
             table: {
-                jsItem: "Itens_js",
+                jsItem: "jsItens",
                 name: "tblItens",
                 remove: false,
                 edit: true,
@@ -204,6 +204,12 @@ CondPagamento = function () {
         } else {
             dtCondicao.addItem(data);
         }
+    };
+
+    this.removeParcelas = function () {
+        self.Limpar();
+        self.dtCondicao.data = null;
+        self.calcPorcentagem();
     };
 }
 

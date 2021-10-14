@@ -10,7 +10,9 @@ namespace SistemaBarbearia.ViewModels.Produtos
     {
         public int IdProduto { get; set; }
 
-        public string dsProduto { get; set; }     
+        public string dsProduto { get; set; }
+
+        public decimal? vlVenda { get; set; }
 
     }
 }
