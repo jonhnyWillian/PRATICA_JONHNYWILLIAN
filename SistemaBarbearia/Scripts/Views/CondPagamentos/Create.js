@@ -2,18 +2,22 @@
 
     var cond = new CondPagamento;
     cond.init();
-    $("#addItem").click(function () {        
-        cond.addItem();
+
+    $("#addParcela").click(function () {
+        cond.addParcela();
+        return false;
     });
 
     $("#removeAll").click(function (e) {
         cond.removerTudo();
         e.preventDefault();
+        return false;
     });
 
     $(document).on("tblItensOpenEdit", cond.openEdit);
     $(document).on("tblItensCancelEdit", cond.clear);
 });
+
 CondPagamento = function () {
 
     self = this;
@@ -32,16 +36,7 @@ CondPagamento = function () {
                 columns: [
                     { data: "nrParcela" },
                     { data: "qtdDias" },
-                    {
-                        data: null,
-                        mRender: function (data) {
-                            let result = "";
-                            if (data) {
-                                result = data.txPercentual.toFixed(2).replace(".", ",");
-                            }
-                            return result;
-                        }
-                    },
+                    { data: "txPercentual"},
 
                     { data: "dsFormaPagamento" },
                 ]
@@ -57,12 +52,13 @@ CondPagamento = function () {
         if (IsNullOrEmpty($("#qtdDias").val())) {
             $("#qtdDias").blink({ msg: "Informe a quantidade de dias" });
             valid = false;
-        }
+        }      
 
-        if ($("#qtdDias").val() == 0 || $("#qtdDias").val() == "") {
+        if ($("#qtdDias").val() == "") {
             $("#qtdDias").blink({ msg: "Informe uma quantidade de dias válido" });
             valid = false;
         }
+
         let maior = 0;
         if (dtCondicao.data != null && dtCondicao.data.length) {
             for (var i = 0; i < dtCondicao.data.length; i++) {
@@ -90,6 +86,7 @@ CondPagamento = function () {
 
         if (!IsNullOrEmpty(txPercentual)) {
             if (!IsNullOrEmpty(txTotal)) {
+                txTotal = txTotal.replace(",", ".");
                 txTotal = parseFloat(txTotal);
             }
             txPercentual = txPercentual.replace(",", ".");
@@ -98,7 +95,7 @@ CondPagamento = function () {
 
             let total = 0;
             if (dtCondicao.isEdit) {
-                total = txTotal - dtCondicao.dataSelected.item.txPercentual + txPercentual;
+                total = (txTotal - dtCondicao.dataSelected.item.txPercentual) + txPercentual;
                 if (total > 100) {
                     $("#txPercentualTotal").blink({ msg: "O valor total deve ser equivalente a 100%, verifique!" });
                     valid = false;
@@ -143,10 +140,10 @@ CondPagamento = function () {
         $("#formaPagamento_Text").val('');
         $("#qtdDias").val('');
         $("#txPercentual").val('');
-        $("#txPercentualTotal").val('');
+       // $("#txPercentualTotal").val('');
     }
 
-    self.addItem = function () {
+    self.addParcela = function () {
         if (self.valid()) {
             var model = self.getModel();
             let item = {
@@ -206,7 +203,7 @@ CondPagamento = function () {
         }
     };
 
-    this.removeParcelas = function () {
+    self.removeParcelas = function () {
         self.Limpar();
         self.dtCondicao.data = null;
         self.calcPorcentagem();

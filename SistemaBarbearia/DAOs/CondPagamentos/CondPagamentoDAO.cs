@@ -34,18 +34,17 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
 
                 Int32 idRetorno = Convert.ToInt32(command.ExecuteScalar());
 
-                command.CommandText = "INSERT INTO CondPagamentoParcela (IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual)" +
-                                                                 " VALUES(@IdCondPag, @IdFormaPagamento, @nrParcela, @qtdDias, @txPercentual)";
-
                 foreach (var item in condPagamento.CondicaoForma)
                 {
-
-                    //command = sqlconnection.CreateCommand();
-                    //command.Transaction = sqlTransaction;
+                    command = sqlconnection.CreateCommand();
+                    command.Transaction = sqlTransaction;
+                    command.CommandText = "INSERT INTO CondPagamentoParcela (CondPag_id, FormaPagamento_id,nrParcela,qtdDias,txPercentual)" +
+                                                               " VALUES(@CondPag_id, @FormaPagamento_id, @nrParcela, @qtdDias, @txPercentual)";
+                 
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@IdCondPag", idRetorno);
-                    command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);
-                    command.Parameters.AddWithValue("@nrParcela", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
+                    command.Parameters.AddWithValue("@CondPag_id", idRetorno);
+                    command.Parameters.AddWithValue("@FormaPagamento_id", item.IdFormaPagamento);
+                    command.Parameters.AddWithValue("@nrParcela", ((object)item.nrParcela) != DBNull.Value ? ((object)item.nrParcela) : 0);
                     command.Parameters.AddWithValue("@qtdDias", ((object)item.qtdDias) != DBNull.Value ? ((object)item.qtdDias) : 0);
                     command.Parameters.AddWithValue("@txPercentual", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
                     i = command.ExecuteNonQuery();
@@ -62,9 +61,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     return false;
                 }
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -79,18 +75,37 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
 
         public bool UpdateCondPagamento(CondPagamento condPagamento)
         {
+          
             try
             {
-                Open();
-                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta
-                                                                        ,dtUltAlteracao = @dtUltAlteracao  WHERE IdCondPag = @IdCondPag";
-                SqlCommand sql = new SqlCommand(updateCondPagamento, sqlconnection);
+                Open();               
+                string deleteParcelas = "DELETE FROM CondPagamentoParcela WHERE CondPag_id = @CondPag_id";
+                SqlCommand sql = new SqlCommand(deleteParcelas, sqlconnection);
                 sql.CommandType = CommandType.Text;
+                sql.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
 
+                string updateCondPagamento = @"UPDATE CondPagamento SET dsCondPag = @dsCondPag, txJuro = @txJuro, txMulta = @txMulta  ,dtUltAlteracao = @dtUltAlteracao  WHERE IdCondPag = " + condPagamento.IdCondPag;
+                sql = new SqlCommand(updateCondPagamento, sqlconnection);          
+
+                sql.Parameters.AddWithValue("@IdCondPag", condPagamento.IdCondPag);
                 sql.Parameters.AddWithValue("@dsCondPag", condPagamento.dsCondPag);
                 sql.Parameters.AddWithValue("@txJuro", condPagamento.txJuro);
                 sql.Parameters.AddWithValue("@txMulta", condPagamento.txMulta);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", condPagamento.dtUltAlteracao = DateTime.Now);
+
+
+                foreach (var item in condPagamento.CondicaoForma)
+                {
+                    
+                    sql.Parameters.AddWithValue("@CondPag_id", condPagamento.IdCondPag);
+                    sql.Parameters.AddWithValue("@FormaPagamento_id", item.IdFormaPagamento);
+                    sql.Parameters.AddWithValue("@nrParcela", ((object)item.nrParcela) != DBNull.Value ? ((object)item.nrParcela) : 0);
+                    sql.Parameters.AddWithValue("@qtdDias", ((object)item.qtdDias) != DBNull.Value ? ((object)item.qtdDias) : 0);
+                    sql.Parameters.AddWithValue("@txPercentual", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
+                    sql.CommandType = CommandType.Text;
+                    sql.ExecuteNonQuery();
+
+                }
 
                 int i = sql.ExecuteNonQuery();
 
@@ -225,8 +240,8 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             {
                 Open();
                 var _where = string.Empty;
-                _where = " WHERE IdCondPag = " + IdCondPag;
-                SQL = new SqlCommand("SELECT * FROM CondPagamentoParcela LEFT JOIN FormaPagamento on CondPagamentoParcela.IdFormaPagamento = FormaPagamento.IdFormaPag" + _where, sqlconnection);
+                _where = " WHERE CondPag_id = " + IdCondPag;
+                SQL = new SqlCommand("SELECT * FROM CondPagamentoParcela LEFT JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPag" + _where, sqlconnection);
                 Dr = SQL.ExecuteReader();
                 List<CondPagamentoParcela> parcelas = new List<CondPagamentoParcela>();
                 while (Dr.Read())
@@ -234,8 +249,8 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     //IdCondPag, IdFormaPagamento,nrParcela,qtdDias,txPercentual)
                     var obj = new CondPagamentoParcela()
                     {
-                        IdCondPag = Convert.ToInt32(Dr["IdCondPag"]),
-                        IdFormaPagamento = Convert.ToInt32(Dr["IdFormaPagamento"]),
+                        IdCondPag = Convert.ToInt32(Dr["CondPag_id"]),
+                        IdFormaPagamento = Convert.ToInt32(Dr["FormaPagamento_id"]),
                         dsFormaPagamento = Convert.ToString(Dr["dsFormaPagamento"]),
                         nrParcela = (short) Convert.ToInt32(Dr["nrParcela"]),
                         qtdDias = (short)Convert.ToInt32(Dr["qtdDias"]),

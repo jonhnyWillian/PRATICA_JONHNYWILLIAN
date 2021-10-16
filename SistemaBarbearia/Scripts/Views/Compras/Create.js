@@ -255,7 +255,7 @@ Compra = function () {
         });
 
         if (dtParcelas.length > 0) {
-            $("#flFinalizar").prop("checked", true)
+          /*  $("#flFinalizar").prop("checked", true)*/
             let total = vlTotalCompra;
             let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $("#vlTotal").val(totalFormat);
@@ -434,7 +434,8 @@ Compra = function () {
             valid = false;
         }
         if (!dtParcelas.length && valid) {
-            let totalF = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            let totalF = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
+          
             $.ajax({
                 dataType: 'json',
                 type: 'GET',

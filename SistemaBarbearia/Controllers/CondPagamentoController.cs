@@ -58,10 +58,7 @@ namespace SistemaBarbearia.Controllers
         [HttpPost]
         public ActionResult Create(CondPagamentoVM condPagamento)
         {
-            if (string.IsNullOrWhiteSpace(condPagamento.dsCondPag))
-            {
-                ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
-            }
+           
             if (!ModelState.IsValid)
             {
                 try
@@ -96,7 +93,6 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "Nome do CondPagamento Nao pode ser em braco");
             }
-            
             try
             {
                 if (ModelState.IsValid)
