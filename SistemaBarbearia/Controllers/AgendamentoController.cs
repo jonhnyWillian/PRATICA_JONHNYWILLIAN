@@ -27,6 +27,8 @@ namespace SistemaBarbearia.Controllers
             var result = new AgendamentoVW
             {
                 IdModelPai = obj.IdAgenda,
+                idAgenda = obj.IdAgenda,
+                dtNota = obj.dtAgendamento,
                 dtAgendamento = obj.dtAgendamento,
                 flhoraAgendamento = obj.flhoraAgendamento,
                 flSituação = obj.flSituacao,
@@ -40,7 +42,7 @@ namespace SistemaBarbearia.Controllers
             result.Funcionario = new ViewModels.Funcionarios.SelectFuncionarioVM { IdFuncionario = objFuncionario.IdFuncionario, nmFuncionario = objFuncionario.nmFuncionario };
 
             var objCliente = DAOCliente.DAOGetCliente(result.IdCliente);
-            result.Cliente = new ViewModels.Clientes.SelectClienteVM { IdCliente = objCliente.idCidade, nmCliente = objCliente.nmCliente };
+            result.Cliente = new ViewModels.Clientes.SelectClienteVM { IdCliente = objCliente.IdCliente, nmCliente = objCliente.nmCliente };
 
             var objServico = DAOServico.GetServico(result.IdServico);
             result.Servico = new ViewModels.Servicos.SelectServicoVM { IdServico = objServico.IdServico, dsServico = objServico.dsServico, vlServico = Convert.ToDecimal(objServico.vlServico) };
@@ -58,12 +60,10 @@ namespace SistemaBarbearia.Controllers
             return View(agendaDAO.SelecionarAgendamento());
         }
 
-
         public ActionResult Details(int id)
         {
             return this.GetView(id);
         }
-
 
         public ActionResult Create()
         {
@@ -157,6 +157,19 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
+        public ActionResult FinalizarHorario(int id)
+        {
+            return this.GetView(id);
+        }
+
+        [HttpPost]
+        public ActionResult FinalizarHorario(int id, AgendamentoVW model)
+        {
+            return View();
+        }
+
+
+        #region JSON
         public JsonResult JsVerificaHorario(string dtAgendamento, string hora, int idFuncionario)
         {
             var dao = new AgendamentosDAO();
@@ -180,5 +193,6 @@ namespace SistemaBarbearia.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        #endregion
     }
 }
