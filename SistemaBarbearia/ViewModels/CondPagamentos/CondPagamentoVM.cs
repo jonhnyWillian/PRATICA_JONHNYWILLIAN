@@ -17,27 +17,21 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		[Display(Name = "Condição Pagamento")]
 		[StringLength(50, MinimumLength = 3)]
-		//[Required(ErrorMessage = "Campo Condição Pagamento não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public string dsCondPag { get; set; }
 
 		[Display(Name = "Juro")]		
-		//[Required(ErrorMessage = "Campo Juro não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal txJuro { get; set; }
 
 		[Display(Name = "Multa")]
-		//[Required(ErrorMessage = "Campo Multa não Pode ser em Branco!", AllowEmptyStrings = false)]
 		public decimal? txMulta { get; set; }
 
-		[Display(Name = "Desconto")]
-		//[Required(ErrorMessage = "Campo Desconto não Pode ser em Branco!", AllowEmptyStrings = false)]
+		[Display(Name = "Desconto")]		
 		public decimal txDesconto { get; set; }
 
-		[Display(Name = "Dias")]
-		//[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		[Display(Name = "Dias")]		
 		public short? qtdDias { get; set; }
 
-		[Display(Name = "Porcentagem (%)")]
-		//[Required(ErrorMessage = "Campo Qtd. Parcela não Pode ser em Branco!", AllowEmptyStrings = false)]
+		[Display(Name = "Porcentagem (%)")]		
 		public decimal? txPercentual { get; set; }
 
 
@@ -48,7 +42,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 		[Display(Name = "Forma Pagamento")]
 		public SistemaBarbearia.ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPagamento { get; set; }
 
-		public DataTablesList<CodicaoFormaVM> Itens { get; set; }
+		public List<CodicaoFormaVM> Itens { get; set; }
 
 		public class CodicaoFormaVM
 		{
@@ -72,9 +66,9 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 			return bean;
 		}
-      
+		
 
-        public string jsItens { get; set; }
+		public string jsItens { get; set; }
         public List<CondPagamentoParcela> ListCondicao
         {
             get
@@ -91,6 +85,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 
 		public class ParcelasVM
 		{
+		
 			public int? idFormaPag { get; set; }
 			public string dsFormaPagamento { get; set; }
 			public DateTime? dtVencimento { get; set; }

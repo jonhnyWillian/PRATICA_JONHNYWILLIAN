@@ -18,7 +18,7 @@
             <tr>
                 <th export="true" style="width:10%">Codigo</th>
                 <th export="true" style="width:70%">Produto</th>
-                <th export="true" class="text-right" style="width:20%">Valor Custo</th>
+                <th export="true" class="text-right" style="width:20%">Valor Venda</th>
                 <th export="true" style="width:20% ">Opções</th>
             </tr>
         </thead>
@@ -32,7 +32,7 @@
                     @Html.DisplayFor(modelItem => item.dsProduto)
                 </td>
                 <td class="text-right" style="width:20%;">
-                    @Html.DisplayFor(modelItem => item.vlCusto)
+                    @Html.DisplayFor(modelItem => item.vlVenda)
                 </td>
                 <td>
                     <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdProduto }))"><i class="fa fa-eye"></i></a>
@@ -47,9 +47,6 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/Views/Produtos/Produto.js")
-    @*@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
-    @Styles.Render("~/Content/bootstrap.min.css")
-    @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
-    @Styles.Render("~/Content/bootstrap.css")*@
+    
 
 }

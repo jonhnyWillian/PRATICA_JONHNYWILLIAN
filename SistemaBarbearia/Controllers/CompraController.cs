@@ -30,14 +30,14 @@ namespace SistemaBarbearia.Controllers
 
         // POST: Compra/Create
         [HttpPost]
-        public ActionResult Create(Compra model )
+        public ActionResult Create(Compra model)
         {
             model.dtEntrega = !string.IsNullOrEmpty(model.dtEntregaAux) ? Convert.ToDateTime(model.dtEntregaAux) : model.dtEntrega;
             model.dtEmissao = !string.IsNullOrEmpty(model.dtEmissaoAux) ? Convert.ToDateTime(model.dtEmissaoAux) : model.dtEmissao;
             model.nrModelo = !string.IsNullOrEmpty(model.nrModeloAux) ? model.nrModeloAux : model.nrModelo;
             model.nrSerie = !string.IsNullOrEmpty(model.nrSerieAux) ? model.nrSerieAux : model.nrSerie;
             model.nrNota = model.nrNotaAux != null ? model.nrNotaAux : model.nrNota;
-            model.Fornecedor.IdFornecedor = model.idFornecedor != null ? model.idFornecedor : model.Fornecedor.IdFornecedor;
+            model.Fornecedor.IdFornecedor = model.Fornecedor.IdFornecedor != null ? model.Fornecedor.IdFornecedor : model.Fornecedor.IdFornecedor;
 
             if (string.IsNullOrWhiteSpace(model.nrModelo))
             {
@@ -75,7 +75,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var dao = new CompraDAO();
-
+                dao.InsertCompra(model);
 
                 return RedirectToAction("Index");
             }

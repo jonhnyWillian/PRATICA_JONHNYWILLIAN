@@ -17,8 +17,6 @@ namespace SistemaBarbearia.ViewModels.Compras
         public string nrModelo { get; set; }
         public string nrModeloAux { get; set; }
 
-
-
         [Display(Name = "Situação")]
         public string flSituacao { get; set; }
 

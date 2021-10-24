@@ -21,7 +21,9 @@
             </ul>
             <div class="form-horizontal">
                 <h6 class="text-right">Campos obrigatório *</h6>
-                @Html.Partial("Form", Model)
+                <fieldset disabled>
+                    @Html.Partial("Form", Model)
+                </fieldset>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>

@@ -22,7 +22,7 @@ namespace SistemaBarbearia.DAOs.Compras
             {
                 command = sqlconnection.CreateCommand();
                 command.Transaction = sqlTransaction;
-                command.CommandText = "INSERT INTO Compra (nrModelo , nrSerie , nrNota , idFornecedor , idCondicaoPagamento , dtEmissao , dtChegada ,flSituacao,dtCadastro )" +
+                command.CommandText = "INSERT INTO Compra (nrModelo, nrSerie, nrNota, idFornecedor, idCondicaoPagamento, dtEmissao, dtChegada, flSituacao, dtCadastro )" +
                                                          " VALUES(@nrModelo, @nrSerie, @nrNota, @idFornecedor, @idCondicaoPagamento, @dtEmissao, @dtChegada, @flSituacao, @dtCadastro);SELECT CAST(SCOPE_IDENTITY() AS int)";
 
                 command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value );
@@ -41,6 +41,8 @@ namespace SistemaBarbearia.DAOs.Compras
                 command.CommandText = "INSERT INTO ProdutoCompras ( IdCompra, IdProduto, qtd, vlCompra, vlVenda, txDesconto )" +
                                                           " VALUES(@IdCompra, @IdProduto, @qtd, @vlCompra, @vlVenda, @txDesconto  )";
 
+                command.CommandText = "UPDATE Produto SET nrQtd += nrQtd@, vlUltCompra += @vlUltCompra WHERE idProduto = @IdProduto";
+
                 foreach (var item in compra.ProdutosCompra)
                 {
                     command.Parameters.Clear();
@@ -50,6 +52,12 @@ namespace SistemaBarbearia.DAOs.Compras
                     command.Parameters.AddWithValue("@vlCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
                     command.Parameters.AddWithValue("@vlVenda", ((object)item.vlVenda) != DBNull.Value ? ((object)item.vlVenda) : 0);
                     command.Parameters.AddWithValue("@txDesconto", ((object)item.txDesconto) != DBNull.Value ? ((object)item.txDesconto) : 0);
+                    i = command.ExecuteNonQuery();
+
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
+                    command.Parameters.AddWithValue("@vlUltCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
+                    command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
                     i = command.ExecuteNonQuery();
 
                 }

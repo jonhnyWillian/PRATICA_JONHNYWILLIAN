@@ -226,7 +226,7 @@ namespace SistemaBarbearia.DAOs.Servicos
                     {
                         IdServico = Convert.ToInt32(Dr["IdServico"]),
                         dsServico = Convert.ToString(Dr["dsServico"]),
-
+                        vlServico = Convert.ToDecimal(Dr["vlServico"])
                     };
 
                     list.Add(servico);

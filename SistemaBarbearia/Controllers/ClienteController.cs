@@ -229,11 +229,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? Id, string Text)
+        public JsonResult JsDetails(int? IdCliente, string nmCliente)
         {
             try
             {
-                var result = this.Find(Id, Text).FirstOrDefault();
+                var result = this.Find(IdCliente, nmCliente).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);

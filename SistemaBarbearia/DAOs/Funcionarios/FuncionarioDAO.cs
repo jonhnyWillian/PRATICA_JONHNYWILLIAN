@@ -301,7 +301,7 @@ namespace SistemaBarbearia.DAOs.Funcionarios
                     var funcionario = new SelectFuncionarioVM
                     {
                         IdFuncionario = Convert.ToInt32(Dr["IdFuncionario"]),
-                        nmFuncionario = Convert.ToString(Dr["nmFuncionarionte"]),
+                        nmFuncionario = Convert.ToString(Dr["nmFuncionario"]),
 
                     };
 

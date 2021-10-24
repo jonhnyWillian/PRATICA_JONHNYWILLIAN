@@ -20,19 +20,20 @@ namespace SistemaBarbearia.DAOs.Produtos
             try
             {
                 Open();
-                string insertProduto = @"INSERT INTO PRODUTO ( dsProduto,  nrUnidade,  nrQtd, codBarra,  vlCompra,  vlCusto,  vlVenda,  IdCategoria, idFornecedor,  dtCadastro)
-                                                     VALUES(  @dsProduto, @nrUnidade, @nrQtd, @codBarra, @vlCompra, @vlCusto, @vlVenda, @IdCategoria, @idFornecedor,  @dtCadastro)";
+                string insertProduto = @"INSERT INTO PRODUTO ( dsProduto,  nrUnidade,  nrQtd, codBarra,  vlCompra,  vlCusto,  vlVenda,  IdCategoria, idFornecedor, vlUltCompra, dtCadastro)
+                                                     VALUES(  @dsProduto, @nrUnidade, @nrQtd, @codBarra, @vlCompra, @vlCusto, @vlVenda, @IdCategoria, @idFornecedor, @vlUltCompra, @dtCadastro)";
 
                 SQL = new SqlCommand(insertProduto, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 
                 SQL.Parameters.AddWithValue("@dsProduto", produto.dsProduto.ToUpper());
                 SQL.Parameters.AddWithValue("@nrUnidade", produto.nrUnidade);
-                SQL.Parameters.AddWithValue("@nrQtd", produto.nrQtd);            
+                SQL.Parameters.AddWithValue("@nrQtd", ((object)produto.nrQtd) != DBNull.Value);            
                 SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
-                SQL.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
-                SQL.Parameters.AddWithValue("@vlVenda", produto.vlVenda);
+                SQL.Parameters.AddWithValue("@vlCusto", ((object)produto.vlCusto) != DBNull.Value);           
+                SQL.Parameters.AddWithValue("@vlVenda", ((object)produto.vlVenda) != DBNull.Value);
+                SQL.Parameters.AddWithValue("@vlUltCompra", ((object)produto.vlCompra) != DBNull.Value);
                 SQL.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
                 SQL.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.IdFornecedor);
                 SQL.Parameters.AddWithValue("@dtCadastro", produto.dtCadastro = DateTime.Now);
@@ -65,7 +66,7 @@ namespace SistemaBarbearia.DAOs.Produtos
             {
                 Open();
                 string updateProduto = @"UPDATE PRODUTO SET dsProduto = @dsProduto, nrUnidade = @nrUnidade, nrQtd = @nrQtd,
-                                                            codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto, vlVenda = @vlVenda,
+                                                            codBarra = @codBarra, vlCompra = @vlCompra, vlCusto = @vlCusto, vlVenda = @vlVenda, 
                                                             IdCategoria = @IdCategoria, idFornecedor = @idFornecedor, dtUltAlteracao = @dtUltAlteracao  
 
                                                            WHERE IdProduto = " + produto.IdProduto;
@@ -78,8 +79,8 @@ namespace SistemaBarbearia.DAOs.Produtos
                 sql.Parameters.AddWithValue("@nrQtd", produto.nrQtd);               
                 sql.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 sql.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
-                sql.Parameters.AddWithValue("@vlCusto", produto.vlCusto);
-                sql.Parameters.AddWithValue("@vlVenda", produto.vlVenda);
+                sql.Parameters.AddWithValue("@vlCusto", ((object)produto.vlCusto) != DBNull.Value);
+                sql.Parameters.AddWithValue("@vlVenda", ((object)produto.vlVenda) != DBNull.Value);
                 sql.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
                 sql.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.IdFornecedor);
 
@@ -200,11 +201,11 @@ namespace SistemaBarbearia.DAOs.Produtos
                     produtoVM.IdProduto = Convert.ToInt32(Dr["IdProduto"]);
                     produtoVM.dsProduto = Convert.ToString(Dr["dsProduto"]);
                     produtoVM.nrUnidade = Convert.ToString(Dr["nrUnidade"]);
-                    produtoVM.nrQtd = Convert.ToInt32(Dr["nrQtd"]);                 
+                    produtoVM.nrQtd = Dr["nrQtd"] == DBNull.Value ? 0 : Convert.ToInt32(Dr["nrQtd"]);
                     produtoVM.codBarra = Convert.ToString(Dr["codBarra"]);
                     produtoVM.vlCompra = Convert.ToDecimal(Dr["vlCompra"]);
-                    produtoVM.vlCusto = Convert.ToDecimal(Dr["vlCusto"]);
-                    produtoVM.vlVenda = Convert.ToDecimal(Dr["vlVenda"]);
+                    produtoVM.vlCusto = Dr["vlCusto"] == DBNull.Value ? 0 : Convert.ToDecimal(Dr["vlCusto"]);
+                    produtoVM.vlVenda = Dr["vlVenda"] == DBNull.Value ? 0 : Convert.ToDecimal(Dr["vlVenda"]);
                     produtoVM.IdCategoria = Convert.ToInt32(Dr["IdCategoria"]);
                     produtoVM.IdFornecedor = Convert.ToInt32(Dr["IdFornecedor"]);
                     produtoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);

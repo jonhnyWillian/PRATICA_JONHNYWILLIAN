@@ -20,118 +20,79 @@
         </div>
     </div>
 }
+
 <h3 class="heading no-margin">Horário</h3>
-<div class="bs-callout bs-callout-primary col-md-10">
-    <div id="calendar"></div>
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span id="eventTitle"></span></h4>
-                </div>
-                <div class="modal-body">
-                    <button id="btnDelete" class="btn btn-default btn-sm pull-right">
-                        <span class="glyphicon glyphicon-remove"></span> Remove
-                    </button>
-                    <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
-                        <span class="glyphicon glyphicon-pencil"></span> Alterar
-                    </button>
-                    <p id="pDetails"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                </div>
+<div class="bs-callout bs-callout-primary">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { Disabled = false, Required = true })
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-4">
+            @Html.LabelFor(model => model.dtAgendamento, new { @class = "required" })
+            <div class="input-group-append">
 
-    <div id="myModalSave" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="heading no-margin">Agendamento</h3>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                @Html.TextBoxFor(model => model.dtAgendamento, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date" })
+                <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.dtAgendamento, null, new { @class = "text-danger" })
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.flhoraAgendamento, new { @class = "required" })
+                <div class="input-group-append">
+                    @Html.DropDownListFor(model => model.flhoraAgendamento, SistemaBarbearia.ViewModels.Agendamentos.AgendamentoVW.Horario, new { @datadrop = "select2", @class = "form-control  col-md-6" })
+                    <span class="fa fa-clock-o input-group-text" style="font-size:23px"></span>
                 </div>
-                <div class="modal-body">
-                    <form class="col-md-12 form-horizontal">
-                        @if (action != "create")
-                        {
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @using (Html.BeginForm())
-                                        {
-                                            @Html.LabelFor(e => e.IdModelPai, new { @class = "control-label required" })
-                                            @Html.TextBoxFor(model => model.IdModelPai, new { @class = "form-control col-md-2", readOnly = "readonly" })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        }                       
-                        <div class="row">
-                            <div class="col-md-6">
-                                @Html.LabelFor(model => model.dtAgendamento, htmlAttributes: new { @class = "control-label" })
-                                <div class="input-group-append">
-                                    <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-                                    @Html.TextBoxFor(model => model.dtAgendamento, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6" })
-                                    @Html.ValidationMessageFor(model => model.dtAgendamento, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.hrAgendamento, htmlAttributes: new { @class = "control-label required" })
-                                    @Html.TextBoxFor(model => model.hrAgendamento, new { @class = "form-control col-md-8", @autofocus = "autofocus" })
-                                    @Html.ValidationMessageFor(model => model.hrAgendamento, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { @Required = false, Disable = readOnly })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.EditorFor(model => model.Servico, "Servicos/Select", new { @Required = false, Disable = readOnly })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.EditorFor(model => model.Funcionario, "Funcionarios/Select", new { @Required = false, Disable = readOnly })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Situação</label>
-                            <select id="ddThemeColor" class="form-control">
-                                <option value=""></option>
-                                <option value="red">Cancelado</option>
-                                <option value="blue">Concluido</option>
-                                <option value="warning">Aberto</option>
-                                <option value="green">Comfirmado</option>
-                            </select>
-                        </div>
-                        <div class="class=" d-grid gap-2 d-md-flex justify-content-md-end"">
-                            <button type="button" id="btnSave" class="btn btn-success">Salvar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
-
-                        </div>
-
-                    </form>
+                @Html.ValidationMessageFor(model => model.flhoraAgendamento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (action != "create")
+        {
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.flSituação, new { @class = "required" })
+                    @Html.DropDownListFor(model => model.flSituação, SistemaBarbearia.ViewModels.Agendamentos.AgendamentoVW.Situação, new { @datadrop = "select2", @class = "form-control  col-md-6" })
+                    @Html.ValidationMessageFor(model => model.flSituação, "", new { @class = "text-danger" })
                 </div>
             </div>
+        }
+    </div>
+
+
+</div>
+
+<div class="bs-callout bs-callout-primary">
+    <h3 class="heading no-margin">Serviço - Cliente</h3>
+    <div id="divAddServico">
+        <div class="form-row">
+            @Html.EditorFor(model => model.Servico, "Servicos/Select", new { Disabled = false, Required = true, flValorServico = "N" })
+        </div>
+
+        <div class="form-row">
+            @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { @disabled = readOnly })
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/Scripts/Views/Agendamentos/Create.js")
-
-}
-
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date", disabled = true })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date", disabled = true })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

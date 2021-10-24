@@ -198,6 +198,56 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             }
         }
 
+        private string BuscaCondPag(int? id, string filter)
+        {
+            var sql = string.Empty;
+            var swhere = string.Empty;
+            if (id != null)
+            {
+                swhere = " WHERE CondPagamento.IdCondPag = " + id;
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var filterQ = filter.Split(' ');
+                foreach (var word in filterQ)
+                {
+                    swhere += " OR CondPagamento.dsCondPag LIKE'%" + word + "%'";
+                }
+                swhere = " WHERE " + swhere.Remove(0, 3);
+            }
+            sql = @"
+                   SELECT
+	                    CondPagamento.IdCondPag AS CondicaoPagamento_ID,
+	                    CondPagamento.dsCondPag AS CondicaoPagamento_Nome,
+	                    CondPagamento.txJuro AS CondicaoPagamento_TaxaJuros,
+	                    CondPagamento.txMulta AS CondicaoPagamento_Multa,
+	                    CondPagamento.dtCadastro AS CondicaoPagamento_DataCadastro,
+	                    CondPagamento.dtUltAlteracao AS CondicaoPagamento_DataUltAlteracao
+                    FROM CondPagamento" + swhere + ";";
+            return sql;
+        }
+
+        private string BuscaParcelas(int? id)
+        {
+            var sql = string.Empty;
+
+            sql = @"
+                     SELECT
+	                      CondPagamentoParcela.CondPag_Id AS CondicaoParcela_ID,
+	                      CondPagamentoParcela.FormaPagamento_id AS Condicao_FormaPag_ID,
+	                      FormaPagamento.dsFormaPagamento AS Condicao_FormaPag,
+	                      CondPagamentoParcela.nrParcela AS Parcela_Nr,
+	                      CondPagamentoParcela.qtdDias AS Parcela_QtDias,
+	                      CondPagamentoParcela.txPercentual AS Parcela_TaxaPercentual
+                     FROM CondPagamentoParcela
+	                      INNER JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPag
+                    WHERE CondPagamentoParcela.CondPag_id = " + id
+            ;
+            return sql;
+        }
+
+
+
         public CondPagamento GetCondPagamento(int? Id)
         {
             try
@@ -217,12 +267,69 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                     //condPagamentoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     //condPagamentoVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
-                  
+
 
 
                 }
                 return condPagamentoVM;
             }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao selecionar o Condição de Pagamento: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+
+
+
+        public CondPagamento GetCondPagamentoParcela(int? Id)
+        {
+            try
+            {
+                var condPag = new CondPagamento();
+                if (Id != null)
+                {
+                    Open();
+                    var sql = this.BuscaCondPag(Id, null);
+                    var sqlParcela = this.BuscaParcelas(Id);
+                    var lista = new List<CondPagamento.CondicaoPagamentoVM>();
+                    SqlCommand query = new SqlCommand(sql + sqlParcela, sqlconnection);
+                    Dr = query.ExecuteReader();
+                    while (Dr.Read())
+                    {
+                        condPag.IdCondPag = Convert.ToInt32(Dr["CondicaoPagamento_ID"]);
+                        condPag.dsCondPag = Convert.ToString(Dr["CondicaoPagamento_Nome"]);
+                        condPag.txJuro = Convert.ToDecimal(Dr["CondicaoPagamento_TaxaJuros"]);
+                        condPag.txMulta = Convert.ToDecimal(Dr["CondicaoPagamento_Multa"]);
+                        //condPag.dtCadastro = Convert.ToDateTime(Dr["CondicaoPagamento_DataCadastro"]);
+                        //condPag.dtUltAlteracao = Convert.ToDateTime(Dr["CondicaoPagamento_DataUltAlteracao"]);
+                    };
+
+                    if (Dr.NextResult())
+                    {
+                        while (Dr.Read())
+                        {
+                            var item = new CondPagamento.CondicaoPagamentoVM()
+                            {
+                                IdCondPag = Convert.ToInt32(Dr["CondicaoParcela_ID"]),
+                                IdFormaPagamento = Convert.ToInt32(Dr["Condicao_FormaPag_ID"]),
+                                dsFormaPagamento = Convert.ToString(Dr["Condicao_FormaPag"]),
+                                nrParcela = Convert.ToInt16(Dr["Parcela_Nr"]),
+                                qtdDias = Convert.ToInt16(Dr["Parcela_QtDias"]),
+                                txPercentual = Convert.ToDecimal(Dr["Parcela_TaxaPercentual"])
+                            };
+                            lista.Add(item);
+                        }
+                    }
+                    condPag.ListCondicao = lista;
+                }
+                return condPag;
+            }
+          
             catch (Exception e)
             {
                 throw new Exception("Erro ao selecionar o Condição de Pagamento: " + e.Message);

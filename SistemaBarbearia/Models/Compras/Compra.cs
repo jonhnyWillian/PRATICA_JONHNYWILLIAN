@@ -32,7 +32,7 @@ namespace SistemaBarbearia.Models.Compras
         public string dtEntregaAux { get; set; }
 
         public ViewModels.Fornecedores.SelectFornecedorVM Fornecedor { get; set; }
-        public int? idFornecedor { get; set; }
+        //public int? IdFornecedor { get; set; }
 
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
 

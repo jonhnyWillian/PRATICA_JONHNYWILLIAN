@@ -235,17 +235,17 @@ namespace SistemaBarbearia.Controllers
         }
 
 
-        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal vlTotal, DateTime? dtIiniParcela)
+        public JsonResult JsGetParcelas(int idCondicaoPagamento, decimal vlTotal, DateTime? dtInicioParcela)
         {
             var dao = new CondPagamentoDAO();
-            var cond = dao.GetCondPagamento(idCondicaoPagamento);
-            var lista = cond.CondicaoForma.OrderBy(k => k.nrParcela);
+            var cond = dao.GetCondPagamentoParcela(idCondicaoPagamento);
+            var lista = cond.ListCondicao.OrderBy(k => k.nrParcela);
 
             var parcelas = new List<CondPagamentoVM.ParcelasVM>();
             var dtinicio = DateTime.Now;
-            if(dtIiniParcela != null)
+            if (dtInicioParcela != null)
             {
-                dtinicio = dtIiniParcela.GetValueOrDefault();
+                dtinicio = dtInicioParcela.GetValueOrDefault();
             }
             foreach (var item in lista)
             {
@@ -260,9 +260,9 @@ namespace SistemaBarbearia.Controllers
                 parcelas.Add(itemParcelas);
             }
             var totalParcelas = parcelas.Sum(k => k.vlParcela);
-            if(totalParcelas != vlTotal)
+            if (totalParcelas != vlTotal)
             {
-                if(totalParcelas < vlTotal)
+                if (totalParcelas < vlTotal)
                 {
                     var dif = vlTotal - totalParcelas;
                     var list = parcelas.OrderBy(u => u.nrParcela);

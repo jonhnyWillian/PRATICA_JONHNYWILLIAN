@@ -29,7 +29,8 @@ namespace SistemaBarbearia.Models.Produtos
       
         public Decimal? vlCompra { get; set; }
 
-       
+        public Decimal? vlUltCompra { get; set; }
+
         public Decimal? vlCusto { get; set; }
 
       

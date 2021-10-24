@@ -43,6 +43,14 @@ namespace SistemaBarbearia.ViewModels.Produtos
         [Required(ErrorMessage = "Campo Valor Compra  não Pode ser em Branco!", AllowEmptyStrings = false)]
         public decimal? vlCompra { get; set; }
 
+
+        [Display(Name = "Valor Ultima Compra")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Ultima Valor Compra  não Pode ser em Branco!", AllowEmptyStrings = false)]
+        public decimal? vlUltCompra { get; set; }
+
+
+
         [Display(Name = "Valor Custo")]
         [StringLength(50, MinimumLength = 3)]
        // [Required(ErrorMessage = "Campo Valor Custo  não Pode ser em Branco!", AllowEmptyStrings = false)]

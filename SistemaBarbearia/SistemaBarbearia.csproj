@@ -759,10 +759,9 @@
     <Content Include="Views\Shared\EditorTemplates\Funcionarios\Select.cshtml" />
     <Content Include="Views\Agendamento\Index.cshtml" />
     <Content Include="Views\Agendamento\Create.cshtml" />
-    <Content Include="Views\Agendamento\Edit.cshtml" />
+    <Content Include="Views\Agendamento\Cancelar.cshtml" />
     <Content Include="Views\Agendamento\Details.cshtml" />
     <Content Include="Views\Agendamento\Delete.cshtml" />
-    <Content Include="Views\Agendamento\Form.cshtml" />
     <Content Include="Views\ContaPagar\Form.cshtml" />
     <Content Include="Views\ContaPagar\Index.cshtml" />
     <Content Include="Views\ContaPagar\Create.cshtml" />
@@ -770,6 +769,9 @@
     <Content Include="Views\ContaPagar\Details.cshtml" />
     <Content Include="Views\ContaPagar\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Servicos\Select.cshtml" />
+    <Content Include="Views\Agendamento\Form.cshtml" />
+    <Content Include="Views\Agendamento\Edit.cshtml" />
+    <Content Include="Views\Agendamento\FinalizarHorario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

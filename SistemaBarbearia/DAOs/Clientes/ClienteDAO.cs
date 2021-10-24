@@ -272,12 +272,12 @@ namespace SistemaBarbearia.DAOs.Clientes
             return sqlSelectCliente;
         }
 
-        public List<SelectClienteVM> SelectCliente(int? id, string nmCliete)
+        public List<SelectClienteVM> SelectCliente(int? idCliente, string nmCliete)
         {
             try
             {
 
-                var sqlSelectCliente = this.BuscarCliente(id, nmCliete);
+                var sqlSelectCliente = this.BuscarCliente(idCliente, nmCliete);
                 Open();
                 SQL = new SqlCommand(sqlSelectCliente, sqlconnection);
                 Dr = SQL.ExecuteReader();

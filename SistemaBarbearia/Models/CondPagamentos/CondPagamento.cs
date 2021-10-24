@@ -27,8 +27,34 @@ namespace SistemaBarbearia.Models.CondPagamento
 
 		public List<CondPagamentoParcela> CondicaoForma { get; set; }
 
+        public class CondicaoPagamentoVM
+        {
+            public int? IdCondPag { get; set; }
+            public short? nrParcela { get; set; }
+            public short? qtdDias { get; set; }
+            public decimal txPercentual { get; set; }
+            public int? IdFormaPagamento { get; set; }
+            public string dsFormaPagamento { get; set; }
 
-		public DateTime? dtCadastro { get; set; }
+        }
+
+        public string jsItens { get; set; }
+        public List<CondicaoPagamentoVM> ListCondicao
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsItens))
+                    return new List<CondicaoPagamentoVM>();
+                return JsonConvert.DeserializeObject<List<CondicaoPagamentoVM>>(jsItens);
+            }
+            set
+            {
+                jsItens = JsonConvert.SerializeObject(value);
+            }
+        }
+
+
+        public DateTime? dtCadastro { get; set; }
 
 		public DateTime? dtUltAlteracao { get; set; }
 

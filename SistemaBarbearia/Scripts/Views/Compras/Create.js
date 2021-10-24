@@ -7,11 +7,13 @@
 
     $("#addProduto").click(function () {
         compra.addProdutoCompra();
+        return false;
     });
 
     $(document).on("tblProdutoAfterDelete", function () {
         compra.calcTotalProduto();
         compra.clearProduto();
+        return false;
     });
 
     $(document).on("tblProdutoOpenEdit", compra.openEditProduto);
@@ -69,7 +71,7 @@
     });
 
     $("#btnSalvar").attr("disabled", true);
-    $('input[name="CondicaoPagamento.Id"]').prop('disabled', true)
+    $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
     $("#CondicaoPagamento_btn-localizar").hide();
     $("#divAddProduto").hide();
 
@@ -104,9 +106,9 @@
         }
     })
 
-    $("#CondicaoPagamento.Id").change(function () {
+    $("#CondicaoPagamento_Id").change(function () {
         dtParcelas.clear();
-        let idCondicao = $("#CondicaoPagamento.Id").val()
+        let idCondicao = $("#CondicaoPagamento_Id").val()
         if (IsNullOrEmpty(idCondicao)) {
             $("#divAddProduto").show();
             $('input[name="dtEmissao"]').prop('disabled', false);
@@ -140,12 +142,12 @@
     })
 
     //load
-    let idCond = $("#CondicaoPagamento.Id").val()
+    let idCond = $("#CondicaoPagamento_Id").val()
     if (!IsNullOrEmpty(idCond)) {
         $("#flTblProdutos").val("S");
         $('input[name="dtEmissao"]').prop('disabled', true)
         $('input[name="dtEntrega"]').prop('disabled', true)
-        $('input[name="CondicaoPagamento.Id"]').prop('disabled', false)
+        $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
         $("#CondicaoPagamento_btn-localizar").show();
         $("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
 
@@ -165,7 +167,7 @@
     }
 
     if (dtProdutos.length > 0) {
-        $('input[name="CondicaoPagamento.Id"]').prop('disabled', false)
+        $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
         $("#CondicaoPagamento_btn-localizar").show();
     }
 
@@ -188,7 +190,7 @@ Compra = function () {
                 remove: true,
                 edit: true,
                 order: [[1, "asc"]],
-                columns: [                  
+                columns: [
                     { data: "IdProduto" },
                     { data: "dsProduto" },
                     {
@@ -255,7 +257,7 @@ Compra = function () {
         });
 
         if (dtParcelas.length > 0) {
-          /*  $("#flFinalizar").prop("checked", true)*/
+            $("#flFinalizar").prop("checked", true)
             let total = vlTotalCompra;
             let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $("#vlTotal").val(totalFormat);
@@ -335,7 +337,7 @@ Compra = function () {
         $("#Produto_vlCompra").val("");
         $("#Produto_txDesconto").val("");
         $("#Produto_vlVenda").val("");
-        $("#Produto_vlTotal").val("")
+        $("#Produto_vlTotal").val("") // Produto_vlTotal
         $('input[name="Produto_IdProduto"]').prop('disabled', false)
     }
 
@@ -366,7 +368,7 @@ Compra = function () {
                 let totalProduto = vlCompraDesconto * dtProdutos.data[i].nrQtd;
                 total += totalProduto;
             }
-            $('input[name="CondicaoPagamento.Id"]').prop('disabled', false)
+            $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
             $("#CondicaoPagamento_btn-localizar").show();
             //desabilita campos nota fiscal
             $('input[name="nrModelo"]').prop('disabled', true)
@@ -384,10 +386,10 @@ Compra = function () {
             $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
             $("#Fornecedor_btn").removeAttr('disabled', false)
 
-            $('input[name="CondicaoPagamento.Id"]').prop('disabled', true)
+            $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
             $("#CondicaoPagamento_btn-localizar").hide();
 
-            $("#CondicaoPagamento.Id").val("")
+            $("#CondicaoPagamento_Id").val("")
             $("#CondicaoPagamento_text").val("")
             $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true)
 
@@ -422,6 +424,7 @@ Compra = function () {
 
     self.getparcelas = function () {
         let valid = true;
+
         if (IsNullOrEmpty(date)) {
             //$("#dtEmissao").blink({msg: "Informe a data de emissão"})
             $.notify({ message: "Informe a data de emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
@@ -434,16 +437,16 @@ Compra = function () {
             valid = false;
         }
         if (!dtParcelas.length && valid) {
-            let totalF = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }); 
-          
+            console.log($("#vlTotal").val());
+            //let vlTotal = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $.ajax({
                 dataType: 'json',
                 type: 'GET',
                 url: Action.getParcelas,
-                data: { idCondicaoPagamento: $("#CondicaoPagamento.Id").val(), vlTotal: totalF, dtIiniParcela: date },
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotal").val()), dtInicioParcela: date },
                 success: function (data) {
-                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
-                    self.setParcelas(data);
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });                 
+                    self.setParcelas(data)
                     $("#btnSalvar").attr("disabled", false);
                     $('input[name="dtEmissao"]').prop('disabled', true)
                     $('input[name="dtEntrega"]').prop('disabled', true)
@@ -462,12 +465,11 @@ Compra = function () {
         let itens = data.parcelas;
         for (var i = 0; i < itens.length; i++) {
             let item = {
-                idFormaPagamento: itens[i].idFormaPagamento,
-                nmFormaPagamento: itens[i].nmFormaPagamento,
-                flSituacao: itens[i].flSituacao,
-                dtVencimento: itens[i].dtVencimento,
+                nrParcela: itens[i].nrParcela,
                 vlParcela: itens[i].vlParcela,
-                nrParcela: itens[i].nrParcela
+                dtVencimento: itens[i].dtVencimento,
+                idFormaPagamento: itens[i].idFormaPagamento,
+                dsFormaPagamento: itens[i].dsFormaPagamento,
             }
             dtParcelas.addItem(item);
         }

@@ -64,10 +64,10 @@ namespace SistemaBarbearia.Controllers
             result.condPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdCondPag, Text = objCondPag.dsCondPag };
             return View(result);
         }
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? IdFornecedor, string text)
         {
             var fornecedorDAO = new FornecedorDAO();
-            var list = fornecedorDAO.SelectFornecedor(id, text);
+            var list = fornecedorDAO.SelectFornecedor(IdFornecedor, text);
             var select = list.Select(u => new
             {
                 IdFornecedor = u.IdFornecedor,
@@ -204,9 +204,9 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {
-                var fornecedorDAO = new FornecedorDAO();
-                IQueryable<dynamic> lista = fornecedorDAO.SelecionarFornecedor().Select(u => new { IdFornecedor = u.IdFornecedor, nmNome = u.nmNome }).AsQueryable();
-                return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
+
+                var select = this.Find(null, q);
+                return Json(new JsonSelect<object>(select, page, 10), JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)

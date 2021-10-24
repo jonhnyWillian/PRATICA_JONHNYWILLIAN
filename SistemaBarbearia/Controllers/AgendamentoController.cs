@@ -1,6 +1,10 @@
 ﻿using SistemaBarbearia.DAOs.Agendamentos;
+using SistemaBarbearia.DAOs.Clientes;
+using SistemaBarbearia.DAOs.Funcionarios;
+using SistemaBarbearia.DAOs.Servicos;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Agendamentos;
+using SistemaBarbearia.ViewModels.Agendamentos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,31 +15,70 @@ namespace SistemaBarbearia.Controllers
 {
     public class AgendamentoController : Controller
     {
-        // GET: Agendamento
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            AgendamentosDAO objAgenda = new AgendamentosDAO();
+            ClienteDAO DAOCliente = new ClienteDAO();
+            FuncionarioDAO DAOFuncionario = new FuncionarioDAO();
+            ServicoDAO DAOServico = new ServicoDAO();
+            var obj = objAgenda.GetAgendamento(id);
+            var result = new AgendamentoVW
+            {
+                IdModelPai = obj.IdAgenda,
+                dtAgendamento = obj.dtAgendamento,
+                flhoraAgendamento = obj.flhoraAgendamento,
+                flSituação = obj.flSituacao,
+                IdCliente = obj.IdCliente,
+                IdServico = obj.IdServico,
+                IdFuncionario = obj.IdFuncionario,
+                dtCadastro = obj.dtCadastro,
+                dtUltAlteracao = obj.dtUltAlteracao
+            };
+            var objFuncionario = DAOFuncionario.DAOGetFuncionario(result.IdFuncionario);
+            result.Funcionario = new ViewModels.Funcionarios.SelectFuncionarioVM { IdFuncionario = objFuncionario.IdFuncionario, nmFuncionario = objFuncionario.nmFuncionario };
+
+            var objCliente = DAOCliente.DAOGetCliente(result.IdCliente);
+            result.Cliente = new ViewModels.Clientes.SelectClienteVM { IdCliente = objCliente.idCidade, nmCliente = objCliente.nmCliente };
+
+            var objServico = DAOServico.GetServico(result.IdServico);
+            result.Servico = new ViewModels.Servicos.SelectServicoVM { IdServico = objServico.IdServico, dsServico = objServico.dsServico, vlServico = Convert.ToDecimal(objServico.vlServico) };
+
+
+            return View(result);
+
+        }
+        #endregion
+
         public ActionResult Index()
         {
-            return View();
+            var agendaDAO = new AgendamentosDAO();
+            ModelState.Clear();
+            return View(agendaDAO.SelecionarAgendamento());
         }
 
-        // GET: Agendamento/Details/5
+
         public ActionResult Details(int id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        // GET: Agendamento/Create
+
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Agendamento/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Agenda agenda)
         {
             try
             {
-                // TODO: Add insert logic here
+                var agendaDAO = new AgendamentosDAO();
+
+                agenda.flSituacao = "A";
+
+                agendaDAO.InsertAgendamento(agenda);
 
                 return RedirectToAction("Index");
             }
@@ -45,20 +88,23 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Agendamento/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        // POST: Agendamento/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, AgendamentoVW model)
         {
             try
             {
-                // TODO: Add update logic here
+                AgendamentosDAO dao = new AgendamentosDAO();
+                var aganda = dao.GetAgendamento(id);
 
+                var bean = model.GetAgenda(aganda);
+                bean.dtUltAlteracao = DateTime.Now;
+
+                dao.UpdateAgendamento(bean);
                 return RedirectToAction("Index");
             }
             catch
@@ -67,20 +113,42 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: Agendamento/Delete/5
+        public ActionResult Cancelar(int id)
+        {
+            return this.GetView(id);
+        }
+        [HttpPost]
+        public ActionResult Cancelar(int id, AgendamentoVW model)
+        {
+            try
+            {
+                AgendamentosDAO dao = new AgendamentosDAO();
+                var aganda = dao.GetAgendamento(id);
+
+                var bean = model.GetAgenda(aganda);
+                bean.dtUltAlteracao = DateTime.Now;
+
+                dao.CancelarAgendamento(bean);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+      
         public ActionResult Delete(int id)
         {
-            return View();
+            return this.GetView(id);
         }
 
-        // POST: Agendamento/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, AgendamentoVW model)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                AgendamentosDAO dao = new AgendamentosDAO();
+                dao.DeleteAgendamento(id);
                 return RedirectToAction("Index");
             }
             catch
@@ -89,70 +157,28 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        public JsonResult GetEvents([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
+        public JsonResult JsVerificaHorario(string dtAgendamento, string hora, int idFuncionario)
         {
-            try
+            var dao = new AgendamentosDAO();
+            var valid = dao.validHorario(dtAgendamento, hora, idFuncionario);
+            var type = string.Empty;
+            var msg = string.Empty;
+            if (valid)
             {
-                var select = this.Find(null, requestModel.Search.Value);
-
-                var totalResult = select.Count();
-
-                var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
-
-                return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
-
-
+                type = "success";
+                msg = "Horario Disponivel!";
             }
-            catch (Exception ex)
+            else
             {
-                Response.StatusCode = 500;
-                throw new Exception(ex.Message);
+                type = "danger";
+                msg = "Já existe Horario marcado, verifique!";
             }
-        }
-
-       
-
-        public JsonResult DeleteEvent(Agenda agendamento)
-        {
-
             var result = new
             {
-                type = "success",
-                field = "",
-                message = "Registro Removido com sucesso!",
-                model = agendamento
+                type = type,
+                message = msg,
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult SaveEvent(Agenda agendamento)
-        {
-            var agendamentosDAO = new AgendamentosDAO();
-            agendamentosDAO.InsertAgendamento(agendamento);
-            var result = new
-            {
-                type = "success",
-                field = "",
-                message = "Registro Removido com sucesso!",
-                model = agendamento
-            };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-        private IQueryable<dynamic> Find(int? id, string text)
-        {
-            var agendaDAO = new AgendamentosDAO();
-            var list = agendaDAO.SelecionarAgendamento();
-            var select = list.Select(u => new
-            {
-                IdAgendamento = u.IdAgenda,
-
-              
-                dtCadastro = u.dtCadastro,
-                dtUltAlteracao = u.dtUltAlteracao
-
-            }).ToList();
-            return select.AsQueryable();
-        }
-
     }
 }

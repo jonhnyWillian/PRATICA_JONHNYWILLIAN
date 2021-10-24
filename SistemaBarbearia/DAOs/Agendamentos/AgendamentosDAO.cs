@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Agendamentos;
+using SistemaBarbearia.Models.Clientes;
 using SistemaBarbearia.ViewModels.Agendamentos;
 using System;
 using System.Collections.Generic;
@@ -19,19 +20,20 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             try
             {
                 Open();
-                string insertAgenda = @"INSERT INTO Agenda (dtAgendamento, hrAgendamnto, IdServico, IdFuncionario, IdCliente, dtCadastro) 
-                                               VALUES(@dtAgendamento, @hrAgendamnto, @IdServico, @IdFuncionario, @IdCliente, @dtCadastro)";
-                SQL = new SqlCommand(insertAgenda, sqlconnection);
-                SQL.CommandType = CommandType.Text;
+                string insertAgenda = @"INSERT INTO Agenda (dtAgendamento, hrAgendamento, IdServico, IdFuncionario, IdCliente,flSituacao, dtCadastro) 
+                                               VALUES(@dtAgendamento, @hrAgendamento, @IdServico, @IdFuncionario, @IdCliente, @flSituacao, @dtCadastro)";
+                SqlCommand sql = new SqlCommand(insertAgenda, sqlconnection);
+                sql.CommandType = CommandType.Text;
+                
+                sql.Parameters.AddWithValue("@dtAgendamento", agendamento.dtAgendamento);
+                sql.Parameters.AddWithValue("@hrAgendamento", agendamento.flhoraAgendamento);
+                sql.Parameters.AddWithValue("@IdServico", agendamento.Servico.IdServico);
+                sql.Parameters.AddWithValue("@flSituacao", agendamento.flSituacao);
+                sql.Parameters.AddWithValue("@IdFuncionario", agendamento.Funcionario.IdFuncionario);
+                sql.Parameters.AddWithValue("@IdCliente", agendamento.Cliente.IdCliente);
+                sql.Parameters.AddWithValue("@dtCadastro", agendamento.dtCadastro = DateTime.Now);
 
-                SQL.Parameters.AddWithValue("@dtAgendamento", agendamento.dtAgendamento);
-                SQL.Parameters.AddWithValue("@hrAgendamnto", agendamento.hrAgendamento);
-                SQL.Parameters.AddWithValue("@IdServico", agendamento.Servico.IdServico);
-                SQL.Parameters.AddWithValue("@IdFuncionario", agendamento.Funcionario.IdFuncionario);
-                SQL.Parameters.AddWithValue("@IdCliente", agendamento.Cliente.IdCliente);
-                SQL.Parameters.AddWithValue("@dtCadastro", agendamento.dtCadastro = DateTime.Now);
-
-                int i = SQL.ExecuteNonQuery();
+                int i = sql.ExecuteNonQuery();
 
                 if (i >= 1)
                 {
@@ -58,16 +60,17 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             try
             {
                 Open();
-                string updateAgenda = @"UPDATE Agenda SET dtAgendamento = @dtAgendamento, hrAgendamnto = @hrAgendamnto, IdServico = @IdServico, 
-                                                               IdFuncionario = @IdFuncionario, IdCliente @IdCliente, dtUltAlteracao = @dtUltAlteracao  WHERE idAgenda =" + agendamento.IdAgenda;
+                string updateAgenda = @"UPDATE Agenda SET dtAgendamento = @dtAgendamento, hrAgendamento = @hrAgendamento, IdServico = @IdServico, 
+                                                          IdFuncionario = @IdFuncionario, IdCliente = @IdCliente, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE idAgenda =" + agendamento.IdAgenda;
                 SqlCommand sql = new SqlCommand(updateAgenda, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@dtAgendamento", agendamento.dtAgendamento);
-                sql.Parameters.AddWithValue("@hrAgendamnto", agendamento.hrAgendamento);
-                sql.Parameters.AddWithValue("@IdServico", agendamento.Servico.IdServico);
-                sql.Parameters.AddWithValue("@IdFuncionario", agendamento.Funcionario.IdFuncionario);
-                sql.Parameters.AddWithValue("@IdCliente", agendamento.Cliente.IdCliente);
+                sql.Parameters.AddWithValue("@hrAgendamento", agendamento.flhoraAgendamento);
+                sql.Parameters.AddWithValue("@IdServico", agendamento.IdServico);
+                sql.Parameters.AddWithValue("@flSituacao", agendamento.flSituacao);
+                sql.Parameters.AddWithValue("@IdFuncionario", agendamento.IdFuncionario);
+                sql.Parameters.AddWithValue("@IdCliente", agendamento.IdCliente);                
                 sql.Parameters.AddWithValue("@dtUltAlteracao", agendamento.dtUltAlteracao = DateTime.Now);
 
 
@@ -91,6 +94,42 @@ namespace SistemaBarbearia.DAOs.Agendamentos
                 Close();
             }
         }
+
+        public bool CancelarAgendamento(Agenda agendamento)
+        {
+            try
+            {
+                Open();
+                string updateAgenda = @"UPDATE Agenda SET  flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao WHERE idAgenda =" + agendamento.IdAgenda;
+                SqlCommand sql = new SqlCommand(updateAgenda, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@flSituacao", agendamento.flSituacao);
+                sql.Parameters.AddWithValue("@dtUltAlteracao", agendamento.dtUltAlteracao = DateTime.Now);
+
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Agenda: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+
 
         public bool DeleteAgendamento(int Id)
         {
@@ -126,32 +165,39 @@ namespace SistemaBarbearia.DAOs.Agendamentos
         #endregion
 
 
-        public IEnumerable<Agenda> SelecionarAgendamento()
+        public List<Agenda> SelecionarAgendamento()
         {
             try
             {
                 Open();
-                SQL = new SqlCommand(@"SELECT * FROM Agenda", sqlconnection);
+                SQL = new SqlCommand(@"SELECT * FROM Agenda INNER JOIN Cliente ON Agenda.idCliente = Cliente.idCliente", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
                 var lista = new List<Agenda>();
                 while (Dr.Read())
                 {
-                    var cidade = new Agenda()
+                    var horario = new Agenda()
                     {
                         IdAgenda = Convert.ToInt32(Dr["idAgenda"]),
-                        idCliente = Convert.ToInt32(Dr["idCliente"]),
-                        idFuncionario = Convert.ToInt32(Dr["idFuncionario"]),
-                        idServico = Convert.ToInt32(Dr["idServico"]),
+                        Cliente = new ViewModels.Clientes.SelectClienteVM
+                        {
+                            IdCliente = Convert.ToInt32(Dr["idCliente"]),
+                            nmCliente = Convert.ToString(Dr["nmCliente"]),
+                        },
+
+                        flSituacao = Convert.ToString(Dr["flSituacao"]),
+                       // IdCliente = Convert.ToInt32(Dr["idCliente"]),
+                        IdFuncionario = Convert.ToInt32(Dr["idFuncionario"]),
+                        IdServico = Convert.ToInt32(Dr["idServico"]),
 
                         dtAgendamento = Dr["dtAgendamento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtAgendamento"]),
-                        hrAgendamento = Convert.ToString(Dr["hrAgendamento"]),
-                    
+                        flhoraAgendamento = Convert.ToString(Dr["hrAgendamento"]),
+
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
                     };
-                    lista.Add(cidade);
+                    lista.Add(horario);
                 }
                 return lista;
             }
@@ -165,12 +211,12 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             }
         }
 
-        public AgendamentoVW GetAgendamento(int? Id)
+        public Agenda GetAgendamento(int? Id)
         {
             try
             {
                 Open();
-                var agendaVM = new AgendamentoVW();
+                var agendaVM = new Agenda();
                 string selectEditCidade = @"SELECT* FROM Agenda WHERE idAgenda =" + Id;
                 SQL = new SqlCommand(selectEditCidade, sqlconnection);
 
@@ -178,11 +224,13 @@ namespace SistemaBarbearia.DAOs.Agendamentos
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    agendaVM.IdModelPai = Convert.ToInt32(Dr["idAgenda"]);
-                    agendaVM.Cliente.IdCliente = Convert.ToInt32(Dr["IdCliente"]);
-                    agendaVM.Servico.IdServico = Convert.ToInt32(Dr["IdServico"]);
-                    agendaVM.Funcionario.IdFuncionario = Convert.ToInt32(Dr["IdFuncionario"]);
-
+                    agendaVM.IdAgenda = Convert.ToInt32(Dr["idAgenda"]);
+                    agendaVM.dtAgendamento = Dr["dtAgendamento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtAgendamento"]);
+                    agendaVM.IdCliente = Convert.ToInt32(Dr["IdCliente"]);
+                    agendaVM.IdServico = Convert.ToInt32(Dr["IdServico"]);
+                    agendaVM.IdFuncionario = Convert.ToInt32(Dr["IdFuncionario"]);
+                    agendaVM.flhoraAgendamento = Convert.ToString(Dr["hrAgendamento"]);
+                    agendaVM.flSituacao = Convert.ToString(Dr["flSituacao"]);
                     agendaVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
                     agendaVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
 
@@ -200,8 +248,26 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             }
         }
 
-  
-       
-        
+
+        public bool validHorario(string dtAgendamento, string hora, int idFuncionario)
+        {
+            string sql = @"SELECT * FROM Agenda WHERE dtAgendamento = '" + dtAgendamento + 
+                                             "' AND hrAgendamento = '" + hora + 
+                                             "' AND idFuncionario = '" + idFuncionario + 
+                                             "' AND flSituacao = 'A'" ;            
+            Open();
+            SqlCommand query = new SqlCommand(sql, sqlconnection);
+            var exist = query.ExecuteScalar();
+            Close();
+            if (exist == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

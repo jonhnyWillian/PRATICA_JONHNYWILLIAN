@@ -297,7 +297,7 @@ namespace SistemaBarbearia.DAOs.Fornecedores
                 {
                     var fornecedor = new SelectFornecedorVM
                     {
-                        IdFornecedor = Convert.ToInt32(Dr["idFornecedor"]),
+                        IdFornecedor = Convert.ToInt32(Dr["IdFornecedor"]),
                         nmNome = Convert.ToString(Dr["nmNome"]),
                       
                     };

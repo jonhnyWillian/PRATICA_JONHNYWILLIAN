@@ -15,7 +15,7 @@
 @Html.Hidden("isEdit")
 
 <div class="form-row">
-    <div class="col-md-12">
+    <div class="col-md-10">
 
         @Html.Label("", Label)
         <div class="input-group">
@@ -33,15 +33,16 @@
 
         </div>
     </div>
+    @if (flParcela == "S")
+    {
+        @Html.Hidden("flParcela")
+        <div class="@Helper.Input2">
+            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)" type="button" class="btn btn-dark btn-lg" style="margin-top:34px; font-size:14px; width:150px; height:38px" title="Gerar parcelas"><b> Gerar parcelas</b> <i class="fa fa-search"></i></button>
+        </div>
+    }
 </div>
-@if (flParcela == "S")
-{
-    @Html.Hidden("flParcela")
-    <div class="@Helper.Input2">
-        <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcela", Prefix)" type="button" class="btn btn-dark btn-lg" style="margin-top:34px; font-size:14px; width:150px; height:38px" title="Gerar parcelas"><b> Gerar parcelas</b> <i class="fa fa-search"></i></button>
-    </div>
-}
 
+<div></div>
 <div id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -1,7 +1,7 @@
 ﻿@model SistemaBarbearia.ViewModels.Agendamentos.AgendamentoVW
 @using SistemaBarbearia.Helper;
 @{
-    ViewBag.Title = "Editar Horario Agendado";
+    ViewBag.Title = "Cancela Horario";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
@@ -15,25 +15,18 @@
         <div class="pull-right col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ul class="breadcrumb breadcrumb-arrow">
                 <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
-                <li class="active">Alterar Horario Agendado</li>
+                <li class="active">Cancelar Horario</li>
             </ul>
             <div class="form-horizontal">
                 <h6 class="text-right">Campos obrigatório *</h6>
-                @Html.Partial("Form", Model)
+               
+                    @Html.Partial("Form", Model)
+               
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i>Agendar</button>
+                <button type="submit" class="btn btn-success"><i class="fa fa-ban"></i>Cancelar</button>
                 <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"><i class="fa fa-arrow-left"></i>Voltar</a>
             </div>
         </div>
     </div>
-}
-@section Scripts {
-    <script type="text/javascript">
-        var Action = {
-            verificahora: "@Url.Action("JsVerificaHorario", "Agendamento")",
-         }
-    </script>
-    @Scripts.Render("~/Scripts/Views/Agendamentos/Create.js")
-
 }

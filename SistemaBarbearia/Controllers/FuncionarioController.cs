@@ -225,11 +225,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? Id, string Text)
+        public JsonResult JsDetails(int? IdFuncionario, string nmFuncionario)
         {
             try
             {
-                var result = this.Find(Id, Text).FirstOrDefault();
+                var result = this.Find(IdFuncionario, nmFuncionario).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -241,10 +241,10 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? id, string text)
+        private IQueryable<dynamic> Find(int? IdFuncionario, string nmFuncionario)
         {
             var funcionarioDAO = new FuncionarioDAO();
-            var list = funcionarioDAO.SelectFuncionario(id, text);
+            var list = funcionarioDAO.SelectFuncionario(IdFuncionario, nmFuncionario);
             var select = list.Select(u => new
             {
                 IdFuncionario = u.IdFuncionario,

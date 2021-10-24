@@ -10,6 +10,8 @@ namespace SistemaBarbearia.ViewModels.Servicos
         public int IdServico { get; set; }
 
         public string dsServico { get; set; }
-      
+        
+
+        public decimal vlServico { get; set; }
     }
 }
