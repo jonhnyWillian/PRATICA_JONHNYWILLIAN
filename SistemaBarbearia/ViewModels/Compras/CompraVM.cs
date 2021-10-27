@@ -46,8 +46,10 @@ namespace SistemaBarbearia.ViewModels.Compras
         public int? IdFornecedor { get; set; }
 
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
+        public int? IdCondPag { get; set; }
+      
         public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
-
+        public int? IdProduto { get; set; }
         public string finalizar { get; set; }
  
         public decimal? vlTotal { get; set; }

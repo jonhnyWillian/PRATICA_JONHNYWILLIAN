@@ -25,18 +25,22 @@ namespace SistemaBarbearia.Models.Compras
         public int? nrNota { get; set; }
         public int? nrNotaAux { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtEmissao { get; set; }
         public string dtEmissaoAux { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtEntrega { get; set; }
         public string dtEntregaAux { get; set; }
 
         public ViewModels.Fornecedores.SelectFornecedorVM Fornecedor { get; set; }
-        //public int? IdFornecedor { get; set; }
+        public int? IdFornecedor { get; set; }
 
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
+        public int? IdCondPag { get; set; }
 
-       public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
+
+        public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
+        public int? IdProduto { get; set; }
 
         public string finalizar { get; set; }
         public decimal? vlTotal { get; set; }

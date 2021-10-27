@@ -253,7 +253,7 @@ namespace SistemaBarbearia.Controllers
                 {
                     nrParcela = item.nrParcela,
                     dtVencimento = dtinicio.AddDays((double)item.qtdDias),
-                    idFormaPag = item.IdFormaPagamento,
+                    idFormaPagamento = item.idFormaPagamento,
                     dsFormaPagamento = item.dsFormaPagamento,
                     vlParcela = decimal.Round(((item.txPercentual / 100) * vlTotal), 2)
                 };

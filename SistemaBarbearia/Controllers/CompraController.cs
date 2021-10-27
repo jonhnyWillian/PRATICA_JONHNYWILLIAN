@@ -1,5 +1,9 @@
 ﻿using SistemaBarbearia.DAOs.Compras;
+using SistemaBarbearia.DAOs.CondPagamentos;
+using SistemaBarbearia.DAOs.Fornecedores;
+using SistemaBarbearia.DAOs.Produtos;
 using SistemaBarbearia.Models.Compras;
+using SistemaBarbearia.ViewModels.Compras;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +14,60 @@ namespace SistemaBarbearia.Controllers
 {
     public class CompraController : Controller
     {
-        // GET: Compra
+
+        #region MethodPrivate
+        private ActionResult GetView(int id)
+        {
+            FornecedorDAO daoFornecedor = new FornecedorDAO();
+            CondPagamentoDAO daoCondPag = new CondPagamentoDAO();
+            CompraDAO daoCompra = new CompraDAO();
+            ProdutoDAO daoProduto = new ProdutoDAO();
+            var obj = daoCompra.GetCompra(id);
+            var result = new CompraVM
+            {
+                IdModelPai = obj.IdCompra,
+                IdFornecedor = obj.IdFornecedor,
+                IdCondPag = obj.IdCondPag,
+                IdProduto = obj.IdProduto,
+                dtEmissao = obj.dtEmissao,
+                dtEntrega = obj.dtEntrega,
+                nrModelo = obj.nrModelo,
+                nrSerie = obj.nrSerie,
+                nrNota = obj.nrNota,
+
+            };
+            var objFornecedor = daoFornecedor.GetFornecedor(result.IdFornecedor);
+            result.Fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM { IdFornecedor = objFornecedor.IdFornecedor, nmNome = objFornecedor.nmNome };
+
+            var objProduto = daoProduto.GetProduto(result.IdProduto);
+            result.Produto = new ViewModels.Produtos.SelectProdutoVM { IdProduto = objProduto.IdProduto, dsProduto = objProduto.dsProduto };
+
+            var objCondPag = daoCondPag.GetCondPagamento(result.IdCondPag);
+            result.CondicaoPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdCondPag, Text = objCondPag.dsCondPag };
+
+
+            return View(result);
+        }
+        #endregion
+
+
         public ActionResult Index()
         {
-            return View();
+            var compraDAO = new CompraDAO();
+            ModelState.Clear();
+            return View(compraDAO.SelecionarCompra());
         }
-
-        // GET: Compra/Details/5
+      
         public ActionResult Details(int id)
         {
-            return View();
+            return this.GetView(id);
         }
-
-        // GET: Compra/Create
+      
         public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Compra/Create
+      
         [HttpPost]
         public ActionResult Create(Compra model)
         {
@@ -38,6 +77,11 @@ namespace SistemaBarbearia.Controllers
             model.nrSerie = !string.IsNullOrEmpty(model.nrSerieAux) ? model.nrSerieAux : model.nrSerie;
             model.nrNota = model.nrNotaAux != null ? model.nrNotaAux : model.nrNota;
             model.Fornecedor.IdFornecedor = model.Fornecedor.IdFornecedor != null ? model.Fornecedor.IdFornecedor : model.Fornecedor.IdFornecedor;
+            
+            model.dtCadastro = DateTime.Now;
+
+            model.flSituacao = "A";
+
 
             if (string.IsNullOrWhiteSpace(model.nrModelo))
             {
@@ -84,14 +128,12 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
-
-        // GET: Compra/Edit/5
+    
         public ActionResult Edit(int id)
         {
             return View();
         }
-
-        // POST: Compra/Edit/5
+      
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -106,21 +148,17 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
-
-        // GET: Compra/Delete/5
+        
         public ActionResult Delete(int id)
         {
             return View();
         }
-
-        // POST: Compra/Delete/5
+        
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
-            {
-                // TODO: Add delete logic here
-
+            {              
                 return RedirectToAction("Index");
             }
             catch

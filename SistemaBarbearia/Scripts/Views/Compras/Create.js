@@ -167,7 +167,7 @@
     }
 
     if (dtProdutos.length > 0) {
-        $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
+       $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
         $("#CondicaoPagamento_btn-localizar").show();
     }
 
@@ -196,7 +196,7 @@ Compra = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            return data.nrQtd.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            return data.nrQtd;
                         }
                     },
                     {
@@ -251,6 +251,7 @@ Compra = function () {
                             return JSONDate(data.dtVencimento);
                         }
                     },
+                    { data: "idFormaPagamento" },
                     { data: "dsFormaPagamento" },
                 ]
             },
@@ -337,7 +338,7 @@ Compra = function () {
         $("#Produto_vlCompra").val("");
         $("#Produto_txDesconto").val("");
         $("#Produto_vlVenda").val("");
-        $("#Produto_vlTotal").val("") // Produto_vlTotal
+        $("#Produto_vlTotal").val("") 
         $('input[name="Produto_IdProduto"]').prop('disabled', false)
     }
 
@@ -374,7 +375,7 @@ Compra = function () {
             $('input[name="nrModelo"]').prop('disabled', true)
             $('input[name="nrSerie"]').prop('disabled', true)
             $('input[name="nrNota"]').prop('disabled', true)
-            $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', true)
+           // $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
             $("#Fornecedor_btn").removeAttr('disabled', true)
             $("#Fornecedor_btn-localizar").hide();
         } else {
@@ -383,7 +384,7 @@ Compra = function () {
             $('input[name="nrModelo"]').prop('disabled', false)
             $('input[name="nrSerie"]').prop('disabled', false)
             $('input[name="nrNota"]').prop('disabled', false)
-            $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
+           // $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
             $("#Fornecedor_btn").removeAttr('disabled', false)
 
             $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
@@ -426,7 +427,6 @@ Compra = function () {
         let valid = true;
 
         if (IsNullOrEmpty(date)) {
-            //$("#dtEmissao").blink({msg: "Informe a data de emissão"})
             $.notify({ message: "Informe a data de emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
             valid = false;
         } else if (IsNullOrEmpty(dateEntrega)) {
@@ -437,8 +437,7 @@ Compra = function () {
             valid = false;
         }
         if (!dtParcelas.length && valid) {
-            console.log($("#vlTotal").val());
-            //let vlTotal = vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            console.log($("#vlTotal").val());           
             $.ajax({
                 dataType: 'json',
                 type: 'GET',
@@ -488,8 +487,7 @@ Compra = function () {
                 data: { nrModelo: nrModelo.val(), nrSerie: nrSerie.val(), numero: numero.val(), idFornecedor: id },
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: data.type, z_index: 2000 });
-                    if (data.type == "success") {
-                        //seta valor válido
+                    if (data.type == "success") {                        
                         let nrModelo = $("#nrModelo").val()
                         $("#modeloAux").val(nrModelo)
                         let nrSerie = $("#nrSerie").val()
@@ -497,8 +495,7 @@ Compra = function () {
                         let numero = $("#nrNota").val()
                         $("#nrNotaAux").val(numero)
                         let idFornecedor = $("#Fornecedor.IdFornecedor").val()
-                        $("#IdFornecedor").val(idFornecedor)
-                        //habilita adicionar produto
+                        $("#IdFornecedor").val(idFornecedor)                        
                         $("#divAddProduto").slideDown();
 
                     } else {

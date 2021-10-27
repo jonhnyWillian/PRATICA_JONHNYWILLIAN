@@ -16,30 +16,38 @@
         <thead class="table-dark">
             <tr>
                 <th export="true" style="width:10%">Codigo</th>
-                <th export="true" style="width:60%">Cliente</th>
-                <th export="true" style="width:10%">Nº Celular</th>
-                <th export="true" style="width:10%">Opções</th>
+                <th export="true" style="width:10%">Nº Nota</th>
+                <th export="true" style="width:10%">Nº Modelo</th>
+                <th export="true" style="width:10%">Dt.Emissão</th>             
+                <th export="true" style="width:45%">Fornecedor</th>
+                <th export="true" style="width:15%">Opções</th>
             </tr>
         </thead>
-        @*@foreach (var item in Model)
-            {
-                <tr>
-                    <td class="text-right" style="width:10%;">
-                        @Html.DisplayFor(modelItem => item.)
-                    </td>
-                    <td style="width:50%;">
-                        @Html.DisplayFor(modelItem => item.nmCliente)
-                    </td>
-                    <td style="width:20%;">
-                        @Html.DisplayFor(modelItem => item.nrCelular)
-                    </td>
-                    <td>
-                        <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCliente }))"><i class="fa fa-eye"></i></a>
-                        <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCliente }))"><i class="fa fa-pencil-square-o"></i></a>
-                        <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCliente }))"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            }*@
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-right" style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.IdCompra)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.nrNota)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.nrModelo)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.dtEmissao)
+                </td>              
+                <td style="width:45%;">
+                    @Html.DisplayFor(modelItem => item.Fornecedor.nmNome)
+                </td>
+                <td>
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCompra }))"><i class="fa fa-eye"></i></a>
+                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCompra }))"><i class="fa fa-pencil-square-o"></i></a>
+                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCompra }))"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }
 
     </table>
 
@@ -47,9 +55,5 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/Views/Compras/Compra.js")
-    @*@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
-    @Styles.Render("~/Content/bootstrap.min.css")
-    @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
-    @Styles.Render("~/Content/bootstrap.css")*@
 
 }

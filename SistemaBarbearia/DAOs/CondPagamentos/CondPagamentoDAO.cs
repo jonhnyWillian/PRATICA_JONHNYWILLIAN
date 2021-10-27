@@ -316,7 +316,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                             var item = new CondPagamento.CondicaoPagamentoVM()
                             {
                                 IdCondPag = Convert.ToInt32(Dr["CondicaoParcela_ID"]),
-                                IdFormaPagamento = Convert.ToInt32(Dr["Condicao_FormaPag_ID"]),
+                                idFormaPagamento = Convert.ToInt32(Dr["Condicao_FormaPag_ID"]),
                                 dsFormaPagamento = Convert.ToString(Dr["Condicao_FormaPag"]),
                                 nrParcela = Convert.ToInt16(Dr["Parcela_Nr"]),
                                 qtdDias = Convert.ToInt16(Dr["Parcela_QtDias"]),
