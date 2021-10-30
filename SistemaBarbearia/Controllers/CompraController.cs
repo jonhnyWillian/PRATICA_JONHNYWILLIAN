@@ -119,7 +119,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var dao = new CompraDAO();
-                dao.InsertCompra(model);
+               // dao.InsertCompra(model);
 
                 return RedirectToAction("Index");
             }

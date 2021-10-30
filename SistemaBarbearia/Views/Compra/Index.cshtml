@@ -42,9 +42,10 @@
                     @Html.DisplayFor(modelItem => item.Fornecedor.nmNome)
                 </td>
                 <td>
-                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCompra }))"><i class="fa fa-eye"></i></a>
+                   
+                    @*<a title="Visualizar" class="btn btn-success btn-sm"   href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCompra }))"><i class="fa fa-eye"></i></a>
                     <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCompra }))"><i class="fa fa-pencil-square-o"></i></a>
-                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCompra }))"><i class="fa fa-trash"></i></a>
+                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCompra }))"><i class="fa fa-trash"></i></a>*@
                 </td>
             </tr>
         }

@@ -30,7 +30,7 @@ namespace SistemaBarbearia.Controllers
                 IdEstado = obj.IdEstado
             };
             var objEstado = DAOEstado.GetEstado(result.IdEstado);
-            result.Estado = new ViewModels.Estados.SelectEstadoVM { IdEstado = objEstado.IdEstado, nmEstado = objEstado.nmEstado };
+            result.Estado = new ViewModels.Estados.SelectEstadoVM { IdEstado = objEstado.IdEstado, Text = objEstado.nmEstado };
             return View(result);
         }
         #endregion

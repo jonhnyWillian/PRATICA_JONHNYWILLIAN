@@ -116,19 +116,16 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
+
+        #region Json
         public JsonResult JsQuery([ModelBinder(typeof(DataTablesBinder))] IDataTablesRequest requestModel)
         {
             try
             {
                 var select = this.Find(null, requestModel.Search.Value);
-
                 var totalResult = select.Count();
-
                 var result = select.OrderBy(requestModel.Columns, requestModel.Start, requestModel.Length).ToList();
-
                 return Json(new DataTablesResponse(requestModel.Draw, result, totalResult, result.Count), JsonRequestBehavior.AllowGet);
-
-
             }
             catch (Exception ex)
             {
@@ -171,7 +168,7 @@ namespace SistemaBarbearia.Controllers
         {
             var paisDAO = new PaisDAO();
             paisDAO.UpdatePais(pais);
-            
+
             var result = new
             {
                 type = "success",
@@ -182,11 +179,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? IdPais, string nmPais)
+        public JsonResult JsDetails(int? IdPais, string Text)
         {
             try
             {
-                var result = this.Find(IdPais, nmPais).FirstOrDefault();
+                var result = this.Find(IdPais, Text).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);
@@ -198,17 +195,20 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? IdPais, string text)
+        #endregion
+
+        private IQueryable<dynamic> Find(int? Id, string text)
         {
             var paisDAO = new PaisDAO();
-            var list = paisDAO.SelectPais(IdPais, text);
+            var list = paisDAO.SelectPais(Id, text);
             var select = list.Select(u => new
             {
-                IdPais = u.Id,
-                nmPais = u.text,
-                dsSigla = u.dsSigla,
+                IdPais = u.IdPais,
+                Text = u.Text,
+                dsSigla = u.dsSigla
+             
                
-            }).OrderBy(u => u.nmPais).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
 

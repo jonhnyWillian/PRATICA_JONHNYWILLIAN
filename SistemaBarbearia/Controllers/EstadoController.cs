@@ -1,15 +1,10 @@
 ﻿using SistemaBarbearia.DAOs.Estados;
 using SistemaBarbearia.Models.Estados;
-using SistemaBarbearia.Models.Paises;
 using SistemaBarbearia.DataTables;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using SistemaBarbearia.DAOs.Paises;
-using SistemaBarbearia.DAOs.Cidades;
-using SistemaBarbearia.ViewModels.Paises;
 using SistemaBarbearia.ViewModels.Estados;
 
 namespace SistemaBarbearia.Controllers
@@ -33,7 +28,7 @@ namespace SistemaBarbearia.Controllers
                 IdPais = obj.IdPais
             };
             var objPais = DAOPais.GetPais(result.IdPais);
-            result.Pais = new ViewModels.Paises.SelectPaisVM { Id = objPais.IdPais, text = objPais.nmPais };
+            result.Pais = new ViewModels.Paises.SelectPaisVM { IdPais = objPais.IdPais, Text = objPais.nmPais };
             return View(result);
         }
         #endregion
@@ -67,7 +62,7 @@ namespace SistemaBarbearia.Controllers
             {
                 ModelState.AddModelError("", "UF do Estado não pode ser em branco");
             }
-            if(estado.pais.Id == 0)
+            if(estado.pais.IdPais == 0)
             {
                 ModelState.AddModelError("", "Campo Pais não pode ser em branco");
             }
@@ -234,9 +229,10 @@ namespace SistemaBarbearia.Controllers
             var select = list.Select(u => new
             {
                 IdEstado = u.IdEstado,
-                nmEstado = u.nmEstado,
+                nmEstado = u.Text,
                 dsUF = u.dsUF,
                 IdPais = u.IdPais,
+                nmPais = u.nmPais, 
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 

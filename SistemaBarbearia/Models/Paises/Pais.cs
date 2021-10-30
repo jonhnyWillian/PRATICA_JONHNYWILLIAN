@@ -10,9 +10,9 @@ namespace SistemaBarbearia.Models.Paises
     {
         [Key]
         public int IdPais { get; set; }
-        [Required]
+        [Display(Name = "Pais")]
         public string nmPais { get; set; }
-        [Required]
+        [Display(Name = "Sigla")]
         public string dsSigla { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtCadastro { get; set; }

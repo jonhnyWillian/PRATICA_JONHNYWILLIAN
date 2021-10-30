@@ -128,7 +128,6 @@ namespace SistemaBarbearia.DAOs.Paises
                 SQL = new SqlCommand(@"SELECT * FROM Pais", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
-                // Criando uma lista vazia
                 var lista = new List<Pais>();
                 while (Dr.Read())
                 {
@@ -162,8 +161,6 @@ namespace SistemaBarbearia.DAOs.Paises
                 var paisVM = new PaisVM();
                 string selectEditPais = @"SELECT* FROM Pais WHERE IdPais =" + Id;
                 SQL = new SqlCommand(selectEditPais, sqlconnection);
-
-
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
@@ -171,10 +168,7 @@ namespace SistemaBarbearia.DAOs.Paises
                     paisVM.nmPais = Dr["nmPais"].ToString();
                     paisVM.dsSigla = Dr["dsSigla"].ToString();
                     paisVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
-
                     paisVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
-
-
                 }
                 return paisVM;
             }
@@ -210,12 +204,12 @@ namespace SistemaBarbearia.DAOs.Paises
             return sqlSelectPais;
         }
 
-        public List<SelectPaisVM> SelectPais(int? Id, string text)
+        public List<SelectPaisVM> SelectPais(int? IdPais, string Text)
         {
             try
             {
 
-                var sqlSelectPais = this.BuscarPais(Id, text);
+                var sqlSelectPais = this.BuscarPais(IdPais, Text);
                 Open();
                 SQL = new SqlCommand(sqlSelectPais, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -225,11 +219,9 @@ namespace SistemaBarbearia.DAOs.Paises
                 {
                     var pais = new SelectPaisVM
                     {
-                        Id = Convert.ToInt32(Dr["IdPais"]),
-                        text = Convert.ToString(Dr["nmPais"]),                       
-                        dsSigla = Convert.ToString(Dr["dsSigla"])
-                        //dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
-                        //dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                        IdPais = Convert.ToInt32(Dr["IdPais"]),
+                        Text = Convert.ToString(Dr["nmPais"]),                       
+                        dsSigla = Convert.ToString(Dr["dsSigla"])                        
                     };
 
                     list.Add(pais);

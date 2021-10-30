@@ -136,7 +136,7 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             try
             {
                 Open();
-                string deleteAgenda = "DELETE FROM Agenda WHERE idAgenda = @idAgenda";
+                string deleteAgenda = "DELETE FROM Agenda WHERE idAgenda = "+ Id;
                 SqlCommand sql = new SqlCommand(deleteAgenda, sqlconnection);
                 sql.CommandType = CommandType.Text;
 

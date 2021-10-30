@@ -23,12 +23,12 @@
                     @Html.TextBoxFor(model => model.IdEstado, new { @style = "border-radius: 4px 0px 0px 4px;", @class = "form-control number", maxLength = "6" })
                 </div>
                 <div class="input-group-btn" style="width:45%">
-                    @Html.TextBoxFor(model => model.nmEstado, new { @class = "form-control", Disabled = true })
+                    @Html.TextBoxFor(model => model.Text, new { @class = "form-control", Disabled = true })
                 </div>
                 <div class="input-group-btn">
                     <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
                 </div>
-                @Html.ValidationMessageFor(model => model.nmEstado, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Text, null, new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModal()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Fechar", Prefix)" onclick="FecharModalEstado()" type="button" class="btn btn-outline-dark"><i class="fa fa-times"></i>Fechar</button>
                         </div>
                     </div>
                 </div>
@@ -78,8 +78,8 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("IdEstado", "Código")
-                                    @Html.TextBox("IdEstado", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("idEstado", "Código")
+                                    @Html.TextBox("idEstado", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
@@ -102,31 +102,13 @@
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="form-row isEdit">
-                                <div class="@Helper.Input3">
-                                    @Html.Label("dtCadastro", "Data de cadastro", new { @class = "required" })
-                                    <div class="input-group-append">
-                                        @Html.TextBox("dtCadastro", null, new { @class = "form-control", disabled = true })
-                                        <span class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="@Helper.Input3 ">
-                                    @Html.Label("dtUltAlteracao", "Data de cadastro", new { @class = "required" })
-                                    <div class="input-group">
-                                        @Html.TextBox("dtUltAlteracao", null, new { @class = "form-control", disabled = true })
-                                        <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
-                                </div>
-                            </div>*@
-
 
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-saveEstado"></i>  Salvar</button>
                             <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreate()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
@@ -146,24 +128,26 @@
          });
 
          $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.saveEstado();
          });
 
          $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)').change(function (data, e) {
              var IdEstado = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)').val();
              if (IdEstado == "") {
                  $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)").val("");
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val("");
+                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");
              } else {
                  $.ajax({
                      dataType: 'json',
                      type: 'GET',
                      url: '@Url.Action("JsDetails", "Estado")',
-                     data: { 'IdEstado': Id },
+                     data: { 'IdEstado': IdEstado },
                      success: function (data) {
-
+                         if (!data) {
+                             $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
+                         }
                          $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)").val(data.IdEstado);
-                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.nmEstado);
+                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                      },
                      error: function (err) {
                          alert(err);
@@ -175,32 +159,28 @@
 
      });
 
-    this.getForm = function() {
+    this.getFormEstado = function () {
         var form = {
-                IdEstado : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)'),
+                idEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)'),
                 nmEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)'),
                 dsUF: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)'),
-                IdPais : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idPais", Prefix)'),
-                dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
-                dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
-        }
+                IdPais: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)'),
+            }
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getForm();
-        form.IdEstado.val("");
+    this.clearEstado = function () {
+        var form = self.getFormEstado();
+        form.idEstado.val("");
         form.nmEstado.val("");
         form.dsUF.val("");
         form.IdPais.val("");
-        form.dtCadastro.val("");
-        form.dtUltAlteracao.val("");
         form.nmEstado.focus();
     };
 
-    this.isValid = function () {
+    this.isValidEstado = function () {
         var valid = true;
-        var form = self.getForm();
+        var form = self.getFormEstado();
 
         if (IsNullOrEmpty(form.nmEstado.val())) {
             form.nmEstado.blink({ msg: "Campo Estado é obrigatório" });
@@ -215,29 +195,30 @@
         return valid;
     };
 
-    getModel = function (form) {
+    getModelEstado = function (form) {
         var model = {
-            IdEstado: form.IdEstado.val(),
+            idEstado: form.idEstado.val(),
             nmEstado: form.nmEstado.val(),
             dsUF: form.dsUF.val(),
-            IdPais: form.IdPais.val(),
+
+            IdPais: $("#Estado_Pais_IdPais").val() > 0 ? $("#Estado_Pais_IdPais").val() : $("#cidade_Estado_Pais_IdPais").val(),
         }
         return model;
     };
 
-    this.save = function () {
+    this.saveEstado = function () {
         if ($('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
-            this.update();
+            this.updateEstado();
         } else {
-            this.insert();
+            this.insertEstado();
         }
     }
 
-    this.insert = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+    this.insertEstado = function () {
+        var form = self.getFormEstado();
+        var model = getModelEstado(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidEstado(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -245,11 +226,11 @@
                 url: '@Url.Action("jsInsert", "Estado")',
                 data: model,
                 success: function (data) {
-                    self.clear();
+                    self.clearEstado();
                     InitModalEstado();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000, });
 
                 },
                 error: function (request) {
@@ -259,11 +240,11 @@
         }
     };
 
-    this.update = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+    this.updateEstado = function () {
+        var form = self.getFormEstado();
+        var model = getModelEstado(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidEstado(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -272,7 +253,7 @@
                 data: model,
                 success: function (data) {
                     console.log(data)
-                    self.clear();
+                    self.clearEstado();
                     InitModalEstado();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
@@ -310,7 +291,7 @@
                     sortable: false,
                     data: null,
                     mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEdit(' + data.IdEstado + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditEstado(' + data.IdEstado + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
                     }
                 },
             ],
@@ -340,17 +321,17 @@
         let tmp = `<table id="listaEstado" class="table table-striped table-bordered" style="width:100%" data-url="@Url.Action("JsQuery", "Estado")">
                         <thead class="table-dark">
                             <tr>
-                                <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:70%">Estado</th>
-                                <th export="true" style="width:10%">Selecionar</th>
-                                <th export="true" style="width:10%">Alterar</th>
+                                <th export="true" style="width:20%">Código</th>
+                                <th export="true" style="width:80%">Estado</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                    </table>`;
           return tmp;
     };
 
-    function FecharModal() {
+    function FecharModalEstado() {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
     };
 
@@ -358,7 +339,7 @@
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").css("overflow", "hidden");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearEstado();
     };
 
     function OpenModalCreate() {
@@ -380,28 +361,24 @@
         return false;
     };
 
-    function OpenEdit(Id) {
+    function OpenEditEstado(Id) {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "Estado")',
             data: { 'IdEstado': Id },
             success: function (data) {
-                self.clear();
+                self.clearEstado();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
-
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)").val(data.IdEstado);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)").val(data.IdEstado);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.nmEstado);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)").val(data.dsUF);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)").val(data.IdPais);
-
-                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)").val(JSONDate(data.dtCadastro));
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)").val(JSONDate(data.dtUltAlteracao));*@
-
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUf", Prefix)").val(data.dsUF);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_IdPais", Prefix)").val(data.IdPais);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_Pais_Text", Prefix)").val(data.Text);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

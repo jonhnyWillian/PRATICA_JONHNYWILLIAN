@@ -13,13 +13,13 @@ namespace SistemaBarbearia.ViewModels.Paises
 
         [Display(Name = "Pais")]
         [StringLength(50, MinimumLength = 3)]
-        [RegularExpression("([A-Z])", ErrorMessage = "Somente Letras")]
+        //[RegularExpression("([A-Z])", ErrorMessage = "Somente Letras")]
         [Required(ErrorMessage = "Campo Pais não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string nmPais { get; set; }
 
         [Display(Name = "Sigla")]
         [StringLength(4, MinimumLength = 2)]
-        [Required(ErrorMessage = "Campo Sigla não Pode ser em Branco!", AllowEmptyStrings = false)]
+        //[Required(ErrorMessage = "Campo Sigla não Pode ser em Branco!", AllowEmptyStrings = false)]
         public string dsSigla { get; set; }
 
         [Display(Name = "Data de Cadastro")]
