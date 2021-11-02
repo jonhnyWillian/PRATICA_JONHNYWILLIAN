@@ -8,8 +8,8 @@ namespace SistemaBarbearia.Models.ContaPagar
 {
     public class ContaPagar
     {
-        [Key]
-        public int IdContaPagar { get; set; }
+        public string flSituacao { get; set; }
+
         public short nrModelo { get; set; }
 
         public short nrSerie { get; set; }

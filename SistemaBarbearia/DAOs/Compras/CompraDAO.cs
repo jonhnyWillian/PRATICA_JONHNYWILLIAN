@@ -1,5 +1,6 @@
 ﻿using SistemaBarbearia.DataBase;
 using SistemaBarbearia.Models.Compras;
+using SistemaBarbearia.ViewModels.Compras;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -155,10 +156,7 @@ namespace SistemaBarbearia.DAOs.Compras
                         nrSerie = Convert.ToString(Dr["nrSerie"]),
                         nrNota = Convert.ToInt32(Dr["nrNota"]),
                         dtEmissao = Dr["dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEmissao"]),
-                        //dtEntrega = Dr["dtEntrega"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEntrega"]),
-
-                        //  dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
-                        //dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),
+                       
                     };
                     lista.Add(c);
                 }
@@ -174,38 +172,86 @@ namespace SistemaBarbearia.DAOs.Compras
             }
         }
 
-
-     
-
-        public Compra GetCompra(int? Id)
+        public CompraVM GetCompra(string filter, string nmModelo, string nrSerie, int nrNota, int? IdFornecedor)
         {
             try
             {
                 Open();
-                var compraVM = new Compra();
-                string select = @"SELECT* FROM Compra  WHERE IdCompra =" + Id;
-                SQL = new SqlCommand(select, sqlconnection);
+                var compraVM = new CompraVM();
+                var sql = this.BuscarCompra(filter, nmModelo, nrSerie, nrNota, IdFornecedor);
+                var sqlProduto = this.BuscarProdutos(nmModelo, nrSerie, nrNota);
+                var sqlParcela = this.BuscarParcelas(nmModelo, nrSerie, nrNota, IdFornecedor);
 
+                var listProdutos = new List<CompraVM.ProdutosVM>();
+                var listParcelas = new List<CompraVM.ParcelasVM>();
 
+                SQL = new SqlCommand(sql + sqlProduto + sqlParcela, sqlconnection);
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    compraVM.IdCompra = Convert.ToInt32(Dr["IdCompra"]);
-                    compraVM.dtEmissao = Dr["dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEmissao"]);
-                    compraVM.dtEntrega = Dr["dtEntrega"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEmissao"]);
-                    compraVM.nrModelo = Convert.ToString(Dr["hrAgendamento"]);
-                    compraVM.nrNota = Convert.ToInt32(Dr["hrAgendamento"]);
-                    compraVM.nrSerie = Convert.ToString(Dr["hrAgendamento"]);
-                    compraVM.IdCondPag = Convert.ToInt32(Dr["hrAgendamento"]);
-                    compraVM.IdProduto = Convert.ToInt32(Dr["hrAgendamento"]);
-                    compraVM.IdFornecedor = Convert.ToInt32(Dr["hrAgendamento"]);
-                    compraVM.vlTotal = Convert.ToDecimal(Dr["hrAgendamento"]);
-                    
-                    //compraVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
-                    //compraVM.dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]);
+              
+                    compraVM.nrModelo = Convert.ToString(Dr["Compra_Modelo"]);
+                    compraVM.nrNota = Convert.ToInt32(Dr["Compra_Nota"]);
+                    compraVM.nrSerie = Convert.ToString(Dr["Compra_Serie"]);
+                    compraVM.vlDespesa = Convert.ToDecimal(Dr["Compra_vlDespesas"]);
+                    compraVM.vlSeguro = Convert.ToDecimal(Dr["Compra_vlSeguro"]);
+                    compraVM.vlFrete = Convert.ToDecimal(Dr["Compra_vlFrete"]);
+                    compraVM.vlTotal = Convert.ToDecimal(Dr["Compra_vlTotal"]);
 
-
+                    compraVM.dtEmissao = Dr["Compra_dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["Compra_dtEmissao"]);
+                    compraVM.dtEntrega = Dr["Compra_dtentrega"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["Compra_dtentrega"]);
+                                 
+                    compraVM.Fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM
+                    {
+                        IdFornecedor = Convert.ToInt32(Dr["Fornecedor_ID"]),
+                        nmNome = Convert.ToString(Dr["Fornecedor_nmNome"])
+                    };
+                    compraVM.CondicaoPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM
+                    {
+                        Id = Convert.ToInt32(Dr["CondicaoPagamento_ID"]),
+                        Text = Convert.ToString(Dr["CondicaoPagamento_Nome"]),
+                    };
+                  
+ 
                 }
+                if (Dr.NextResult())
+                {
+                    while (Dr.Read())
+                    {
+                        var produto = new CompraVM.ProdutosVM
+                        {
+                            IdProduto = Convert.ToInt32(Dr["ProdutoCompra_ID"]),
+                            dsProduto = Convert.ToString(Dr["ProdutoCompra_dsProduto"]),                         
+                            nrQtd = Convert.ToDecimal(Dr["ProdutoCompra_nrQtd"]),
+                            vlCompra = Convert.ToDecimal(Dr["ProdutoCompra_vlCompra"]),
+                            txDesconto = Convert.ToDecimal(Dr["ProdutoCompra_txDesconto"]),
+                            vlVenda = Convert.ToDecimal(Dr["ProdutoCompra_vlVenda"]),
+                        };
+                        var txDesc = (produto.vlCompra * produto.txDesconto) / 100;
+                        var vlTotal = produto.vlCompra - txDesc;
+                        produto.vlTotal = vlTotal;
+                        listProdutos.Add(produto);
+                    }
+                }
+
+                if (Dr.NextResult())
+                {
+                    while (Dr.Read())
+                    {
+                        var parcela = new CompraVM.ParcelasVM
+                        {
+                            IdFormaPagamento = Convert.ToInt32(Dr["FormaPagamento_ID"]),
+                            dsFormaPagamento = Convert.ToString(Dr["FormaPagamento_dsForma"]),
+                            nrParcela = Convert.ToDouble(Dr["ContaPagar_NrParcela"]),
+                            vlParcela = Convert.ToDecimal(Dr["ContaPagar_VlParcela"]),
+                            dtVencimento = Convert.ToDateTime(Dr["ContaPagar_DtVencimento"]),
+                            //flSituacao =Convert.ToString(Dr["ContaPagar_flSituacao"])
+                        };
+                        listParcelas.Add(parcela);
+                    }
+                }
+                compraVM.ProdutosCompra = listProdutos;
+                compraVM.ParcelasCompra = listParcelas;
                 return compraVM;
             }
             catch (Exception e)
@@ -218,8 +264,111 @@ namespace SistemaBarbearia.DAOs.Compras
             }
         }
 
+        protected string BuscarCompra(string filter, string nrModelo, string nrSerie, int? nrNota, int? IdFornecedor)
+        {
+            var sql = string.Empty;
+            var swhere = string.Empty;
+            if (!string.IsNullOrEmpty(nrModelo))
+            {
+                swhere += " AND Compra.nrModelo = '" + nrModelo + "'";
+            }
+            if (!string.IsNullOrEmpty(nrSerie))
+            {
+                swhere += " AND Compra.nrSerie = '" + nrSerie + "'";
+            }
+            if (nrNota != null)
+            {
+                swhere += " AND Compra.nrNota = " + nrNota;
+            }
+            if (nrNota != null)
+            {
+                swhere += " AND Compra.IdFornecedor = " + IdFornecedor;
+            }
 
+            if (!string.IsNullOrEmpty(filter))
+            {
+                var filterQ = filter.Split(' ');
+                foreach (var word in filterQ)
+                {
+                    swhere += " OR Fornecedor.nmNome LIKE'%" + word + "%'";
+                }
+            }
 
+            if (!string.IsNullOrEmpty(swhere))
+                swhere = " WHERE " + swhere.Remove(0, 4);
+            sql = @"
+                 SELECT
+	                    Compra.flSituacao  AS Compra_flSituacao,
+
+	                    Compra.nrModelo AS Compra_Modelo,
+	                    Compra.nrSerie AS Compra_Serie,
+	                    Compra.nrNota AS Compra_Nota,
+
+	                    Compra.dtEmissao AS Compra_dtEmissao,
+	                    Compra.dtentrega AS Compra_dtentrega,	    
+	                    Compra.dtCadastro AS Compra_dtCadastro,
+
+	                    Compra.vlFrete AS Compra_vlFrete,
+	                    Compra.vlSeguro AS Compra_vlSeguro,
+	                    Compra.vlDespesas AS Compra_vlDespesas,
+                        Compra.vlTotal AS Compra_vlTotal,
+
+	                    Compra.IdFornecedor AS Fornecedor_ID,
+	                    Fornecedor.nmNome AS Fornecedor_nmNome,
+
+	                    Compra.IdCondPag AS CondicaoPagamento_ID,
+	                    CondPagamento.dsCondPag AS CondicaoPagamento_Nome
+
+	            FROM Compra
+	            INNER JOIN Fornecedor on Compra.IdFornecedor = Fornecedor.IdFornecedor
+	            INNER JOIN CondPagamento on Compra.IdCondPag = CondPagamento.IdCondPag
+                " + swhere + ";";
+            return sql;
+        }
+
+        protected string BuscarProdutos(string nrModelo, string nrSerie, int? nrNota)
+        {
+            var sql = string.Empty;
+
+            sql = @"SELECT
+	                    ProdutoCompras.nrModelo AS Compra_Modelo,
+	                    ProdutoCompras.nrSerie AS Compra_Modelo,
+	                    ProdutoCompras.nrNota AS Compra_Modelo,	 
+
+	                    ProdutoCompras.IdProduto AS ProdutoCompra_ID,
+	                    Produto.dsProduto AS ProdutoCompra_dsProduto,
+
+	                    ProdutoCompras.nrQtd AS ProdutoCompra_nrQtd,
+	                    ProdutoCompras.vlCompra AS ProdutoCompra_vlCompra,
+	                    ProdutoCompras.txDesconto AS ProdutoCompra_txDesconto,
+	                    ProdutoCompras.vlVenda AS ProdutoCompra_vlVenda
+	                FROM ProdutoCompras
+	                    INNER JOIN Produto on ProdutoCompras.IdProduto = Produto.IdProduto
+                    WHERE ProdutoCompras.nrModelo = '" + nrModelo + "' AND ProdutoCompras.nrSerie = '" + nrSerie + "' AND ProdutoCompras.nrNota = " + nrNota ;
+
+            ;
+            return sql;
+        }
+
+        protected string BuscarParcelas(string nrModelo, string nrSerie, int? nrNota, int? IdFornecedor)
+        {
+            var sql = string.Empty;
+            sql = @"
+                    SELECT  ContasPagar.fornecedor_id AS ContaPagar_Fornecedor_ID ,
+	                        ContasPagar.formaPagamento_id AS FormaPagamento_ID,
+	                        Formapagamento.dsFormaPagamento AS FormaPagamento_dsForma,
+	                        ContasPagar.nrparcela AS ContaPagar_NrParcela,
+	                        ContasPagar.vlparcela AS ContaPagar_VlParcela,
+	                        ContasPagar.dtvencimento AS ContaPagar_DtVencimento,
+	                      
+	                        ContasPagar.nrModelo AS ContaPagar_nrModelo,
+	                        ContasPagar.nrSerie AS ContaPagar_nrSerie,
+	                        ContasPagar.nrNota AS ContaPagar_nrNota
+                    FROM ContasPagar
+	                    INNER JOIN Formapagamento on ContasPagar.formaPagamento_id = FormaPagamento.IdFormaPagamento
+                        WHERE ContasPagar.nrModelo = '" + nrModelo + "' AND ContasPagar.nrSerie = '" + nrSerie + "' AND ContasPagar.nrNota = " + nrNota + " AND ContasPagar.fornecedor_id = " + IdFornecedor;
+            return sql;
+        }
 
         public bool validNota(string modelo, string serie, int nrNota, int idFornecedor)
         {

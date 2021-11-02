@@ -16,37 +16,18 @@ namespace SistemaBarbearia.Controllers
     {
 
         #region MethodPrivate
-        private ActionResult GetView(int id)
+        private ActionResult GetView(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
         {
-            FornecedorDAO daoFornecedor = new FornecedorDAO();
-            CondPagamentoDAO daoCondPag = new CondPagamentoDAO();
-            CompraDAO daoCompra = new CompraDAO();
-            ProdutoDAO daoProduto = new ProdutoDAO();
-            var obj = daoCompra.GetCompra(id);
-            var result = new CompraVM
+            try
             {
-                IdModelPai = obj.IdCompra,
-                IdFornecedor = obj.IdFornecedor,
-                IdCondPag = obj.IdCondPag,
-                IdProduto = obj.IdProduto,
-                dtEmissao = obj.dtEmissao,
-                dtEntrega = obj.dtEntrega,
-                nrModelo = obj.nrModelo,
-                nrSerie = obj.nrSerie,
-                nrNota = obj.nrNota,
-
-            };
-            var objFornecedor = daoFornecedor.GetFornecedor(result.IdFornecedor);
-            result.Fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM { IdFornecedor = objFornecedor.IdFornecedor, nmNome = objFornecedor.nmNome };
-
-            var objProduto = daoProduto.GetProduto(result.IdProduto);
-            result.Produto = new ViewModels.Produtos.SelectProdutoVM { IdProduto = objProduto.IdProduto, dsProduto = objProduto.dsProduto };
-
-            var objCondPag = daoCondPag.GetCondPagamento(result.IdCondPag);
-            result.CondicaoPagamento = new ViewModels.CondPagamentos.SelectCondPagamentoVM { Id = objCondPag.IdCondPag, Text = objCondPag.dsCondPag };
-
-
-            return View(result);
+                var Dao = new CompraDAO();
+                var compra = Dao.GetCompra(null, nrModelo, nrSerie, nrNota, IdFornecedor);
+                return View(compra);
+            }
+            catch (Exception)
+            {
+                return View();
+            }
         }
         #endregion
 
@@ -58,9 +39,9 @@ namespace SistemaBarbearia.Controllers
             return View(compraDAO.SelecionarCompra());
         }
       
-        public ActionResult Details(int id)
+        public ActionResult Details(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
         {
-            return this.GetView(id);
+            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor);
         }
       
         public ActionResult Create()

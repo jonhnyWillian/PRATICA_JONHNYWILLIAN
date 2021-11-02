@@ -7,5 +7,6 @@ namespace SistemaBarbearia.DAOs.ContasPagar
 {
     public class ContaPagarDAO
     {
+
     }
 }

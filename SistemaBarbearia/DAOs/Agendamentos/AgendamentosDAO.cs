@@ -129,8 +129,6 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             }
         }
 
-
-
         public bool DeleteAgendamento(int Id)
         {
             try
@@ -164,6 +162,10 @@ namespace SistemaBarbearia.DAOs.Agendamentos
         }
         #endregion
 
+        #region Conta Receber
+
+       
+        #endregion
 
         public List<Agenda> SelecionarAgendamento()
         {
@@ -247,7 +249,6 @@ namespace SistemaBarbearia.DAOs.Agendamentos
                 Close();
             }
         }
-
 
         public bool validHorario(string dtAgendamento, string hora, int idFuncionario)
         {

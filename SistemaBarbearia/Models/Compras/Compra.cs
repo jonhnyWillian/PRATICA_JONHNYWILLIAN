@@ -52,7 +52,7 @@ namespace SistemaBarbearia.Models.Compras
         public class ProdutosVM
         {
             public int? IdProduto { get; set; }
-            public string nmProduto { get; set; }
+            public string dsProduto { get; set; }
             public decimal? nrQtd { get; set; }
             public decimal? vlVenda { get; set; }
             public decimal? vlCompra { get; set; }

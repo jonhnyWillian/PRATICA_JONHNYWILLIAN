@@ -16,11 +16,11 @@
         <thead class="table-dark">
             <tr>
                 
-                <th export="true" style="width:10%">Nº Nota</th>
-                <th export="true" style="width:10%">Nº Modelo</th>
+                <th export="true" style="width:10%">Nota</th>
+                <th export="true" style="width:10%">Modelo</th>
                 <th export="true" style="width:10%">Dt.Emissão</th>             
-                <th export="true" style="width:45%">Fornecedor</th>
-                <th export="true" style="width:15%">Opções</th>
+                <th export="true" style="width:50%">Fornecedor</th>
+                <th export="true" style="width:20%">Opções</th>
             </tr>
         </thead>
         @foreach (var item in Model)
@@ -35,14 +35,14 @@
                 <td style="width:10%;">
                     @Html.DisplayFor(modelItem => item.dtEmissao)
                 </td>              
-                <td style="width:45%;">
+                <td style="width:60%;">
                     @Html.DisplayFor(modelItem => item.Fornecedor.nmNome)
                 </td>
                 <td>
-                   
-                    @*<a title="Visualizar" class="btn btn-success btn-sm"   href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdCompra }))"><i class="fa fa-eye"></i></a>
-                    <a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCompra }))"><i class="fa fa-pencil-square-o"></i></a>
-                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCompra }))"><i class="fa fa-trash"></i></a>*@
+
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { nrModelo = item.nrModelo, nrSerie = item.nrSerie, nrNota = item.nrNota, IdFornecedor = item.Fornecedor.IdFornecedor}))"><i class="fa fa-eye"></i></a>
+                    @*<a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdCompra }))"><i class="fa fa-pencil-square-o"></i></a>
+        <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdCompra }))"><i class="fa fa-trash"></i></a>*@
                 </td>
             </tr>
         }

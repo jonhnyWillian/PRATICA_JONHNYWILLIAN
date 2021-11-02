@@ -562,6 +562,7 @@
     <Content Include="Scripts\Views\Clientes\Create.js" />
     <Content Include="Scripts\Views\Compras\Compra.js" />
     <Content Include="Scripts\Views\Compras\Create.js" />
+    <Content Include="Scripts\Views\Compras\Details.js" />
     <Content Include="Scripts\Views\CondPagamentos\CondPagamento.js" />
     <Content Include="Scripts\Views\CondPagamentos\Create.js" />
     <Content Include="Scripts\Views\ContasPagar\ContaPagar.js" />

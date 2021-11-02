@@ -1,6 +1,7 @@
 ﻿@model SistemaBarbearia.ViewModels.Compras.CompraVM
 @using SistemaBarbearia.Helper;
 @{
+  
     var action = Convert.ToString(ViewBag.Action);
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     bool isEdit = action.ToLower() == "edit";
@@ -15,18 +16,7 @@
 @Html.HiddenFor(k => k.IdFornecedor)
 @Html.Hidden("flTblProdutos")
 
-@if (action != "create")
-{
-    <div class="row">
-        @Html.HiddenFor(u => u.IdModelPai)
-        <div class="form-row">
-            <div class="@Helper.Input2">
-                @Html.LabelFor(model => model.flSituacao, new { @class = "required" })
-                @Html.TextBoxFor(model => model.flSituacao, new { @class = "form-control", disabled = true })
-            </div>
-        </div>
-    </div>
-}
+
 <div class="form-row">
     <div class="col-sm-2">
         @Html.LabelFor(model => model.nrModelo, htmlAttributes: new { @class = "control-label required" })
@@ -83,7 +73,7 @@
     <table id="tblProduto" class="table table-striped table-bordered" style="width:100%">
         <thead class="table-dark">
             <tr>
-                @if (action == "create")
+                @if (action == "Create")
                 {
                     <th width="5%"></th>
                 }

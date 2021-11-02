@@ -9,6 +9,10 @@ namespace SistemaBarbearia.ViewModels.ContasPagar
 {
     public class ContaPagarVM : ModelPaiVM
     {
+
+        [Display(Name = "Situação")]
+        public string flSituacao { get; set; }
+
         [Display(Name = "Modelo")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
