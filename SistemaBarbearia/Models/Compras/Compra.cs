@@ -34,20 +34,21 @@ namespace SistemaBarbearia.Models.Compras
 
         public ViewModels.Fornecedores.SelectFornecedorVM Fornecedor { get; set; }
         public int? IdFornecedor { get; set; }
-
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
         public int? IdCondPag { get; set; }
-
-
         public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
         public int? IdProduto { get; set; }
 
         public string finalizar { get; set; }
         public decimal? vlTotal { get; set; }
+       
+        public decimal? vlFrete { get; set; }
+        public decimal? vlSeguro { get; set; }      
+        public decimal? vlDespesa { get; set; }
 
         public DateTime? dtCadastro { get; set; }
-
         public DateTime? dtUltAlteracao { get; set; }
+
         public class ProdutosVM
         {
             public int? IdProduto { get; set; }
@@ -76,7 +77,7 @@ namespace SistemaBarbearia.Models.Compras
 
         public class ParcelasVM
         {
-            public int? idFormaPagamento { get; set; }
+            public int? IdFormaPagamento { get; set; }
             public string dsFormaPagamento { get; set; }
             public DateTime? dtVencimento { get; set; }
             public decimal vlParcela { get; set; }

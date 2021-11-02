@@ -23,75 +23,93 @@ namespace SistemaBarbearia.DAOs.Compras
             {
                 command = sqlconnection.CreateCommand();
                 command.Transaction = sqlTransaction; 
-                command.CommandText = "INSERT INTO Compra (nrModelo,  nrSerie,  nrNota,  idFornecedor,  IdCondPag,  dtEmissao,  dtEntrega, flSituacao  )" +
-                                                   "VALUES(@nrModelo, @nrSerie, @nrNota, @idFornecedor, @IdCondPag, @dtEmissao, @dtEntrega, @flSituacao);SELECT CAST(SCOPE_IDENTITY() AS int)";
+                command.CommandText = "INSERT INTO Compra ( nrModelo,  nrSerie,  nrNota,  IdFornecedor,  IdCondPag,  dtEmissao,  dtEntrega,  vlSeguro,  vlFrete,  vlDespesas,  vlTotal,  dtCadastro,  flSituacao,  dtUltAlteracao  )" +
+                                                   "VALUES(@nrModelo, @nrSerie, @nrNota, @IdFornecedor, @IdCondPag, @dtEmissao, @dtEntrega, @vlSeguro, @vlFrete, @vlDespesas, @vlTotal, @dtCadastro, @flSituacao, @dtUltAlteracao );"; //SELECT CAST(SCOPE_IDENTITY() AS int)
 
                 command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value );
                 command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value );
                 command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value );
-                command.Parameters.AddWithValue("@idFornecedor", compra.Fornecedor.IdFornecedor);
+                command.Parameters.AddWithValue("@IdFornecedor", compra.Fornecedor.IdFornecedor);
                 command.Parameters.AddWithValue("@IdCondPag", compra.CondicaoPagamento.Id);
                 command.Parameters.AddWithValue("@dtEmissao", compra.dtEmissao);
                 command.Parameters.AddWithValue("@dtEntrega", compra.dtEntrega);                
-                command.Parameters.AddWithValue("@flSituacao", compra.flSituacao);                
-                //command.Parameters.AddWithValue("@dtcadastro", ((object)compra.dtCadastro) ?? DBNull.Value);
+                command.Parameters.AddWithValue("@flSituacao", compra.flSituacao);
+                command.Parameters.AddWithValue("@vlSeguro", compra.vlSeguro);
+                command.Parameters.AddWithValue("@vlFrete", compra.vlFrete);
+                command.Parameters.AddWithValue("@vlDespesas", compra.vlDespesa);
+                command.Parameters.AddWithValue("@vlTotal", compra.vlTotal);
+                command.Parameters.AddWithValue("@dtcadastro", compra.dtCadastro = DateTime.Now);
+                command.Parameters.AddWithValue("@dtUltAlteracao", compra.dtUltAlteracao = DateTime.Now);
 
 
-                Int32 id = Convert.ToInt32(command.ExecuteScalar());
+                i = command.ExecuteNonQuery();
 
-                command.CommandText = "INSERT INTO ProdutoCompras ( IdCompra, IdProduto, qtd, vlCompra, vlVenda, txDesconto )" +
-                                                          " VALUES(@IdCompra, @IdProduto, @qtd, @vlCompra, @vlVenda, @txDesconto  )";
-
-              
 
                 foreach (var item in compra.ProdutosCompra)
                 {
+                   
+                    command.CommandText = "INSERT INTO ProdutoCompras ( nrModelo, nrSerie, nrNota, IdProduto, nrQtd, vlCompra, vlVenda, txDesconto)" +
+                                                       " VALUES( @nrModelo, @nrSerie, @nrNota, @IdProduto, @nrQtd, @vlCompra, @vlVenda, @txDesconto)";
+
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@IdCompra", id);
+                    command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value);
+                    command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value);
+                    command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value);
                     command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
-                    command.Parameters.AddWithValue("@qtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
+                    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
                     command.Parameters.AddWithValue("@vlCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
                     command.Parameters.AddWithValue("@vlVenda", ((object)item.vlVenda) != DBNull.Value ? ((object)item.vlVenda) : 0);
                     command.Parameters.AddWithValue("@txDesconto", ((object)item.txDesconto) != DBNull.Value ? ((object)item.txDesconto) : 0);
+
                     i = command.ExecuteNonQuery();
-
                 }
-
+                
                 //command.CommandText = "UPDATE Produto SET nrQtd += nrQtd@, vlUltCompra += @vlUltCompra WHERE idProduto = @IdProduto";
-                //command.Parameters.Clear();
-                //command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
-                //command.Parameters.AddWithValue("@vlUltCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
-                //command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
-                //i = command.ExecuteNonQuery();
+                //foreach (var item in compra.ProdutosCompra)
+                //{
+                //    command.Parameters.Clear();
+                //    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
+                //    command.Parameters.AddWithValue("@vlUltCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
+                //    command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
+                //    command.ExecuteNonQuery();
+                //}
 
-                //IdCompra , IdFornecedor , IdFormaPagamento , nrparcela, vlParcela , flSituacao , dtVencimento 
-                command.CommandText = "INSERT INTO ContasPagar ( IdCompra, IdFornecedor, IdFormaPagamento, nrparcela, vlParcela, flSituacao, dtVencimento )" +
-                                                         " VALUES(@IdCompra, @IdFornecedor, @IdFormaPagamento, @nrparcela, @vlParcela, @flSituacao, @dtVencimento  )";
-
+                
                 foreach (var item in compra.ParcelasCompra)
                 {
-                    command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@IdCompra", id);
-                    command.Parameters.AddWithValue("@IdFornecedor", compra.Fornecedor.IdFornecedor);
-                    command.Parameters.AddWithValue("@IdFormaPagamento", item.idFormaPagamento);
-                    command.Parameters.AddWithValue("@nrparcela", ((object)item.nrParcela) != DBNull.Value );
-                    command.Parameters.AddWithValue("@vlParcela", ((object)item.vlParcela) != DBNull.Value ? ((object)item.vlParcela) : 0);
-                    command.Parameters.AddWithValue("@flSituacao", ((object)item.flSituacao) != DBNull.Value);
-                    command.Parameters.AddWithValue("@dtVencimento", ((object)item.dtVencimento) ?? DBNull.Value);
+                    command = sqlconnection.CreateCommand();
+                    command.Transaction = sqlTransaction;
+                    command.CommandText = "INSERT INTO ContasPagar  ( nrModelo,  nrSerie,  nrNota, fornecedor_id, formaPagamento_id, vlParcela,  flSituacao, dtVencimento, nrparcela  )" +
+                                                         "VALUES(@nrModelo, @nrSerie, @nrNota, @fornecedor_id, @formaPagamento_id, @vlParcela,  @flSituacao, @dtVencimento, @nrparcela )";
+                    
 
+                   
+                    command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value);
+                    command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value);
+                    command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value);
+                    command.Parameters.AddWithValue("@fornecedor_id", compra.Fornecedor.IdFornecedor);
+                    command.Parameters.AddWithValue("@formaPagamento_id", item.IdFormaPagamento);                 
+                    command.Parameters.AddWithValue("@vlParcela", ((object)item.vlParcela) != DBNull.Value ? ((object)item.vlParcela) : 0);
+                    command.Parameters.AddWithValue("@flSituacao", item.flSituacao = "A");
+                    command.Parameters.AddWithValue("@dtVencimento", ((object)item.dtVencimento) ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@nrparcela", ((object)item.nrParcela) != DBNull.Value);
                     i = command.ExecuteNonQuery();
+
 
                 }
                 sqlTransaction.Commit();
 
+
                 if (i >= 1)
                 {
                     return true;
+
                 }
                 else
                 {
                     return false;
                 }
+
             }
             catch (Exception ex)
             {
@@ -127,8 +145,7 @@ namespace SistemaBarbearia.DAOs.Compras
                 while (Dr.Read())
                 {
                     var c = new Compra()
-                    {
-                        IdCompra = Convert.ToInt32(Dr["IdCompra"]),
+                    {                       
                         Fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM
                         {
                             IdFornecedor = Convert.ToInt32(Dr["IdFornecedor"]),

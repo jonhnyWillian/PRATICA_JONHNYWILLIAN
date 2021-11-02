@@ -29,6 +29,7 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         [Display(Name = "Data - Agendamento")]        
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dtAgendamento { get; set; }
+        public string dtAgendamentoAux { get; set; }
 
         [Display(Name = "Horário")]       
         [Required(ErrorMessage = "Campo Hora do Agendamento não Pode ser em Branco!")]
@@ -154,7 +155,7 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         }
         public class ParcelasVM
         {
-            public int? idFormaPag { get; set; }
+            public int? IdFormaPagamento { get; set; }
             public string dsFormaPagamento { get; set; }
             public DateTime? dtVencimento { get; set; }
             public decimal vlParcela { get; set; }

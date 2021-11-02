@@ -134,7 +134,7 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var formaPagamentoDAO = new FormaPagamentoDAO();
-                IQueryable<dynamic> lista = formaPagamentoDAO.SelecionarFormaPagamento().Select(u => new { IdFormaPag = u.IdFormaPag, dsFormaPagamento = u.dsFormaPagamento }).AsQueryable();
+                IQueryable<dynamic> lista = formaPagamentoDAO.SelecionarFormaPagamento().Select(u => new { IdFormaPagamento = u.IdFormaPagamento, dsFormaPagamento = u.dsFormaPagamento }).AsQueryable();
                 return Json(new JsonSelect<object>(lista, page, 10), JsonRequestBehavior.AllowGet);
 
             }

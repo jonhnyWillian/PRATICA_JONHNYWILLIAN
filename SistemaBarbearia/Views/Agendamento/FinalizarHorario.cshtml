@@ -50,12 +50,12 @@
                 @Html.ValidationMessageFor(model => model.nrSerie, "", new { @class = "text-danger" })
             </div>
             <div class="col-sm-3">
-                @Html.LabelFor(model => model.dtNota, new { @class = "required" })
+                @Html.LabelFor(model => model.dtAgendamento, new { @class = "required" })
                 <div class="input-group-append">
                     <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
-                    @Html.TextBoxFor(model => model.dtNota, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date", disabled = true })
+                    @Html.TextBoxFor(model => model.dtAgendamento, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date", disabled = true })
                 </div>
-                @Html.ValidationMessageFor(model => model.dtNota, null, new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.dtAgendamento, null, new { @class = "text-danger" })
             </div>
 
         </div>
@@ -73,6 +73,7 @@
                 </div>
             </div>
         </div>
+        <div></div>
         <div class="bs-callout bs-callout-primary">
             <h3 class="heading no-margin">Produtos</h3>
             <div id="divAddProduto">

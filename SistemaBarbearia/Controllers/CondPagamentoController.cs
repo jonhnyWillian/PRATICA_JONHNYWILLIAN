@@ -12,8 +12,6 @@ namespace SistemaBarbearia.Controllers
 {
     public class CondPagamentoController : Controller
     {
-
-
         #region MethodPrivate
         private ActionResult GetView(int id)
         {
@@ -35,8 +33,6 @@ namespace SistemaBarbearia.Controllers
             return View(result);
         }
         #endregion
-
-
         public ActionResult Index()
         {
             var condPag = new CondPagamentoDAO();
@@ -253,7 +249,7 @@ namespace SistemaBarbearia.Controllers
                 {
                     nrParcela = item.nrParcela,
                     dtVencimento = dtinicio.AddDays((double)item.qtdDias),
-                    idFormaPagamento = item.idFormaPagamento,
+                    IdFormaPagamento = item.IdFormaPagamento,
                     dsFormaPagamento = item.dsFormaPagamento,
                     vlParcela = decimal.Round(((item.txPercentual / 100) * vlTotal), 2)
                 };

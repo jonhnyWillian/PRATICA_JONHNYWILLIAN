@@ -240,13 +240,11 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
 	                      CondPagamentoParcela.qtdDias AS Parcela_QtDias,
 	                      CondPagamentoParcela.txPercentual AS Parcela_TaxaPercentual
                      FROM CondPagamentoParcela
-	                      INNER JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPag
+	                      INNER JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPagamento
                     WHERE CondPagamentoParcela.CondPag_id = " + id
             ;
             return sql;
         }
-
-
 
         public CondPagamento GetCondPagamento(int? Id)
         {
@@ -283,9 +281,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             }
         }
 
-
-
-
         public CondPagamento GetCondPagamentoParcela(int? Id)
         {
             try
@@ -316,7 +311,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                             var item = new CondPagamento.CondicaoPagamentoVM()
                             {
                                 IdCondPag = Convert.ToInt32(Dr["CondicaoParcela_ID"]),
-                                idFormaPagamento = Convert.ToInt32(Dr["Condicao_FormaPag_ID"]),
+                                IdFormaPagamento = Convert.ToInt32(Dr["Condicao_FormaPag_ID"]),
                                 dsFormaPagamento = Convert.ToString(Dr["Condicao_FormaPag"]),
                                 nrParcela = Convert.ToInt16(Dr["Parcela_Nr"]),
                                 qtdDias = Convert.ToInt16(Dr["Parcela_QtDias"]),
@@ -340,7 +335,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             }
         }
 
-
         public List<CondPagamentoParcela> GetParcelas(int? IdCondPag)
         {
             try
@@ -348,7 +342,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 Open();
                 var _where = string.Empty;
                 _where = " WHERE CondPag_id = " + IdCondPag;
-                SQL = new SqlCommand("SELECT * FROM CondPagamentoParcela LEFT JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPag" + _where, sqlconnection);
+                SQL = new SqlCommand("SELECT * FROM CondPagamentoParcela LEFT JOIN FormaPagamento on CondPagamentoParcela.FormaPagamento_id = FormaPagamento.IdFormaPagamento" + _where, sqlconnection);
                 Dr = SQL.ExecuteReader();
                 List<CondPagamentoParcela> parcelas = new List<CondPagamentoParcela>();
                 while (Dr.Read())
@@ -374,7 +368,6 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             }
 
         }
-
 
         protected string BuscarCondPagamento(int? id, string text)
         {
@@ -432,8 +425,5 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 Close();
             }
         }
-
-
-       
     }
 }

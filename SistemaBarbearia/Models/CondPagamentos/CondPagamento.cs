@@ -33,7 +33,7 @@ namespace SistemaBarbearia.Models.CondPagamento
             public short? nrParcela { get; set; }
             public short? qtdDias { get; set; }
             public decimal txPercentual { get; set; }
-            public int? idFormaPagamento { get; set; }
+            public int? IdFormaPagamento { get; set; }
             public string dsFormaPagamento { get; set; }
 
         }

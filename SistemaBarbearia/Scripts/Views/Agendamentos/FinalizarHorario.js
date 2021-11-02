@@ -48,15 +48,15 @@
         return false;
     });
 
-    let dtNota = $("#dtNota")
-    dtNota.change(function () {
-        let dtString = dtNota.val();
+    let dtAgendamento = $("#dtAgendamento")
+    dtAgendamento.change(function () {
+        let dtString = dtAgendamento.val();
         let dayArray = dtString.split("/");
         let day = dayArray[0];
         let month = (parseFloat(dayArray[1]) - 1);
         let year = dayArray[2];
         date = new Date(year, month, day).toJSON();
-        $("#dtNotaAux").val(dtNota.val())
+        $("#dtAgendamentoAux").val(dtAgendamento.val())
     });
 
 
@@ -65,12 +65,18 @@
     $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
     $('input[name="Cliente_IdCliente"]').prop('disabled', true)
     $('input[name="Servico_IdServico"]').prop('disabled', true)
-    $("#CondicaoPagamento_btn-localizar").hide();
+   // $("#CondicaoPagamento_btn-localizar").hide();
     $("#divAddProduto").show();
 
     let nrModelo = $("#nrModelo")
+    nrModelo.change(function () {     
+        $("#nrModeloAux").val(nrModelo.val())
+    })
 
     let nrSerie = $("#nrSerie")
+    nrSerie.change(function () {       
+        $("#nrSerieAux").val(nrSerie.val())
+    })
 
 
     $("#Servico_IdServico").change(function () {
@@ -86,7 +92,7 @@
         let idCondicao = $("#CondicaoPagamento_Id").val()
         if (IsNullOrEmpty(idCondicao)) {
             $("#divAddProduto").show();
-            $('input[name="dtNota"]').prop('disabled', false);        
+            $('input[name="dtAgendamento"]').prop('disabled', false);        
             $("#flTblProdutos").val("")
         } else {
             $("#divAddProduto").hide();
@@ -112,12 +118,12 @@
     let idCond = $("#CondicaoPagamento_Id").val()
     if (!IsNullOrEmpty(idCond)) {
         $("#flTblProdutos").val("S");
-        $('input[name="dtNota"]').prop('disabled', true)   
+        $('input[name="dtAgendamento"]').prop('disabled', true)   
         $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
-        $("#CondicaoPagamento_btn-localizar").show();
-        $("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
+        //$("#CondicaoPagamento_btn-localizar").show();
+        //$("#CondicaoPagamento_btnGerarParcela").attr('disabled', false)
 
-        let dtString = $("#dtNota").val();
+        let dtString = $("#dtAgendamento").val();
         let dayArray = dtString.split("/");
         let day = dayArray[0];
         let month = (parseFloat(dayArray[1]) - 1);
@@ -136,14 +142,14 @@
     if (!IsNullOrEmpty(idS)) {        
         $("#Servico_btn-localizar").hide();
     }
-    if (dtProdutos.length > 0) {
-        $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
-        $("#CondicaoPagamento_btn-localizar").show();
-    }
+    //if (dtProdutos.length > 0) {
+    //    $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
+    //    $("#CondicaoPagamento_btn-localizar").show();
+    //}
 
-    if (!IsNullOrEmpty(idCond) && dtParcelas.length > 0) {
-        $("#btnSalvar").attr("disabled", false);
-    }
+    //if (!IsNullOrEmpty(idCond) && dtParcelas.length > 0) {
+    //    $("#btnSalvar").attr("disabled", false);
+    //}
 });
 
 Venda = function () {
@@ -223,7 +229,6 @@ Venda = function () {
     self.getModelProdutoVenda = function () {
         let vlVendaProduto = $("#Produto_vlVenda").val();
         let vlVendaProdutoAux = parseFloat(vlVendaProduto);
-
         let qtProdutoAux = $("#Produto_nrQtd").val();
         qtProdutoAux = parseFloat(qtProdutoAux);
 
@@ -299,7 +304,7 @@ Venda = function () {
                 total += totalProdutoVenda;
             }
             $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
-            $("#CondicaoPagamento_btn-localizar").show();
+            //$("#CondicaoPagamento_btn-localizar").show();
             //desabilita campos nota fiscal
             $('input[name="nrModelo"]').prop('disabled', true)
             $('input[name="nrSerie"]').prop('disabled', true)            
@@ -314,7 +319,7 @@ Venda = function () {
             $("#Cliente_btn").removeAttr('disabled', false)
 
             $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
-            $("#CondicaoPagamento_btn-localizar").hide();
+            //$("#CondicaoPagamento_btn-localizar").hide();
 
             $("#CondicaoPagamento_Id").val("")
             $("#CondicaoPagamento_text").val("")
@@ -355,29 +360,18 @@ Venda = function () {
     self.getparcelas = function () {
         let valid = true;
 
-        if (IsNullOrEmpty(dtNota)) {
-            //$("#dtNota").blink({msg: "Informe a data de emissão"})
-            $.notify({ message: "Informe a data de emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-            valid = false;
-        } else if (IsNullOrEmpty(dtNota)) {
-            $.notify({ message: "Informe a data de entrega!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-            valid = false;
-        } //else if (dtNota < date) {
-        //    $.notify({ message: "A data de entrega não pode ser menor que a data de Emissão!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
-        //    valid = false;
-        //}
         if (!dtParcelas.length && valid) {
             console.log(Number.parseFloat($("#vlTotal").val()));
             $.ajax({
                 dataType: 'json',
                 type: 'GET',
-                url: Action.getParcelas,
-                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotal").val()), dtInicioParcela: dtNota },
+                url: Action.getParcelas,                
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotal").val()), dtInicialParcala: date},                
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelas(data)
                     $("#btnSalvar").attr("disabled", false);
-                    $('input[name="dtNota"]').prop('disabled', true)                
+                    $('input[name="dtAgendamento"]').prop('disabled', true)                
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");

@@ -82,8 +82,8 @@
 
                             <div class="form-row isEdit">
                                 <div class="@Helper.Input2">
-                                    @Html.Label("IdFormaPag", "Código")
-                                    @Html.TextBox("IdFormaPag", null, new { @class = "form-control", disabled = true })
+                                    @Html.Label("IdFormaPagamento", "Código")
+                                    @Html.TextBox("IdFormaPagamento", null, new { @class = "form-control", disabled = true })
                                 </div>
                             </div>
 
@@ -376,7 +376,7 @@
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "FormaPagamento")',
-            data: { 'IdFormaPag': Id },
+            data: { 'IdFormaPagamento': Id },
             success: function (data) {
                 self.clear();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");

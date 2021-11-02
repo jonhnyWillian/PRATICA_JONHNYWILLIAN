@@ -50,7 +50,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 			public short? nrParcela { get; set; }
 			public short? qtdDias { get; set; }
 			public decimal? txPercentual { get; set; }
-			public int? idFormaPagamento { get; set; }
+			public int? IdFormaPagamento { get; set; }
 			public string dsFormaPagamento { get; set; }
 		}
 		public CondPagamento GetPagamento(CondPagamento bean)
@@ -86,7 +86,7 @@ namespace SistemaBarbearia.ViewModels.CondPagamentos
 		public class ParcelasVM
 		{
 		
-			public int? idFormaPagamento { get; set; }
+			public int? IdFormaPagamento { get; set; }
 			public string dsFormaPagamento { get; set; }
 			public DateTime? dtVencimento { get; set; }
 			public decimal vlParcela { get; set; }

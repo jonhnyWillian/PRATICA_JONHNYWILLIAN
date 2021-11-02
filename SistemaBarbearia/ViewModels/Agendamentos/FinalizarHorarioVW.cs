@@ -78,7 +78,7 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         }
         public class ParcelasVM
         {
-            public int? idFormaPag { get; set; }
+            public int? IdFormaPagamento { get; set; }
             public string dsFormaPagamento { get; set; }
             public DateTime? dtVencimento { get; set; }
             public decimal vlParcela { get; set; }

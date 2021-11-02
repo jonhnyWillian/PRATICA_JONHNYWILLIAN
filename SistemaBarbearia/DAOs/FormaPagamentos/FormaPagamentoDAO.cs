@@ -54,11 +54,11 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             try
             {
                 Open();
-                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsFormaPagamento, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE IdFormaPag = @IdFormaPag";
+                string updateCargo = @"UPDATE FormaPagamento SET dsFormaPagamento = @dsFormaPagamento, flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao  WHERE IdFormaPagamento = @IdFormaPagamento";
                 SqlCommand sql = new SqlCommand(updateCargo, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@IdFormaPag", formaPagamento.IdFormaPag);
+                sql.Parameters.AddWithValue("@IdFormaPagamento", formaPagamento.IdFormaPagamento);
                 sql.Parameters.AddWithValue("@dsFormaPagamento", formaPagamento.dsFormaPagamento.ToUpper());
                 sql.Parameters.AddWithValue("@flSituacao", formaPagamento.flSituacao);
                 sql.Parameters.AddWithValue("@dtUltAlteracao", formaPagamento.dtUltAlteracao = DateTime.Now);
@@ -90,11 +90,11 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             try
             {
                 Open();
-                string deleteCargo = "DELETE FROM FormaPagamento WHERE IdFormaPag = @IdFormaPag";
+                string deleteCargo = "DELETE FROM FormaPagamento WHERE IdFormaPagamento = @IdFormaPagamento";
                 SqlCommand sql = new SqlCommand(deleteCargo, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
-                sql.Parameters.AddWithValue("@IdFormaPag", Id);
+                sql.Parameters.AddWithValue("@IdFormaPagamento", Id);
 
                 int i = sql.ExecuteNonQuery();
 
@@ -133,7 +133,7 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
                 {
                     var servico = new FormaPagamento()
                     {
-                        IdFormaPag = Convert.ToInt32(Dr["IdFormaPag"]),
+                        IdFormaPagamento = Convert.ToInt32(Dr["IdFormaPagamento"]),
                         dsFormaPagamento = Convert.ToString(Dr["dsFormaPagamento"]),
                         flSituacao = Convert.ToString(Dr["flSituacao"]),
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
@@ -159,14 +159,14 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
             {
                 Open();
                 var formaPagamentoVM = new FormaPagamentoVM();
-                string selectEditFormaPg = @"SELECT* FROM FormaPagamento WHERE IdFormaPag =" + Id;
+                string selectEditFormaPg = @"SELECT* FROM FormaPagamento WHERE IdFormaPagamento =" + Id;
                 SQL = new SqlCommand(selectEditFormaPg, sqlconnection);
 
 
                 Dr = SQL.ExecuteReader();
                 while (Dr.Read())
                 {
-                    formaPagamentoVM.IdFormaPag = Convert.ToInt32(Dr["IdFormaPag"]);
+                    formaPagamentoVM.IdFormaPagamento = Convert.ToInt32(Dr["IdFormaPagamento"]);
                     formaPagamentoVM.dsFormaPagamento = Dr["dsFormaPagamento"].ToString();
                     formaPagamentoVM.flSituacao = Dr["flSituacao"].ToString();
                     formaPagamentoVM.dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]);
@@ -191,7 +191,7 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
 
             if (id != null)
             {
-                where = "WHERE IdFormaPag = " + id;
+                where = "WHERE IdFormaPagamento = " + id;
             }
             if (!string.IsNullOrEmpty(text))
             {
@@ -221,7 +221,7 @@ namespace SistemaBarbearia.DAOs.FormaPagamentos
                 {
                     var formaPg = new SelectFormaPagamentoVM
                     {
-                        Id = Convert.ToInt32(Dr["IdFormaPag"]),
+                        Id = Convert.ToInt32(Dr["IdFormaPagamento"]),
                         Text = Convert.ToString(Dr["dsFormaPagamento"]),                       
                         dtCadastro = Dr["dtCadastro"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtCadastro"]),
                         dtUltAlteracao = Dr["dtUltAlteracao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtUltAlteracao"]),

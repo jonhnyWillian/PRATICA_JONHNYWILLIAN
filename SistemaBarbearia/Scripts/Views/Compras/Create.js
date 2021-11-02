@@ -1,5 +1,8 @@
 ﻿$(function () {
     vlTotalCompra = 0;
+    vlSeguro = 0;
+    vlDespesa = 0;
+    vlFrete = 0;
     date = null;
     dateEntrega = null;
     var compra = new Compra();
@@ -137,6 +140,18 @@
         compra.calcTotalItem();
     })
 
+    $("#vlSeguro").change(function () {
+        compra.calcTotalProduto();
+    })
+    $("#vlFrete").change(function () {
+        compra.calcTotalProduto();
+    })
+    $("#vlDespesa").change(function () {
+        compra.calcTotalProduto();
+    })
+   
+
+
     $("#Produto_txDesconto").change(function () {
         compra.calcTotalItem();
     })
@@ -251,7 +266,7 @@ Compra = function () {
                             return JSONDate(data.dtVencimento);
                         }
                     },
-                    { data: "idFormaPagamento" },
+                    { data: "IdFormaPagamento" },
                     { data: "dsFormaPagamento" },
                 ]
             },
@@ -370,36 +385,56 @@ Compra = function () {
                 total += totalProduto;
             }
             $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
-            $("#CondicaoPagamento_btn-localizar").show();
-            //desabilita campos nota fiscal
+            $("#CondicaoPagamento_btn-localizar").show();            
             $('input[name="nrModelo"]').prop('disabled', true)
             $('input[name="nrSerie"]').prop('disabled', true)
-            $('input[name="nrNota"]').prop('disabled', true)
-           // $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
+            $('input[name="nrNota"]').prop('disabled', true)           
             $("#Fornecedor_btn").removeAttr('disabled', true)
             $("#Fornecedor_btn-localizar").hide();
         } else {
-            $("#divAddProduto").show();
-            //reaabilita campos nota fiscal
+            $("#divAddProduto").show();            
             $('input[name="nrModelo"]').prop('disabled', false)
             $('input[name="nrSerie"]').prop('disabled', false)
-            $('input[name="nrNota"]').prop('disabled', false)
-           // $('input[name="Fornecedor.IdFornecedor"]').prop('disabled', false)
+            $('input[name="nrNota"]').prop('disabled', false)          
             $("#Fornecedor_btn").removeAttr('disabled', false)
-
             $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
             $("#CondicaoPagamento_btn-localizar").hide();
-
             $("#CondicaoPagamento_Id").val("")
             $("#CondicaoPagamento_text").val("")
             $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true)
-
             $("#Fornecedor_btn-localizar").show();
         }
 
-        total = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        total = Number.parseFloat(total);
         $("#ftp").text("Total: " + total);
-        vlTotalCompra = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+        
+        vlFrete = Number.parseFloat($("#vlFrete").val());
+       
+        vlDespesa = Number.parseFloat($("#vlDespesa").val());
+     
+        vlSeguro = Number.parseFloat($("#vlSeguro").val());
+
+        let valorTotalOutros = Number.parseFloat(vlFrete) + vlDespesa + vlSeguro;
+        let vlCompra_Outros = 0;
+        if (!IsNullOrEmpty(vlSeguro))
+        {
+            vlCompra_Outros = valorTotalOutros + total;
+
+        } else if (!IsNullOrEmpty(vlFrete))
+        {
+            vlCompra_Outros = valorTotalOutros + total;
+
+        } else if (!IsNullOrEmpty(vlDespesa))
+        {
+            vlCompra_Outros = valorTotalOutros + total;
+
+        } else {
+            vlCompra_Outros += total;
+        }
+        
+        vlTotalCompra = vlCompra_Outros.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
         $("#vlTotal").val(vlTotalCompra)
     }
 
@@ -467,7 +502,7 @@ Compra = function () {
                 nrParcela: itens[i].nrParcela,
                 vlParcela: itens[i].vlParcela,
                 dtVencimento: itens[i].dtVencimento,
-                idFormaPagamento: itens[i].idFormaPagamento,
+                IdFormaPagamento: itens[i].IdFormaPagamento,
                 dsFormaPagamento: itens[i].dsFormaPagamento,
             }
             dtParcelas.addItem(item);

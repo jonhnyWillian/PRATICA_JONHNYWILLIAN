@@ -28,7 +28,7 @@ namespace SistemaBarbearia.Controllers
             {
                 IdModelPai = obj.IdAgenda,
                 idAgenda = obj.IdAgenda,
-                dtNota = obj.dtAgendamento,
+                //dtNota = obj.dtAgendamento,
                 dtAgendamento = obj.dtAgendamento,
                 flhoraAgendamento = obj.flhoraAgendamento,
                 flSituação = obj.flSituacao,

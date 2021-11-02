@@ -107,6 +107,18 @@
 <div id="divFinaliza">
     <div class="form-row">
         <div class="col-sm-2">
+            @Html.Label("Valor total de Seguro", new { @class = "" })
+            @Html.TextBoxFor(model => model.vlSeguro, new { @class = "form-control",  style = "text-align: right" })
+        </div>
+        <div class="col-sm-2">
+            @Html.Label("Valor total de Frete", new { @class = "" })
+            @Html.TextBoxFor(model => model.vlFrete, new { @class = "form-control",  style = "text-align: right" })
+        </div>
+        <div class="col-sm-2">
+            @Html.Label("Valor de Despesa", new { @class = "" })
+            @Html.TextBoxFor(model => model.vlDespesa, new { @class = "form-control",  style = "text-align: right" })
+        </div>
+        <div class="col-sm-2">
             @Html.Label("Valor total da compra", new { @class = "required" })
             @Html.TextBoxFor(model => model.vlTotal, new { @class = "form-control", placeholder = "0,00", style = "text-align: right" })
         </div>
