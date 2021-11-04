@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace SistemaBarbearia.Models.ContaPagar
+namespace SistemaBarbearia.Models.ContasPagar
 {
     public class ContaPagar
     {
         public string flSituacao { get; set; }
 
-        public short nrModelo { get; set; }
+        public string nrModelo { get; set; }
 
-        public short nrSerie { get; set; }
+        public string nrSerie { get; set; }
 
-        public int nrNumero { get; set; }
+        public int nrNota { get; set; }
 
         public int nrParcela{ get; set; }
 
@@ -32,6 +32,7 @@ namespace SistemaBarbearia.Models.ContaPagar
 
         public decimal? vlPago { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtEmissao { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

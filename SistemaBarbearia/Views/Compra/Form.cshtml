@@ -5,7 +5,7 @@
     var action = Convert.ToString(ViewBag.Action);
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     bool isEdit = action.ToLower() == "edit";
-    var tam = action == "create" ? 8 : 7;
+    var tam = action == "create" ? 8 : 9;
 }
 @Html.HiddenFor(k => k.dtEmissaoAux)
 @Html.HiddenFor(k => k.dtEntregaAux)
@@ -76,7 +76,9 @@
                 @if (action == "Create")
                 {
                     <th width="5%"></th>
+
                 }
+                <th width="5%"></th>
                 <th width="5%">Id</th>
                 <th width="40%">Produto</th>
                 <th width="10%">Quant.</th>

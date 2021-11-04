@@ -189,7 +189,8 @@
     <Compile Include="Models\Cargos\Cargo.cs" />
     <Compile Include="Models\Compras\Compra.cs" />
     <Compile Include="Models\CondPagamentos\CondPagamentoParcela.cs" />
-    <Compile Include="Models\ContaPagar\ContaPagar.cs" />
+    <Compile Include="Models\ContaBancarias\ContaBanco.cs" />
+    <Compile Include="Models\ContasPagar\ContaPagar.cs" />
     <Compile Include="Models\ContaReceber\ContaReceber.cs" />
     <Compile Include="Models\FormaPagamentos\FormaPagamento.cs" />
     <Compile Include="Models\Fornecedores\Fornecedor.cs" />

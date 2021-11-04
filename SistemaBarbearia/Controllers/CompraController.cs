@@ -148,10 +148,10 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        public JsonResult JsVerificaNF(string modelo, string serie, int numero, int idFornecedor)
+        public JsonResult JsVerificaNF(string nrModelo, string nrSerie, int nrNota, int idFornecedor)
         {
             var dao = new CompraDAO();
-            var validNF = dao.validNota(modelo, serie, numero, idFornecedor);
+            var validNF = dao.validNota(nrModelo, nrSerie, nrNota, idFornecedor);
             var type = string.Empty;
             var msg = string.Empty;
             if (validNF)

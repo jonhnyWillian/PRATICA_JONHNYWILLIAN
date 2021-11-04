@@ -513,13 +513,13 @@ Compra = function () {
     self.verificaNF = function (id) {
         let nrModelo = $("#nrModelo");
         let nrSerie = $("#nrSerie");
-        let numero = $("#nrNota");
-        if (!IsNullOrEmpty(nrModelo.val()) && !IsNullOrEmpty(nrSerie.val()) && !IsNullOrEmpty(numero.val()) && !IsNullOrEmpty(id)) {
+        let nrNota = $("#nrNota");
+        if (!IsNullOrEmpty(nrModelo.val()) && !IsNullOrEmpty(nrSerie.val()) && !IsNullOrEmpty(nrNota.val()) && !IsNullOrEmpty(id)) {
             $.ajax({
                 dataType: 'json',
                 type: 'GET',
                 url: Action.verificaNF,
-                data: { nrModelo: nrModelo.val(), nrSerie: nrSerie.val(), numero: numero.val(), idFornecedor: id },
+                data: { nrModelo: nrModelo.val(), nrSerie: nrSerie.val(), nrNota: nrNota.val(), idFornecedor: id },
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: data.type, z_index: 2000 });
                     if (data.type == "success") {                        

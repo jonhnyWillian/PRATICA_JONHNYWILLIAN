@@ -1,9 +1,6 @@
 ﻿using SistemaBarbearia.ViewModels.Model;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace SistemaBarbearia.ViewModels.ContasPagar
 {
@@ -16,17 +13,17 @@ namespace SistemaBarbearia.ViewModels.ContasPagar
         [Display(Name = "Modelo")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
-        public short nrModelo { get; set; }
+        public string nrModelo { get; set; }
 
         [Display(Name = "Nº Serie")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
-        public short nrSerie { get; set; }
+        public string nrSerie { get; set; }
 
-        [Display(Name = "Nº Numero")]
+        [Display(Name = "Nº Nota")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
-        public int nrNumero { get; set; }
+        public int nrNota { get; set; }
 
         [Display(Name = "Nº Parcela")]
         [StringLength(50, MinimumLength = 3)]

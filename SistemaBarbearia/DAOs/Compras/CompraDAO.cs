@@ -24,12 +24,12 @@ namespace SistemaBarbearia.DAOs.Compras
             {
                 command = sqlconnection.CreateCommand();
                 command.Transaction = sqlTransaction; 
-                command.CommandText = "INSERT INTO Compra ( nrModelo,  nrSerie,  nrNota,  IdFornecedor,  IdCondPag,  dtEmissao,  dtEntrega,  vlSeguro,  vlFrete,  vlDespesas,  vlTotal,  dtCadastro,  flSituacao,  dtUltAlteracao  )" +
-                                                   "VALUES(@nrModelo, @nrSerie, @nrNota, @IdFornecedor, @IdCondPag, @dtEmissao, @dtEntrega, @vlSeguro, @vlFrete, @vlDespesas, @vlTotal, @dtCadastro, @flSituacao, @dtUltAlteracao );"; //SELECT CAST(SCOPE_IDENTITY() AS int)
+                command.CommandText = "INSERT INTO Compra ( nrModelo,  nrSerie,  nrNota,  IdFornecedor,  IdCondPag,  dtEmissao,  dtEntrega,  vlSeguro,  vlFrete,  vlDespesas, vlTotal,  dtCadastro,  flSituacao,  dtUltAlteracao  )" +
+                                                   "VALUES(@nrModelo, @nrSerie, @nrNota, @IdFornecedor, @IdCondPag, @dtEmissao, @dtEntrega, @vlSeguro, @vlFrete, @vlDespesas,  @vlTotal, @dtCadastro, @flSituacao, @dtUltAlteracao );"; //SELECT CAST(SCOPE_IDENTITY() AS int)
 
-                command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value );
-                command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value );
-                command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value );
+                command.Parameters.AddWithValue("@nrModelo", compra.nrModelo );
+                command.Parameters.AddWithValue("@nrSerie", compra.nrSerie );
+                command.Parameters.AddWithValue("@nrNota", compra.nrNota );
                 command.Parameters.AddWithValue("@IdFornecedor", compra.Fornecedor.IdFornecedor);
                 command.Parameters.AddWithValue("@IdCondPag", compra.CondicaoPagamento.Id);
                 command.Parameters.AddWithValue("@dtEmissao", compra.dtEmissao);
@@ -53,9 +53,9 @@ namespace SistemaBarbearia.DAOs.Compras
                                                        " VALUES( @nrModelo, @nrSerie, @nrNota, @IdProduto, @nrQtd, @vlCompra, @vlVenda, @txDesconto)";
 
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value);
-                    command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value);
-                    command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value);
+                    command.Parameters.AddWithValue("@nrModelo", compra.nrModelo);
+                    command.Parameters.AddWithValue("@nrSerie", compra.nrSerie);
+                    command.Parameters.AddWithValue("@nrNota", compra.nrNota);
                     command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
                     command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
                     command.Parameters.AddWithValue("@vlCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
@@ -80,16 +80,14 @@ namespace SistemaBarbearia.DAOs.Compras
                 {
                     command = sqlconnection.CreateCommand();
                     command.Transaction = sqlTransaction;
-                    command.CommandText = "INSERT INTO ContasPagar  ( nrModelo,  nrSerie,  nrNota, fornecedor_id, formaPagamento_id, vlParcela,  flSituacao, dtVencimento, nrparcela  )" +
-                                                         "VALUES(@nrModelo, @nrSerie, @nrNota, @fornecedor_id, @formaPagamento_id, @vlParcela,  @flSituacao, @dtVencimento, @nrparcela )";
-                    
+                    command.CommandText = "INSERT INTO ContasPagar  ( nrModelo,  nrSerie,  nrNota, IdFornecedor, IdFormaPagamento, vlParcela,  flSituacao, dtVencimento, nrparcela  )" +
+                                                         "VALUES(@nrModelo, @nrSerie, @nrNota, @IdFornecedor, @IdFormaPagamento, @vlParcela,  @flSituacao, @dtVencimento, @nrparcela )";
 
-                   
-                    command.Parameters.AddWithValue("@nrModelo", ((object)compra.nrModelo) != DBNull.Value);
-                    command.Parameters.AddWithValue("@nrSerie", ((object)compra.nrSerie) != DBNull.Value);
-                    command.Parameters.AddWithValue("@nrNota", ((object)compra.nrNota) != DBNull.Value);
-                    command.Parameters.AddWithValue("@fornecedor_id", compra.Fornecedor.IdFornecedor);
-                    command.Parameters.AddWithValue("@formaPagamento_id", item.IdFormaPagamento);                 
+                    command.Parameters.AddWithValue("@nrModelo", compra.nrModelo);
+                    command.Parameters.AddWithValue("@nrSerie", compra.nrSerie);
+                    command.Parameters.AddWithValue("@nrNota", compra.nrNota);
+                    command.Parameters.AddWithValue("@IdFornecedor", compra.Fornecedor.IdFornecedor);
+                    command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);                 
                     command.Parameters.AddWithValue("@vlParcela", ((object)item.vlParcela) != DBNull.Value ? ((object)item.vlParcela) : 0);
                     command.Parameters.AddWithValue("@flSituacao", item.flSituacao = "A");
                     command.Parameters.AddWithValue("@dtVencimento", ((object)item.dtVencimento) ?? DBNull.Value);
@@ -354,8 +352,8 @@ namespace SistemaBarbearia.DAOs.Compras
         {
             var sql = string.Empty;
             sql = @"
-                    SELECT  ContasPagar.fornecedor_id AS ContaPagar_Fornecedor_ID ,
-	                        ContasPagar.formaPagamento_id AS FormaPagamento_ID,
+                    SELECT  ContasPagar.IdFornecedor AS ContaPagar_Fornecedor_ID ,
+	                        ContasPagar.IdFormaPagamento AS FormaPagamento_ID,
 	                        Formapagamento.dsFormaPagamento AS FormaPagamento_dsForma,
 	                        ContasPagar.nrparcela AS ContaPagar_NrParcela,
 	                        ContasPagar.vlparcela AS ContaPagar_VlParcela,
@@ -365,14 +363,14 @@ namespace SistemaBarbearia.DAOs.Compras
 	                        ContasPagar.nrSerie AS ContaPagar_nrSerie,
 	                        ContasPagar.nrNota AS ContaPagar_nrNota
                     FROM ContasPagar
-	                    INNER JOIN Formapagamento on ContasPagar.formaPagamento_id = FormaPagamento.IdFormaPagamento
-                        WHERE ContasPagar.nrModelo = '" + nrModelo + "' AND ContasPagar.nrSerie = '" + nrSerie + "' AND ContasPagar.nrNota = " + nrNota + " AND ContasPagar.fornecedor_id = " + IdFornecedor;
+	                    INNER JOIN Formapagamento on ContasPagar.IdFormaPagamento = FormaPagamento.IdFormaPagamento
+                        WHERE ContasPagar.nrModelo = '" + nrModelo + "' AND ContasPagar.nrSerie = '" + nrSerie + "' AND ContasPagar.nrNota = " + nrNota + " AND ContasPagar.IdFornecedor = " + IdFornecedor;
             return sql;
         }
 
-        public bool validNota(string modelo, string serie, int nrNota, int idFornecedor)
+        public bool validNota(string nrModelo, string nrSerie, int nrNota, int idFornecedor)
         {
-            string sql = "SELECT * FROM Compra WHERE nrModelo = '" + modelo + "' AND nrSerie = '" + serie + "' AND nrNota = " + nrNota + " AND idFornecedor = " + idFornecedor;
+            string sql = "SELECT * FROM Compra WHERE nrModelo = '" + nrModelo + "' AND nrSerie = '" + nrSerie + "' AND nrNota = " + nrNota + " AND idFornecedor = " + idFornecedor;
             Open();
             SqlCommand query = new SqlCommand(sql, sqlconnection);
             var exist = query.ExecuteScalar();
