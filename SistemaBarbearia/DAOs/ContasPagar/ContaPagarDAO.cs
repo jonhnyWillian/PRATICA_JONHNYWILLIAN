@@ -18,8 +18,9 @@ namespace SistemaBarbearia.DAOs.ContasPagar
             {
                 Open();
                 SQL = new SqlCommand(@"SELECT* FROM ContasPagar 
-                                                INNER JOIN Fornecedor ON ContasPagar.fornecedor_id = Fornecedor.idFornecedor 
-                                                INNER JOIN Compra ON Compra.IdFornecedor = Fornecedor.IdFornecedor ", sqlconnection);
+                                                INNER JOIN Fornecedor ON ContasPagar.idFornecedor = Fornecedor.idFornecedor 
+                                                INNER JOIN Compra ON Compra.IdFornecedor = Fornecedor.IdFornecedor                                                        
+                                                                                                                   ", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
@@ -32,10 +33,14 @@ namespace SistemaBarbearia.DAOs.ContasPagar
                         {
                             IdFornecedor = Convert.ToInt32(Dr["IdFornecedor"]),
                             nmNome = Convert.ToString(Dr["nmNome"]),
-                        },
+                        },                      
+
                         nrModelo = Convert.ToString(Dr["nrModelo"]),
                         nrSerie = Convert.ToString(Dr["nrSerie"]),
                         nrNota = Convert.ToInt32(Dr["nrNota"]),
+                        nrParcela = Convert.ToInt32(Dr["nrParcela"]),
+                        vlParcela = Convert.ToDecimal(Dr["vlParcela"]),
+                        dtVencimento = Dr["dtVencimento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtVencimento"]),
                         dtEmissao = Dr["dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEmissao"]),
 
                     };
@@ -66,19 +71,25 @@ namespace SistemaBarbearia.DAOs.ContasPagar
                 while (Dr.Read())
                 {
 
-                    contaVM.nrModelo = Convert.ToString(Dr["Compra_Modelo"]);
-                    contaVM.nrNota = Convert.ToInt32(Dr["Compra_Nota"]);
-                    contaVM.nrSerie = Convert.ToString(Dr["Compra_Serie"]);
+                    contaVM.nrModelo = Convert.ToString(Dr["ContaPagar_nrModelo"]);
+                    contaVM.nrNota = Convert.ToInt32(Dr["ContaPagar_nrNota"]);
+                    contaVM.nrSerie = Convert.ToString(Dr["ContaPagar_nrSerie"]);
+                    contaVM.vlParcela = Convert.ToDecimal(Dr["ContaPagar_vlParcela"]);
+                    contaVM.nrParcela = Convert.ToInt32(Dr["ContaPagar_NrParcela"]);
+                    contaVM.dtVencimento = Dr["ContaPagar_DataVencimento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContaPagar_DataVencimento"]);
 
-
-                    contaVM.dtEmissao = Dr["Compra_dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["Compra_dtEmissao"]);
+                    contaVM.dtVencimento = Dr["ContaPagar_DataPagamento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContaPagar_DataPagamento"]);
 
                     contaVM.Fornecedor = new ViewModels.Fornecedores.SelectFornecedorVM
                     {
-                        IdFornecedor = Convert.ToInt32(Dr["Fornecedor_ID"]),
-                        nmNome = Convert.ToString(Dr["Fornecedor_nmNome"])
+                        IdFornecedor = Convert.ToInt32(Dr["ContaPagar_Fornecedor_ID"]),
+                        nmNome = Convert.ToString(Dr["ContaPagar_Fornecedor_Nome"])
                     };
-                
+                    contaVM.formaPag = new ViewModels.FormaPagamentos.SelectFormaPagamentoVM
+                    {
+                        Id = Convert.ToInt32(Dr["ContaPagar_FormaPagamento_ID"]),
+                        Text = Convert.ToString(Dr["ContaPagar_FormaPagamento_dsFormaPagamento"]),
+                    };
 
                 }
                 return contaVM;
@@ -98,19 +109,19 @@ namespace SistemaBarbearia.DAOs.ContasPagar
             var swhere = string.Empty;
             if (!string.IsNullOrEmpty(nrModelo))
             {
-                swhere += " AND Compra.nrModelo = '" + nrModelo + "'";
+                swhere += " AND ContasPagar.nrModelo = '" + nrModelo + "'";
             }
             if (!string.IsNullOrEmpty(nrSerie))
             {
-                swhere += " AND Compra.nrSerie = '" + nrSerie + "'";
+                swhere += " AND ContasPagar.nrSerie = '" + nrSerie + "'";
             }
             if (nrNota != null)
             {
-                swhere += " AND Compra.nrNota = " + nrNota;
+                swhere += " AND ContasPagar.nrNota = " + nrNota;
             }
             if (nrNota != null)
             {
-                swhere += " AND Compra.IdFornecedor = " + IdFornecedor;
+                swhere += " AND ContasPagar.IdFornecedor = " + IdFornecedor;
             }
 
             if (!string.IsNullOrEmpty(filter))
@@ -126,31 +137,70 @@ namespace SistemaBarbearia.DAOs.ContasPagar
                 swhere = " WHERE " + swhere.Remove(0, 4);
             sql = @"
                  SELECT
-	                    Compra.flSituacao  AS Compra_flSituacao,
-
-	                    Compra.nrModelo AS Compra_Modelo,
-	                    Compra.nrSerie AS Compra_Serie,
-	                    Compra.nrNota AS Compra_Nota,
-
-	                    Compra.dtEmissao AS Compra_dtEmissao,
-	                    Compra.dtentrega AS Compra_dtentrega,	    
-	                    Compra.dtCadastro AS Compra_dtCadastro,
-
-	                    Compra.vlFrete AS Compra_vlFrete,
-	                    Compra.vlSeguro AS Compra_vlSeguro,
-	                    Compra.vlDespesas AS Compra_vlDespesas,
-                        Compra.vlTotal AS Compra_vlTotal,
-
-	                    Compra.IdFornecedor AS Fornecedor_ID,
-	                    Fornecedor.nmNome AS Fornecedor_nmNome,
-
-	                    Compra.IdCondPag AS CondicaoPagamento_ID,
-	                    CondPagamento.dsCondPag AS CondicaoPagamento_Nome
-
-	            FROM Compra
-	            INNER JOIN Fornecedor on Compra.IdFornecedor = Fornecedor.IdFornecedor
-	            INNER JOIN CondPagamento on Compra.IdCondPag = CondPagamento.IdCondPag
+	                ContasPagar.IdFornecedor AS ContaPagar_Fornecedor_ID,
+	                Fornecedor.nmNome AS ContaPagar_Fornecedor_Nome,
+	                ContasPagar.IdFormaPagamento AS ContaPagar_FormaPagamento_ID,
+	                FormaPagamento.dsFormaPagamento AS ContaPagar_FormaPagamento_dsFormaPagamento,	                
+					ContasPagar.nrparcela AS ContaPagar_NrParcela,
+	                ContasPagar.vlparcela AS ContaPagar_vlParcela,
+	                ContasPagar.dtvencimento AS ContaPagar_DataVencimento,
+	                ContasPagar.dtpagamento AS ContaPagar_DataPagamento,
+	                ContasPagar.flSituacao AS ContaPagar_Situacao,
+	                ContasPagar.nrModelo AS ContaPagar_nrModelo,
+	                ContasPagar.nrSerie AS ContaPagar_nrSerie,
+	                ContasPagar.nrNota AS ContaPagar_nrNota,
+	                ContasPagar.IdConta AS ContaBanco_ID,
+	                ContaBanco.dsConta AS ContaBanco_dsConta
+    	                   
+	            FROM ContasPagar
+	            INNER JOIN Fornecedor on ContasPagar.IdFornecedor = Fornecedor.IdFornecedor
+	            INNER JOIN FormaPagamento on ContasPagar.IdFormaPagamento = FormaPagamento.IdFormaPagamento
+				LEFT JOIN ContaBanco ON ContasPagar.IdConta = ContaBanco.IdConta
                 " + swhere + ";";
+            return sql;
+        }
+
+        protected string BuscarProdutos(string nrModelo, string nrSerie, int? nrNota)
+        {
+            var sql = string.Empty;
+
+            sql = @"SELECT
+	                    ProdutoCompras.nrModelo AS Compra_Modelo,
+	                    ProdutoCompras.nrSerie AS Compra_Modelo,
+	                    ProdutoCompras.nrNota AS Compra_Modelo,	 
+
+	                    ProdutoCompras.IdProduto AS ProdutoCompra_ID,
+	                    Produto.dsProduto AS ProdutoCompra_dsProduto,
+
+	                    ProdutoCompras.nrQtd AS ProdutoCompra_nrQtd,
+	                    ProdutoCompras.vlCompra AS ProdutoCompra_vlCompra,
+	                    ProdutoCompras.txDesconto AS ProdutoCompra_txDesconto,
+	                    ProdutoCompras.vlVenda AS ProdutoCompra_vlVenda
+	                FROM ProdutoCompras
+	                    INNER JOIN Produto on ProdutoCompras.IdProduto = Produto.IdProduto
+                    WHERE ProdutoCompras.nrModelo = '" + nrModelo + "' AND ProdutoCompras.nrSerie = '" + nrSerie + "' AND ProdutoCompras.nrNota = " + nrNota;
+
+            ;
+            return sql;
+        }
+
+        protected string BuscarParcelas(string nrModelo, string nrSerie, int? nrNota, int? IdFornecedor)
+        {
+            var sql = string.Empty;
+            sql = @"
+                    SELECT  ContasPagar.IdFornecedor AS ContaPagar_Fornecedor_ID ,
+	                        ContasPagar.IdFormaPagamento AS FormaPagamento_ID,
+	                        Formapagamento.dsFormaPagamento AS FormaPagamento_dsForma,
+	                        ContasPagar.nrparcela AS ContaPagar_NrParcela,
+	                        ContasPagar.vlparcela AS ContaPagar_VlParcela,
+	                        ContasPagar.dtvencimento AS ContaPagar_DtVencimento,
+	                      
+	                        ContasPagar.nrModelo AS ContaPagar_nrModelo,
+	                        ContasPagar.nrSerie AS ContaPagar_nrSerie,
+	                        ContasPagar.nrNota AS ContaPagar_nrNota
+                    FROM ContasPagar
+	                    INNER JOIN Formapagamento on ContasPagar.IdFormaPagamento = FormaPagamento.IdFormaPagamento
+                        WHERE ContasPagar.nrModelo = '" + nrModelo + "' AND ContasPagar.nrSerie = '" + nrSerie + "' AND ContasPagar.nrNota = " + nrNota + " AND ContasPagar.IdFornecedor = " + IdFornecedor;
             return sql;
         }
     }

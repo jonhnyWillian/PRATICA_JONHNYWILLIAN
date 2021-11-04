@@ -23,31 +23,24 @@
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrModelo, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrModelo, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.nrModelo, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.nrModelo, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrSerie, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrSerie, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.nrSerie, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.nrSerie, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrNota, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrNota, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.nrNota, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.nrNota, "", new { @class = "text-danger" })
         </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group">
-            @Html.LabelFor(model => model.dtEmissao, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.dtEmissao, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.dtEmissao, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    </div>    
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -67,62 +60,40 @@
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.nrParcela, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.nrParcela, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.nrParcela, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.vlParcela, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
+            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.vlParcela, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-sm-4">
         <div class="form-group">
             @Html.LabelFor(model => model.dtVencimento, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.dtVencimento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.dtVencimento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
             @Html.ValidationMessageFor(model => model.dtVencimento, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="@Helper.Input3">
         <div class="form-group">
             @Html.LabelFor(model => model.dtPagamento, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.dtPagamento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @Html.EditorFor(model => model.dtPagamento, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.dtPagamento, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-2">
+    <div class="col-md-12">
         <div class="form-group">
-            @Html.LabelFor(model => model.txJuro, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.txJuro, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
-            @Html.ValidationMessageFor(model => model.txJuro, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group">
-            @Html.LabelFor(model => model.txMulta, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.txMulta, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
-            @Html.ValidationMessageFor(model => model.txMulta, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group">
-            @Html.LabelFor(model => model.txDesconto, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.txDesconto, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
-            @Html.ValidationMessageFor(model => model.txDesconto, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-sm-2">
-        <div class="form-group">
-            @Html.LabelFor(model => model.vlPago, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.vlPago, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus" })
-            @Html.ValidationMessageFor(model => model.vlPago, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.ContaBancaria, "ContaBanco/Select", new { @disabled = readOnly })
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-6">
         @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })

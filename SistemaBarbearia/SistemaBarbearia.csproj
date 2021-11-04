@@ -215,7 +215,8 @@
     <Compile Include="ViewModels\Cidades\SelectCidadeVM.cs" />
     <Compile Include="ViewModels\CondPagamentos\CondPagamentoVM.cs" />
     <Compile Include="ViewModels\CondPagamentos\SelectCondPagamentoVM.cs" />
-    <Compile Include="ViewModels\ContaBancarias\ContaBancoVM.cs" />
+    <Compile Include="ViewModels\ContasBancos\ContaBancoVM.cs" />
+    <Compile Include="ViewModels\ContasBancos\SelectContaBancoVM.cs" />
     <Compile Include="ViewModels\ContasPagar\ContaPagarVM.cs" />
     <Compile Include="ViewModels\ContasReceber\ContaReceberVW.cs" />
     <Compile Include="ViewModels\Estados\EstadoVM.cs" />
@@ -799,6 +800,7 @@
     <Content Include="Views\ContaBanco\Form.cshtml" />
     <Content Include="Views\ContaBanco\Delete.cshtml" />
     <Content Include="Views\ContaBanco\Details.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ContaBanco\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

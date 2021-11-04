@@ -191,5 +191,62 @@ namespace SistemaBarbearia.DAOs.ContasBancos
                 Close();
             }
         }
+
+        protected string BuscarCargo(int? IdConta, string dsConta)
+        {
+            var sqlSelectConta = string.Empty;
+            var where = string.Empty;
+
+            if (IdConta != null)
+            {
+                where = "WHERE IdConta = " + IdConta;
+            }
+            if (!string.IsNullOrEmpty(dsConta))
+            {
+                var query = dsConta.Split(' ');
+                foreach (var item in query)
+                {
+                    where += "OR dsConta LIKE '%'" + item + "'%'";
+                }
+                where = "WHERE" + where.Remove(0, 3);
+            }
+            sqlSelectConta = @"SELECT * FROM ContaBanco " + where;
+            return sqlSelectConta;
+        }
+
+        public List<SelectContaBancoVM> SelectContaBanco(int? IdConta, string dsConta)
+        {
+            try
+            {
+
+                var sqlSelectConta = this.BuscarCargo(IdConta, dsConta);
+                Open();
+                SQL = new SqlCommand(sqlSelectConta, sqlconnection);
+                Dr = SQL.ExecuteReader();
+                var list = new List<SelectContaBancoVM>();
+
+                while (Dr.Read())
+                {
+                    var conta= new SelectContaBancoVM
+                    {
+                        IdConta = Convert.ToInt32(Dr["IdConta"]),
+                        dsConta = Convert.ToString(Dr["dsConta"]),
+                        
+                       
+                    };
+                    list.Add(conta);
+                }
+
+                return list;
+            }
+            catch (Exception error)
+            {
+                throw new Exception(error.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
     }
 }

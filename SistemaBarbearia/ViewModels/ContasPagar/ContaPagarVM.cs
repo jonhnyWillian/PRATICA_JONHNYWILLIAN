@@ -70,12 +70,14 @@ namespace SistemaBarbearia.ViewModels.ContasPagar
 
         [Display(Name = "Dt. Emissão")]
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtEmissao { get; set; }
 
 
         public ViewModels.Fornecedores.SelectFornecedorVM Fornecedor { get; set; }
 
         public ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPag { get; set; }
+
+        public ViewModels.ContasBancos.SelectContaBancoVM ContaBancaria { get; set; }
     }
 }

@@ -57,10 +57,10 @@ namespace SistemaBarbearia.DAOs.Compras
                     command.Parameters.AddWithValue("@nrSerie", compra.nrSerie);
                     command.Parameters.AddWithValue("@nrNota", compra.nrNota);
                     command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
-                    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
-                    command.Parameters.AddWithValue("@vlCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
-                    command.Parameters.AddWithValue("@vlVenda", ((object)item.vlVenda) != DBNull.Value ? ((object)item.vlVenda) : 0);
-                    command.Parameters.AddWithValue("@txDesconto", ((object)item.txDesconto) != DBNull.Value ? ((object)item.txDesconto) : 0);
+                    command.Parameters.AddWithValue("@nrQtd", item.nrQtd);
+                    command.Parameters.AddWithValue("@vlCompra", item.vlCompra);
+                    command.Parameters.AddWithValue("@vlVenda",item.vlVenda);
+                    command.Parameters.AddWithValue("@txDesconto", item.txDesconto);
 
                     i = command.ExecuteNonQuery();
                 }
@@ -88,10 +88,10 @@ namespace SistemaBarbearia.DAOs.Compras
                     command.Parameters.AddWithValue("@nrNota", compra.nrNota);
                     command.Parameters.AddWithValue("@IdFornecedor", compra.Fornecedor.IdFornecedor);
                     command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);                 
-                    command.Parameters.AddWithValue("@vlParcela", ((object)item.vlParcela) != DBNull.Value ? ((object)item.vlParcela) : 0);
+                    command.Parameters.AddWithValue("@vlParcela", item.vlParcela );
                     command.Parameters.AddWithValue("@flSituacao", item.flSituacao = "A");
-                    command.Parameters.AddWithValue("@dtVencimento", ((object)item.dtVencimento) ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@nrparcela", ((object)item.nrParcela) != DBNull.Value);
+                    command.Parameters.AddWithValue("@dtVencimento",item.dtVencimento);
+                    command.Parameters.AddWithValue("@nrparcela", item.nrParcela);
                     i = command.ExecuteNonQuery();
 
 
