@@ -1,0 +1,76 @@
+﻿@model SistemaBarbearia.ViewModels.ContasBancos.ContaBancoVM
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+}
+@if (action != "create")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @using (Html.BeginForm())
+                {
+                    @Html.LabelFor(e => e.IdModelPai, new { @class = "control-label required" })
+                    @Html.TextBoxFor(model => model.IdModelPai, new { @class = "form-control col-md-2", readOnly = "readonly" })
+                }
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.dsConta, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsConta, new { @class = "form-control col-md-8", @maxlength = "50", @autofocus = "autofocus", @style = "text-transform:uppercase", @placeholder = "Conta" })
+            @Html.ValidationMessageFor(model => model.dsConta, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.flSituacao, htmlAttributes: new { @class = "control-label required" })
+            @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.ContasBancos.ContaBancoVM.Situacao, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.flSituacao, null, new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            @Html.LabelFor(model => model.dsClassificacao, htmlAttributes: new { @class = "control-label required" })
+            @Html.TextBoxFor(model => model.dsClassificacao, new { @class = "form-control col-md-8", @maxlength = "50", @autofocus = "autofocus", @style = "text-transform:uppercase", @placeholder = "Classificação" })
+            @Html.ValidationMessageFor(model => model.dsClassificacao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(model => model.vlSaldo, new { @class = "required" })
+            @Html.TextBoxFor(model => model.vlSaldo, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right"})
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
+        <div class="input-group-append">
+            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
+            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

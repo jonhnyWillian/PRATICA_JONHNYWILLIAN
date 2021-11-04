@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace SistemaBarbearia.Models.ContaBancarias
+namespace SistemaBarbearia.Models.ContasBancos
 {
     public class ContaBanco
     {
