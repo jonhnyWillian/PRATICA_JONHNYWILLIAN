@@ -22,7 +22,8 @@
                 <th export="true" style="width:10%">Serie</th>
                 <th export="true" style="width:10%">Parcela</th>
                 <th export="true" style="width:10%">Dt Emissão</th>
-                <th export="true" style="width:40%">Fornecedor</th>
+                <th export="true" style="width:10%">Situação</th>
+                <th export="true" style="width:30%">Fornecedor</th>
                 <th export="true" style="width:10%">Opções</th>
             </tr>
         </thead>
@@ -44,12 +45,24 @@
                 <td style="width:10%;">
                     @Html.DisplayFor(modelItem => item.dtEmissao)
                 </td>
-                <td style="width:40%;">
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.flSituacao)
+                </td>
+                <td style="width:30%;">
                     @Html.DisplayFor(modelItem => item.Fornecedor.nmNome)
                 </td>
                 <td>
                     <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { nrNota = item.nrNota, nrModelo = item.nrModelo, nrSerie = item.nrSerie, IdFornecedor = item.Fornecedor.IdFornecedor, nrParcela = item.nrParcela }))"><i class="fa fa-eye"></i></a>
-                    <a title="Pagar" class="btn btn-primary btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Create", new { nrNota = item.nrNota, nrModelo = item.nrModelo, nrSerie = item.nrSerie, IdFornecedor = item.Fornecedor.IdFornecedor }))"><i class="fa fa-check"></i></a>
+
+                    @if (item.flSituacao != "P")
+                    {
+                        <a title="Pagar" class="btn btn-primary btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Create", new { nrNota = item.nrNota, nrModelo = item.nrModelo, nrSerie = item.nrSerie, IdFornecedor = item.Fornecedor.IdFornecedor, nrParcela = item.nrParcela }))"><i class="fa fa-check"></i></a>
+                    }
+                    else
+                    {
+                        <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
+
+                    }
                     @*<a title="Editar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdContaPagar }))"><i class="fa fa-pencil-square-o"></i></a>
                         <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdContaPagar }))"><i class="fa fa-trash"></i></a>*@
                 </td>

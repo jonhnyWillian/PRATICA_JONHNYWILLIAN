@@ -1,4 +1,5 @@
 ﻿using SistemaBarbearia.DAOs.ContasPagar;
+using SistemaBarbearia.Models.ContasPagar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace SistemaBarbearia.Controllers
     {
 
         #region MethodPrivate
-        private ActionResult GetView(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
+        private ActionResult GetView(string nrModelo, string nrSerie, int nrNota, int? nrParcela,  int? IdFornecedor)
         {
             try
             {
                 var Dao = new ContaPagarDAO();
-                var contaPagar = Dao.GetContaPagar(null, nrModelo, nrSerie, nrNota, IdFornecedor);
+                var contaPagar = Dao.GetContaPagar(null, nrModelo, nrSerie, nrNota, nrParcela, IdFornecedor);
                 return View(contaPagar);
             }
             catch (Exception)
@@ -33,23 +34,27 @@ namespace SistemaBarbearia.Controllers
             return View(dao.SelecionarCompra());
         }
     
-        public ActionResult Details(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
+        public ActionResult Details(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdFornecedor)
         {
-            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor);
+            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
         }
       
-        public ActionResult Create(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
+        public ActionResult Create(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdFornecedor)
         {
-            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor);
+            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ContaPagar contaPagar , string nrModelo, string nrSerie, int nrNota, int IdFornecedor, int nrParcela)
         {
+            if  (contaPagar.ContaBancaria.IdConta == null)
+            {
+                ModelState.AddModelError("ContaBancaria.IdConta", "Informe a Conta Bancaria");
+            }
             try
             {
-                // TODO: Add insert logic here
-
+                var dao = new ContaPagarDAO();
+                dao.PagarCompra(contaPagar, nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
                 return RedirectToAction("Index");
             }
             catch

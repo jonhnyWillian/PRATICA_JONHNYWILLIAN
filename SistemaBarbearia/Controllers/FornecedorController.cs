@@ -246,11 +246,11 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult JsDetails(int? Id, string Text)
+        public JsonResult JsDetails(int? IdFornecedor, string nmNome)
         {
             try
             {
-                var result = this.Find(Id, Text).FirstOrDefault();
+                var result = this.Find(IdFornecedor, nmNome).FirstOrDefault();
                 if (result != null)
                     return Json(result, JsonRequestBehavior.AllowGet);
                 return Json(string.Empty, JsonRequestBehavior.AllowGet);

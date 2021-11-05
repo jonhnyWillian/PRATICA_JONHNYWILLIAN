@@ -7,7 +7,7 @@ namespace SistemaBarbearia.ViewModels.ContasBancos
 {
     public class SelectContaBancoVM
     {
-        public int IdConta { get; set; }
+        public int? IdConta { get; set; }
 
 
         public string dsConta { get; set; }

@@ -129,11 +129,11 @@
                 self.saveContaBancaria();
          });
 
-        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').change(function (data, e) {
-            var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)').val();
+        $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)').change(function (data, e) {
+            var Id = $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)').val();
             if (Id == "") {
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val("");
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val("");               
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)").val("");
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsConta", Prefix)").val("");               
             } else {
                 $.ajax({
                     dataType: 'json',
@@ -145,8 +145,8 @@
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });                            
                         }
                         SelectContaBancaria(data)
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)").val(data.IdConta);
+                        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsConta", Prefix)").val(data.dsConta);
                     },
                     error: function (err) {
                         alert(err);
@@ -160,30 +160,26 @@
 
      this.getFormContaBancaria = function() {
         var form = {
-                Id : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)'),
-                dsCondPag: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)'),
-
-                dtCadastro: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtCadastro", Prefix)'),
-                dtUltAlteracao: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dtUltAlteracao", Prefix)'),
+                IdConta : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)'),
+                dsConta: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)'),               
         }
         return form;
     };
 
     this.clearContaBancaria = function () {
         var form = self.getFormContaBancaria();
-        form.Id.val("");
-        form.dtCadastro.val("");
-        form.dtUltAlteracao.val("");
-        form.dsCondPag.focus();
+        form.IdConta.val("");
+    
+        form.dsConta.focus();
     };
 
     this.isValidContaBancaria = function () {
         var valid = true;
         var form = self.getFormContaBancaria();
 
-        if (IsNullOrEmpty(form.dsCondPag.val())) {
-            form.dsCondPag.blink({ msg: "Campo Forma Pagamento é obrigatório" });
-            form.dsCondPag.focus();
+        if (IsNullOrEmpty(form.dsConta.val())) {
+            form.dsConta.blink({ msg: "Campo Forma Pagamento é obrigatório" });
+            form.dsConta.focus();
             valid = false;
         }
         return valid;
@@ -191,8 +187,8 @@
 
     getModelContaBancaria = function (form) {
         var model = {
-            Id: form.Id.val(),
-            dsCondPag: form.dsCondPag.val(),
+            IdConta: form.IdConta.val(),
+            dsConta: form.dsConta.val(),
 
         }
         return model;
@@ -348,8 +344,8 @@
 
     function SelectContaBancaria(data) {
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").modal("hide");
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)").val(data.IdConta);
+        $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsConta", Prefix)").val(data.dsConta);
         return false;
     };
 
@@ -358,7 +354,7 @@
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "ContaBanco")',
-            data: { 'IdFormaPagamento': Id },
+            data: { 'Id': Id },
             success: function (data) {
                 self.clearContaBancaria();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");
@@ -367,8 +363,8 @@
                     $(".isEdit").show();
                 }
 
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Id", Prefix)").val(data.Id);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.Text);             
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdConta", Prefix)").val(data.IdConta);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsConta", Prefix)").val(data.dsConta);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

@@ -43,7 +43,7 @@ namespace SistemaBarbearia.Models.ContasPagar
 
         public ViewModels.FormaPagamentos.SelectFormaPagamentoVM formaPag { get; set; }
 
-
+        public ViewModels.ContasBancos.SelectContaBancoVM ContaBancaria { get; set; }
 
     }
 }

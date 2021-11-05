@@ -57,5 +57,14 @@ namespace SistemaBarbearia.DataBase
             }
             return result;
         }
+        protected string FormatDecimal(decimal? valor)
+        {
+            var result = string.Empty;
+            if (valor != null)
+            {
+                result = valor.Value.ToString().Replace(",", ".");
+            }
+            return result;
+        }
     }
 }

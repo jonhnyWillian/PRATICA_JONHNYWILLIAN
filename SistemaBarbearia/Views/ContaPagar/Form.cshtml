@@ -5,20 +5,18 @@
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     bool isEdit = action.ToLower() == "edit";
 }
-@if (action != "create")
-{
-    <div class="row">
+
+<div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @using (Html.BeginForm())
-                {
+               
                     @Html.LabelFor(e => e.flSituacao, new { @class = "control-label required" })
-                    @Html.TextBoxFor(model => model.flSituacao, new { @class = "form-control col-md-2", readOnly = "readonly" })
-                }
+                    @Html.DropDownListFor(model => model.flSituacao, SistemaBarbearia.ViewModels.ContasPagar.ContaPagarVM.Situacao, new { @datadrop = "select2", @class = "form-control  col-md-6" , @disabled = "disabled" })               
+                
             </div>
         </div>
-    </div>
-}
+   </div>
+
 <div class="row">
     <div class="col-sm-2">
         <div class="form-group">
@@ -40,19 +38,19 @@
             @Html.TextBoxFor(model => model.nrNota, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
             @Html.ValidationMessageFor(model => model.nrNota, "", new { @class = "text-danger" })
         </div>
-    </div>    
+    </div>  
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { @disabled = readOnly })
+            @Html.EditorFor(model => model.Fornecedor, "Fornecedores/Select", new { @disabled = true })
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
-            @Html.EditorFor(model => model.formaPag, "FormaPagamentos/Select", new { @disabled = readOnly })
+            @Html.EditorFor(model => model.formaPag, "FormaPagamentos/Select", new { @disabled = true })
         </div>
     </div>
 </div>
@@ -66,8 +64,8 @@
     </div>
     <div class="col-sm-2">
         <div class="form-group">
-            @Html.LabelFor(model => model.vlParcela, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control", @maxlength = "50", @autofocus = "autofocus", @disabled = "disabled" })
+            @Html.LabelFor(model => model.vlParcela, new { @class = "required" })
+            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
             @Html.ValidationMessageFor(model => model.vlParcela, "", new { @class = "text-danger" })
         </div>
     </div>

@@ -1,6 +1,7 @@
 ﻿using SistemaBarbearia.ViewModels.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace SistemaBarbearia.ViewModels.ContasPagar
 {
@@ -9,6 +10,23 @@ namespace SistemaBarbearia.ViewModels.ContasPagar
 
         [Display(Name = "Situação")]
         public string flSituacao { get; set; }
+
+
+
+
+        public static SelectListItem[] Situacao
+        {
+            get
+            {
+                return new[]
+                {
+                    new SelectListItem { Value = "A", Text = "ABERTA" },
+                    new SelectListItem { Value = "P", Text = "PAGO" },
+                    
+                };
+            }
+        }
+
 
         [Display(Name = "Modelo")]
         [StringLength(50, MinimumLength = 3)]
