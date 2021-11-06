@@ -160,12 +160,96 @@ namespace SistemaBarbearia.DAOs.Agendamentos
                 Close();
             }
         }
+
+
+        public bool realizarVenda(Agenda agenda)
+        {
+            int i = 0;
+            Open();
+            SqlTransaction sqlTransaction = sqlconnection.BeginTransaction();
+            SqlCommand command;
+            try
+            {
+                command = sqlconnection.CreateCommand();
+                command.Transaction = sqlTransaction;
+                command.CommandText = "INSERT INTO VENDA ( nrModelo , nrSerie , nrNota , flSituacao , IdCliente , IdFuncionario , IdCondPag , dtEmissao , dtCadastro , dtUltAlteracao, vlTotal  )" +
+                                                   "VALUES(@nrModelo , @nrSerie , @nrNota , @flSituacao , @IdCliente , @IdFuncionario , @IdCondPag , @dtEmissao , @dtCadastro , @dtUltAlteracao, @vlTotal );"; 
+
+                command.Parameters.AddWithValue("@nrModelo", agenda.nrModelo);
+                command.Parameters.AddWithValue("@nrSerie", agenda.nrSerie);
+                command.Parameters.AddWithValue("@nrNota", agenda.nrNota);
+                command.Parameters.AddWithValue("@flSituacao", agenda.flSituacao = "A");
+                command.Parameters.AddWithValue("@IdCliente", agenda.Cliente.IdCliente);
+                command.Parameters.AddWithValue("@IdFuncionario", agenda.Funcionario.IdFuncionario);
+                command.Parameters.AddWithValue("@IdCondPag", agenda.CondicaoPagamento.Id);
+                command.Parameters.AddWithValue("@dtEmissao", agenda.dtAgendamento );
+                command.Parameters.AddWithValue("@vlTotal", agenda.vlTotal);
+                command.Parameters.AddWithValue("@dtCadastro", agenda.dtCadastro = DateTime.Now);
+                command.Parameters.AddWithValue("@dtUltAlteracao", agenda.dtUltAlteracao = DateTime.Now);
+
+
+                i = command.ExecuteNonQuery();
+                foreach (var item in agenda.ProdutosCompra)
+                {
+
+                    command.CommandText = "INSERT INTO ProdutoVenda ( nrModelo, nrSerie,nrNota,IdProduto,nrQtd,vlVenda,txDesconto)" +
+                                                       " VALUES(@nrModelo, @nrSerie, @nrNota, @IdProduto, @nrQtd, @vlVenda, @txDesconto)";
+
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@nrModelo", agenda.nrModelo);
+                    command.Parameters.AddWithValue("@nrSerie", agenda.nrSerie);
+                    command.Parameters.AddWithValue("@nrNota", agenda.nrNota);
+                    command.Parameters.AddWithValue("@IdProduto", item.IdProduto);                    
+                    command.Parameters.AddWithValue("@nrQtd", item.nrQtd);                    
+                    command.Parameters.AddWithValue("@vlVenda", item.vlVenda);                    
+
+                    i = command.ExecuteNonQuery();
+                }
+                foreach (var item in agenda.ParcelasVenda)
+                {
+                    command = sqlconnection.CreateCommand();
+                    command.Transaction = sqlTransaction;
+                    command.CommandText = "INSERT INTO ContasPagar  ( nrModelo,  nrSerie,  nrNota, IdFornecedor, IdFormaPagamento, vlParcela,  flSituacao, dtVencimento, nrparcela  )" +
+                                                         "VALUES(@nrModelo, @nrSerie, @nrNota, @IdFornecedor, @IdFormaPagamento, @vlParcela,  @flSituacao, @dtVencimento, @nrparcela )";
+
+                    command.Parameters.AddWithValue("@nrModelo", agenda.nrModelo);
+                    command.Parameters.AddWithValue("@nrSerie", agenda.nrSerie);
+                    command.Parameters.AddWithValue("@nrNota", agenda.nrNota);
+                    command.Parameters.AddWithValue("@IdFornecedor", agenda.Funcionario.IdFuncionario);
+                    command.Parameters.AddWithValue("@IdFormaPagamento", item.IdFormaPagamento);
+                    command.Parameters.AddWithValue("@vlParcela", item.vlParcela);
+                    command.Parameters.AddWithValue("@flSituacao", item.flSituacao = "A");
+                    command.Parameters.AddWithValue("@dtVencimento", item.dtVencimento);
+                    command.Parameters.AddWithValue("@nrparcela", item.nrParcela);
+                    i = command.ExecuteNonQuery();
+
+
+                }
+                sqlTransaction.Commit();
+                if (i >= 1)
+                {
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                sqlTransaction.Rollback();
+                throw new Exception("Erro ao inserir o Compra: " + ex.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
         #endregion
 
-        #region Conta Receber
-
-       
-        #endregion
+     
 
         public List<Agenda> SelecionarAgendamento()
         {
