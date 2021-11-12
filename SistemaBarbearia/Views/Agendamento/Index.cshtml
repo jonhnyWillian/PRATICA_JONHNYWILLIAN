@@ -18,49 +18,51 @@
             <tr>
                 <th export="true" style="width:5%">Codigo</th>
                 <th export="true" style="width:10%">Data</th>
+                <th export="true" style="width:5%">Horário</th>
                 <th export="true" style="width:25%">Cliente</th>
                 <th export="true" style="width:10%">Situação</th>
-                <th export="true" style="width:5%">Horário</th>
                 <th export="true" style="width:10%">Opções</th>
             </tr>
         </thead>
         @foreach (var item in Model)
         {
-            <tr>
-                <td class="text-right" style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.IdAgenda)
-                </td>
-                <td class="text-right" style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.dtAgendamento)
-                </td>
-                <td style="width:40%;">
-                    @Html.DisplayFor(modelItem => item.Cliente.nmCliente)
-                </td>
-                <td style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.flSituacao)
-                </td>
-                <td style="width:10%;">
-                    @Html.DisplayFor(modelItem => item.flhoraAgendamento)
-                </td>
-                <td>
-                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdAgenda }))"><i class="fa fa-eye"></i></a>
+    <tr>
+        <td class="text-right" style="width:10%;">
+            @Html.DisplayFor(modelItem => item.IdAgenda)
+        </td>
 
-                    @if (item.flSituacao != "C")
-                    {
-                        <a title="Editar" class="btn btn-warning btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdAgenda }))"><i class="fa fa-pencil-square-o"></i></a>
-                        <a title="Cancelar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Cancelar", new { id = item.IdAgenda }))"><i class="fa fa-ban"></i></a>
-                        <a title="Finalizar Horário" class="btn btn-primary btn-sm" href="@HttpUtility.UrlDecode(Url.Action("FinalizarHorario", new { id = item.IdAgenda }))"><i class="fa fa-check"></i></a>
-                    }
-                    else
-                    {
-                        <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
-                        <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
-                        <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
-                    }
-                    <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdAgenda }))"><i class="fa fa-trash"></i></a>
+        <td class="text-right" style="width:10%;">
+            @Html.DisplayFor(modelItem => item.dtAgendamento)
+        </td>
+        <td style="width:10%;">
+            @Html.DisplayFor(modelItem => item.flhoraAgendamento)
+        </td>
+        <td style="width:40%;">
+            @Html.DisplayFor(modelItem => item.Cliente.nmCliente)
+        </td>
+        <td style="width:10%;">
+            @Html.DisplayFor(modelItem => item.flSituacao)
+        </td>
 
-                </td>
-            </tr>
+        <td>
+            <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { id = item.IdAgenda }))"><i class="fa fa-eye"></i></a>
+
+            @if (item.flSituacao != "C")
+            {
+                <a title="Editar" class="btn btn-warning btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Edit", new { id = item.IdAgenda }))"><i class="fa fa-pencil-square-o"></i></a>
+                <a title="Cancelar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Cancelar", new { id = item.IdAgenda }))"><i class="fa fa-ban"></i></a>
+                <a title="Finalizar Horário" class="btn btn-primary btn-sm" href="@HttpUtility.UrlDecode(Url.Action("FinalizarHorario", new { id = item.IdAgenda }))"><i class="fa fa-check"></i></a>
+            }
+            else
+            {
+                <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
+                <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
+                <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
+            }
+            <a title="Excluir" class="btn btn-danger btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Delete", new { id = item.IdAgenda }))"><i class="fa fa-trash"></i></a>
+
+        </td>
+    </tr>
         }
 
     </table>

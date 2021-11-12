@@ -217,6 +217,24 @@ namespace SistemaBarbearia.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        public JsonResult JsDetailsProduto(int? IdCondPag, string dsCondPag)
+        {
+            try
+            {
+                var result = this.Find(IdCondPag, dsCondPag).FirstOrDefault();
+                if (result != null)
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(string.Empty, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                throw new Exception(ex.Message);
+            }
+        }
+
+
         private IQueryable<dynamic> Find(int? id, string text)
         {
             var condPag = new CondPagamentoDAO();
@@ -281,5 +299,59 @@ namespace SistemaBarbearia.Controllers
             };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+
+        public JsonResult JsGetParcelasProduto(int idCondicaoPagamento, decimal vlTotal, DateTime? dtInicioParcela)
+        {
+            var dao = new CondPagamentoDAO();
+            var cond = dao.GetCondPagamentoParcela(idCondicaoPagamento);
+            var lista = cond.ListCondicao.OrderBy(k => k.nrParcela);
+
+            var parcelas = new List<CondPagamentoVM.ParcelasVM>();
+            var dtinicio = DateTime.Now;
+            if (dtInicioParcela != null)
+            {
+                dtinicio = dtInicioParcela.GetValueOrDefault();
+            }
+            foreach (var item in lista)
+            {
+                var itemParcelas = new CondPagamentoVM.ParcelasVM
+                {
+                    nrParcela = item.nrParcela,
+                    dtVencimento = dtinicio.AddDays((double)item.qtdDias),
+                    IdFormaPagamento = item.IdFormaPagamento,
+                    dsFormaPagamento = item.dsFormaPagamento,
+                    vlParcela = decimal.Round(((item.txPercentual / 100) * vlTotal), 2)
+                };
+                parcelas.Add(itemParcelas);
+            }
+            var totalParcelas = parcelas.Sum(k => k.vlParcela);
+            if (totalParcelas != vlTotal)
+            {
+                if (totalParcelas < vlTotal)
+                {
+                    var dif = vlTotal - totalParcelas;
+                    var list = parcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela + dif;
+                    parcelas = list.ToList();
+                }
+                if (totalParcelas > vlTotal)
+                {
+                    var dif = totalParcelas - vlTotal;
+                    var list = parcelas.OrderBy(u => u.nrParcela);
+                    list.Last().vlParcela = list.Last().vlParcela - dif;
+                    parcelas = list.ToList();
+                }
+            }
+            var result = new
+            {
+                type = "success",
+                message = "Parcelas geradas com sucesso!",
+                parcelas = parcelas
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

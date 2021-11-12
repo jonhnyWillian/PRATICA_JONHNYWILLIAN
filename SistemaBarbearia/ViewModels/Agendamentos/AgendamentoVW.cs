@@ -26,12 +26,15 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
             return agenda;
         }
 
-        [Display(Name = "Data - Agendamento")]        
+
+        public int idAgenda { get; set; }
+
+        [Display(Name = "Data - Agendamento")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dtAgendamento { get; set; }
         public string dtAgendamentoAux { get; set; }
 
-        [Display(Name = "Horário")]       
+        [Display(Name = "Horário")]
         [Required(ErrorMessage = "Campo Hora do Agendamento não Pode ser em Branco!")]
         public string flhoraAgendamento { get; set; }
 
@@ -92,43 +95,78 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         public ViewModels.Servicos.SelectServicoVM Servico { get; set; }
         public int IdServico { get; set; }
 
+
         [Display(Name = "Valor Serviço")]
         [Required(ErrorMessage = "Campo Hora do Agendamento não Pode ser em Branco!")]
         public decimal? vlServico { get; set; }
 
-        [Display(Name = "Modelo")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
-        public string nrModelo { get; set; }
-        public string nrModeloAux { get; set; }
 
         [Display(Name = "Situação")]
         public string flSituacao { get; set; }
 
-        [Display(Name = "Serie")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
-        public string nrSerie { get; set; }
-        public string nrSerieAux { get; set; }
 
-        [Display(Name = "Nº Nota")]
-        [StringLength(50, MinimumLength = 3)]
-        [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!")]
-        public int idAgenda { get; set; }
-        public int IdAgendaAux { get; set; }
+        public VendaVM VendaServico { get; set; }
+        public ProdutoVendaVM VendaProduto { get; set; }
 
-        [Display(Name = "Dt. Nota")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? dtNota { get; set; }
-        public string dtNotaAux { get; set; }
+        public class VendaVM
+        {
+            [Display(Name = "Modelo")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
+            public string nrModelo { get; set; }
+
+
+            [Display(Name = "Nota")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
+            public string nrNota { get; set; }
+
+            [Display(Name = "Serie")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
+            public string nrSerie { get; set; }
+
+            [Display(Name = "Dt. Nota")]
+            [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+            public DateTime? dtNota { get; set; }
+        }
+
+        public class ProdutoVendaVM
+        {
+            [Display(Name = "Modelo")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
+            public string nrModelo { get; set; }
+
+            [Display(Name = "Situação")]
+            public string flSituacao { get; set; }
+
+            [Display(Name = "Nota")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
+            public string nrNota { get; set; }
+
+            [Display(Name = "Serie")]
+            [StringLength(50, MinimumLength = 3)]
+            [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
+            public string nrSerie { get; set; }
+
+            [Display(Name = "Dt. Nota")]
+            [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+            public DateTime? dtNota { get; set; }
+        }
 
         public ViewModels.CondPagamentos.SelectCondPagamentoVM CondicaoPagamento { get; set; }
+        public int IdCondPagamento { get; set; }
         public ViewModels.Produtos.SelectProdutoVM Produto { get; set; }
 
         public string finalizar { get; set; }
 
-        public decimal? vlTotal { get; set; }
+        public decimal? vlTotalServico { get; set; }
+
+        public decimal? vlTotalProduto { get; set; }
 
         public class ProdutosVM
         {
@@ -177,9 +215,6 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
             }
         }
 
-
-
-        
 
     }
 }

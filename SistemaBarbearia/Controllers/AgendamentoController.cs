@@ -23,11 +23,12 @@ namespace SistemaBarbearia.Controllers
             ClienteDAO DAOCliente = new ClienteDAO();
             FuncionarioDAO DAOFuncionario = new FuncionarioDAO();
             ServicoDAO DAOServico = new ServicoDAO();
+           
             var obj = objAgenda.GetAgendamento(id);
             var result = new AgendamentoVW
             {
                 IdModelPai = obj.IdAgenda,
-                idAgenda = obj.IdAgenda,
+                //idAgenda = obj.IdAgenda,
                 //dtNota = obj.dtAgendamento,
                 dtAgendamento = obj.dtAgendamento,
                 flhoraAgendamento = obj.flhoraAgendamento,
@@ -69,6 +70,7 @@ namespace SistemaBarbearia.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Create(Agenda agenda)
         {
@@ -117,6 +119,7 @@ namespace SistemaBarbearia.Controllers
         {
             return this.GetView(id);
         }
+
         [HttpPost]
         public ActionResult Cancelar(int id, AgendamentoVW model)
         {
@@ -157,8 +160,9 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        public ActionResult FinalizarHorario(int id)
+        public ActionResult FinalizarHorario(int id )
         {
+            //return View();
             return this.GetView(id);
         }
 
@@ -185,6 +189,30 @@ namespace SistemaBarbearia.Controllers
             {
                 type = "danger";
                 msg = "Já existe Horario marcado, verifique!";
+            }
+            var result = new
+            {
+                type = type,
+                message = msg,
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult jsVerificarVenda(string nrModelo, string nrSerie, int nrNota, int idCliente)
+        {
+            var dao = new AgendamentosDAO();
+            var valid = dao.validNotaVenda(nrModelo, nrSerie, nrNota, idCliente);
+            var type = string.Empty;
+            var msg = string.Empty;
+            if (valid)
+            {
+                type = "success";
+                msg = "Nota Fiscal válida!";
+            }
+            else
+            {
+                type = "danger";
+                msg = "Já existe uma Nota Fiscal registrada com este número e cliente, verifique!";
             }
             var result = new
             {

@@ -24,6 +24,11 @@
         return false;
     });
 
+    $("#CondicaoPagamento_btnGerarParcelaProduto").click(function () {
+        venda.getparcelas();
+        return false;
+    });
+
     $(document).on('tblProdutoRowCallback', function (e, data) {
         let flTblProdutos = $("#flTblProdutos").val()
         if (flTblProdutos == "S") {
@@ -157,6 +162,7 @@ Venda = function () {
     dtProdutos = null;
     dtParcelas = null;
     dtServico = null;
+    dtParcelaProduto = null;
     this.init = function () {
 
         dtProdutos = new tDataTable({
@@ -191,7 +197,7 @@ Venda = function () {
                 ]
             },
         });
-        self.calcTotalProdutoVenda();
+        self.calcTotalVenda();
 
         dtParcelas = new tDataTable({
             table: {
@@ -216,13 +222,41 @@ Venda = function () {
                 ]
             },
         });
+        if (dtParcelas.length > 0) {           
+            let vlServico = $("#Servico_vlServico").val();         
+            let totalFormat = vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#vlTotalServico").val(totalFormat);
+        };
 
-        if (dtParcelas.length > 0) {
-            $("#flFinalizar").prop("checked", true)
-            let vlServico = $("#Servico_vlServico").val();
-            let total = vlTotalCompra + vlServico;
-            let totalFormat = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            $("#vlTotal").val(totalFormat);
+
+        self.calcTotalProdutoVenda();
+        dtParcelaProduto = new tDataTable({
+            table: {
+                jsItem: "jsParcelas",
+                name: "tblParcelaProduto",
+                order: [[0, "asc"]],
+                columns: [
+                    { data: "nrParcela" },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return data.vlParcela.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
+                    {
+                        data: null,
+                        mRender: function (data) {
+                            return JSONDate(data.dtVencimento);
+                        }
+                    },
+                    { data: "dsFormaPagamento" },
+                ]
+            },
+        });
+        if (dtParcelaProduto.length > 0) {          
+            let vlVendaProduto = $("#Produto_vlVenda").val();
+            let totalVP = vlVendaProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            $("#vlTotalProduto").val(totalVP);
         }
     }
 
@@ -293,48 +327,31 @@ Venda = function () {
         }
     }
 
-    self.calcTotalProdutoVenda = function () {
+    self.calcTotalVenda = function () {
         let total = 0;
         let vlServico = $("#Servico_vlServico").val().replace(".", "").replace(",", ".");
-        vlTotalServico = parseFloat(vlServico);
+        let vlTotalServico = parseFloat(vlServico);       
+        $("#ftp").text("Total: " + total);
+        vlTotalVendaServico = vlTotalServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $("#vlTotalServico").val(vlTotalVendaServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+    }
+
+
+    self.calcTotalProdutoVenda = function () {
+        let vlTotalProduto = 0;
+        let vlProduto = $("#Produto_vlVenda").val().replace(".", "").replace(",", ".");
+       /* vlTotalProduto = parseFloat(vlProduto);*/
 
         if (dtProdutos.length && dtProdutos.length > 0) {
             for (var i = 0; i < dtProdutos.length; i++) {
-                let totalProdutoVenda = dtProdutos.data[i].vlVenda * dtProdutos.data[i].nrQtd;
-                total += totalProdutoVenda;
+                let vlProdutoVenda = dtProdutos.data[i].vlVenda * dtProdutos.data[i].nrQtd;
+                vlTotalProduto += vlProdutoVenda;
             }
-            $('input[name="CondicaoPagamento_Id"]').prop('disabled', false)
-            //$("#CondicaoPagamento_btn-localizar").show();
-            //desabilita campos nota fiscal
-            $('input[name="nrModelo"]').prop('disabled', true)
-            $('input[name="nrSerie"]').prop('disabled', true)            
-            $('input[name="Cliente.IdCliente"]').prop('disabled', true)
-            $("#Cliente_btn").removeAttr('disabled', true)
-            $("#Cliente_btn-localizar").hide();
-        } else {
-            //reaabilita campos nota fiscal
-            $('input[name="nrModelo"]').prop('disabled', false)
-            $('input[name="nrSerie"]').prop('disabled', false)
-            $('input[name="Cliente.IdCliente"]').prop('disabled', false)
-            $("#Cliente_btn").removeAttr('disabled', false)
-
-            $('input[name="CondicaoPagamento_Id"]').prop('disabled', true)
-            //$("#CondicaoPagamento_btn-localizar").hide();
-
-            $("#CondicaoPagamento_Id").val("")
-            $("#CondicaoPagamento_text").val("")
-            $("#CondicaoPagamento_btnGerarParcela").attr('disabled', true)
-
-            $("#Cliente_btn-localizar").show();
         }
-        
-        totalProdutoVenda = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        $("#ftp").text("Total: " + total);
-        vlTotalVenda = total.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        let TotalServicoProduto = parseFloat(vlTotalVenda);
-        ServicoProdutovlTotal = vlTotalServico + TotalServicoProduto
-
-        $("#vlTotal").val(ServicoProdutovlTotal.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+        vlProdutoVenda = vlTotalProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $("#ftp").text("Total: " + vlTotalProduto);
+      
+        $("#vlTotalProduto").val(vlProdutoVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 }))
     }
 
     self.openEditProduto = function (e, data) {
@@ -361,12 +378,12 @@ Venda = function () {
         let valid = true;
 
         if (!dtParcelas.length && valid) {
-            console.log(Number.parseFloat($("#vlTotal").val()));
+            console.log(Number.parseFloat($("#vlTotalServico").val()));
             $.ajax({
                 dataType: 'json',
                 type: 'GET',
                 url: Action.getParcelas,                
-                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotal").val()), dtInicialParcala: date},                
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotalServico").val()), dtInicialParcala: date},
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelas(data)
@@ -394,6 +411,47 @@ Venda = function () {
                 dsFormaPagamento: itens[i].dsFormaPagamento,
             }
             dtParcelas.addItem(item);
+        }
+        $("#divParcelas").slideDown();
+    }
+
+    self.getparcelasProduto = function () {
+        let valid = true;
+
+        if (!dtParcelaProduto.length && valid) {
+            console.log(Number.parseFloat($("#vlTotalProduto").val()));
+            $.ajax({
+                dataType: 'json',
+                type: 'GET',
+                url: Action.getparcelasProduto,
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotalProduto").val()), dtInicialParcala: date },
+                success: function (data) {
+                    $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
+                    self.setParcelasProduto(data)
+                    $("#btnSalvar").attr("disabled", false);
+                    $('input[name="dtAgendamento"]').prop('disabled', true)
+                },
+                error: function (request) {
+                    alert("Erro ao buscar registro");
+                }
+            });
+        }
+        else if (dtParcelaProduto.length) {
+            $.notify({ message: "Já foram geradas parcelas para esta Venda, verifique!", icon: 'fa fa-exclamation' }, { type: 'danger', z_index: 2000 });
+        }
+    }
+
+    self.setParcelasProduto = function (data) {
+        let itens = data.parcelas;
+        for (var i = 0; i < itens.length; i++) {
+            let item = {
+                nrParcela: itens[i].nrParcela,
+                vlParcela: itens[i].vlParcela,
+                dtVencimento: itens[i].dtVencimento,
+                idFormaPagamento: itens[i].idFormaPagamento,
+                dsFormaPagamento: itens[i].dsFormaPagamento,
+            }
+            dtParcelaProduto.addItem(item);
         }
         $("#divParcelas").slideDown();
     }

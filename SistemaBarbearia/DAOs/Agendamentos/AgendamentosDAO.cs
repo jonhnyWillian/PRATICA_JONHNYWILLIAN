@@ -354,5 +354,23 @@ namespace SistemaBarbearia.DAOs.Agendamentos
             }
         }
 
+
+        public bool validNotaVenda(string nrModelo, string nrSerie, int nrNota, int idCliente)
+        {
+            string sql = "SELECT * FROM Venda WHERE nrModelo = '" + nrModelo + "' AND nrSerie = '" + nrSerie + "' AND nrNota = " + nrNota + " AND idCliente = " + idCliente;
+            Open();
+            SqlCommand query = new SqlCommand(sql, sqlconnection);
+            var exist = query.ExecuteScalar();
+            Close();
+            if (exist == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
