@@ -168,6 +168,11 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
 
         public decimal? vlTotalProduto { get; set; }
 
+
+        public decimal? TotalServico { get; set; }
+
+        public decimal? TotalProduto { get; set; }
+
         public class ProdutosVM
         {
             public int? IdProduto { get; set; }

@@ -39,11 +39,11 @@
                 </div>
             }
             <div class="form-row">
-                <div class="col-sm-2">
+                @*<div class="col-sm-2">
                     @Html.LabelFor(model => model.VendaServico.nrNota, htmlAttributes: new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.VendaServico.nrNota, new { @class = "form-control number" })
                     @Html.ValidationMessageFor(model => model.VendaServico.nrNota, "", new { @class = "text-danger" })
-                </div>
+                </div>*@
                 <div class="col-sm-2">
                     @Html.LabelFor(model => model.VendaServico.nrModelo, htmlAttributes: new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.VendaServico.nrModelo, new { @class = "form-control number", maxlength = "2" })
@@ -103,11 +103,11 @@
         </div>
         <div class="tab-pane fade" id="perfil" role="tabpanel" aria-labelledby="profile-tab">
             <div class="form-row">
-                <div class="col-sm-2">
+                @*<div class="col-sm-2">
                     @Html.LabelFor(model => model.VendaProduto.nrNota, htmlAttributes: new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.VendaProduto.nrNota, new { @class = "form-control number", maxlength = "2" })
                     @Html.ValidationMessageFor(model => model.VendaProduto.nrNota, "", new { @class = "text-danger" })
-                </div>
+                </div>*@
                 <div class="col-sm-2">
                     @Html.LabelFor(model => model.VendaProduto.nrModelo, htmlAttributes: new { @class = "control-label required" })
                     @Html.TextBoxFor(model => model.VendaProduto.nrModelo, new { @class = "form-control number", maxlength = "2" })
@@ -189,14 +189,14 @@
             </div>
         </div>
         <div class="tab-pane fade" id="contato" role="tabpanel" aria-labelledby="contact-tab">
-            @*<div class="col-sm-4">
+            <div class="col-sm-4">
                 @Html.Label("Valor Total Servico", new { @class = "required" })
-                @Html.TextBoxFor(model => model.vlTotalServico, new { @class = "form-control", placeholder = "0,00", style = "text-align: right" })
+                @Html.TextBoxFor(model => model.TotalServico, new { @class = "form-control",  style = "text-align: right" })
             </div>
             <div class="col-sm-4">
                 @Html.Label("Valor Total Produto", new { @class = "required" })
-                @Html.TextBoxFor(model => model.vlTotalProduto, new { @class = "form-control", placeholder = "0,00", style = "text-align: right" })
-            </div>*@
+                @Html.TextBoxFor(model => model.TotalProduto, new { @class = "form-control", style = "text-align: right" })
+            </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i>Finalizar</button>
                 <a href="@Url.Action("Index")" class="btn btn-secondary" role="button" aria-pressed="true"> <i class="fa fa-arrow-left"></i> Voltar</a>

@@ -300,7 +300,6 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
         public JsonResult JsGetParcelasProduto(int idCondicaoPagamento, decimal vlTotal, DateTime? dtInicioParcela)
         {
             var dao = new CondPagamentoDAO();

@@ -29,8 +29,6 @@
                 <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
             </div>
             @Html.ValidationMessageFor(model => model.IdCondPag, null, new { @class = "text-danger" })
-
-
         </div>
     </div>
     @if (flParcela == "S")
@@ -113,7 +111,7 @@
 
                     <div class="modal-footer">
                         <div style="text-align:right">
-                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-save"></i>  Salvar</button>
+                            <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)" type="button" class="btn btn-success"><i class="fa fa-saveProduto"></i>  Salvar</button>
                             <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("FecharCreate", Prefix)" onclick="FecharModalCreateCondPagamentoProduto()" type="button" class="btn btn-danger"><i class="fa fa-ban"></i>  Cancelar</button>
                         </div>
                     </div>
@@ -133,7 +131,7 @@
          });
 
          $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnSave", Prefix)').on('click', function () {
-                self.save();
+                self.saveProduto();
          });
 
         $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCondPag", Prefix)').change(function (data, e) {
@@ -141,19 +139,19 @@
             if (Id == "") {
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCondPag", Prefix)").val("");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val("");
-                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcelaProduto", Prefix)").attr('disabled', true)
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcelaProduto", Prefix)").attr('disabled', true)
             } else {
                 $.ajax({
                     dataType: 'json',
                     type: 'GET',
                     url: '@Url.Action("JsDetailsProduto", "CondPagamento")',
-                    data: { 'Id': Id },
+                    data: { 'IdCondPag': Id },
                     success: function (data) {
                         if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });
                              $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("btnGerarParcelaProduto", Prefix)").attr('disabled', true)
                         }
-                        SelectCondPagamento(data)
+                        SelectCondPagamentoProduto(data)
                         @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCondPag", Prefix)").val(data.IdCondPag);
                         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)").val(data.dsCondPag);*@
                     },
@@ -167,7 +165,7 @@
 
      });
 
-     this.getForm = function() {
+     this.getFormProduto = function() {
         var form = {
                 IdCondPag : $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCondPag", Prefix)'),
                 dsCondPag: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsCondPag", Prefix)'),
@@ -177,17 +175,17 @@
         return form;
     };
 
-    this.clear = function () {
-        var form = self.getForm();
+    this.clearProduto = function () {
+        var form = self.getFormProduto();
         form.IdCondPag.val("");
         form.dtCadastro.val("");
         form.dtUltAlteracao.val("");
         form.dsCondPag.focus();
     };
 
-    this.isValid = function () {
+    this.isValidProduto = function () {
         var valid = true;
-        var form = self.getForm();
+        var form = self.getFormProduto();
 
         if (IsNullOrEmpty(form.dsCondPag.val())) {
             form.dsCondPag.blink({ msg: "Campo Forma Pagamento é obrigatório" });
@@ -197,7 +195,7 @@
         return valid;
     };
 
-    getModel = function (form) {
+    getModelProduto = function (form) {
         var model = {
             Id: form.Id.val(),
             dsCondPag: form.dsCondPag.val(),
@@ -206,7 +204,7 @@
         return model;
     };
 
-    this.save = function () {
+    this.saveProduto = function () {
         if ($('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)').val() == "S") {
             this.updateCondProduto();
         } else {
@@ -215,10 +213,10 @@
     }
 
     this.insertCondProduto = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+        var form = self.getFormProduto();
+        var model = getModelProduto(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidProduto(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -226,7 +224,7 @@
                 url: '@Url.Action("jsInsert", "CondPagamento")',
                 data: model,
                 success: function (data) {
-                    self.clear();
+                    self.clearProduto();
                     InitModalFormaPagamento();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreateCondPagProduto", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalListaCondPagProduto", Prefix)").css("overflow", "auto");
@@ -239,10 +237,10 @@
     };
 
     this.updateCondProduto = function () {
-        var form = self.getForm();
-        var model = getModel(form);
+        var form = self.getFormProduto();
+        var model = getModelProduto(form);
 
-        if (self.isValid(model)) {
+        if (self.isValidProduto(model)) {
 
             $.ajax({
                 dataType: 'json',
@@ -251,7 +249,7 @@
                 data: model,
                 success: function (data) {
                     console.log(data)
-                    self.clear();
+                    self.clearProduto();
                     InitModalFormaPagamento();
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreateCondPagProduto", Prefix)").modal("hide");
                     $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalListaCondPagProduto", Prefix)").css("overflow", "auto");
@@ -308,7 +306,7 @@
                 });
             }
             else {
-                row.child(SelectCondPagamento(row.data())).show();
+                row.child(SelectCondPagamentoProduto(row.data())).show();
                 tr.addClass('shown');
                 $('div.slider', row.child()).slideDown();
             }
@@ -337,7 +335,7 @@
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreateCondPagProduto", Prefix)").css("overflow", "hidden");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreateCondPagProduto", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalListaCondPagProduto", Prefix)").css("overflow", "auto");
-        self.clear();
+        self.clearProduto();
     };
 
     function OpenModalCreateCondPagamentoProduto() {
@@ -357,7 +355,7 @@
         $(document).trigger('@SistemaBarbearia.Helper.SelectFunctions.getInputId(Prefix, "AfterLoad")', data);
     };
 
-    function SelectCondPagamento(data) {
+    function SelectCondPagamentoProduto(data) {
         loadCondicaoPagamentoProduto(data)
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalListaCondPagProduto", Prefix)").modal("hide");
         $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdCondPag", Prefix)").val(data.Id);
@@ -373,7 +371,7 @@
             url: '@Url.Action("JsDetailsProduto", "CondPagamento")',
             data: { 'Id': Id },
             success: function (data) {
-                self.clear();
+                self.clearProduto();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreateCondPagProduto", Prefix)").modal("show");
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val("S");
                 if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {

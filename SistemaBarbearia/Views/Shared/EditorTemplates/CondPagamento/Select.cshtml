@@ -29,8 +29,6 @@
                 <a style="border-radius:0" data-target="#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Modal", Prefix)" id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("btn-localizar", Prefix)" title="Abrir a busca de @Label" class="btn btn-primary" data-toggle="modal"><i class="fa fa-search"></i></a>
             </div>
             @Html.ValidationMessageFor(model => model.Id, null, new { @class = "text-danger" })
-
-
         </div>
     </div>
     @if (flParcela == "S")
@@ -93,7 +91,7 @@
                         <div class="container-fluid">
 
 
-                            <div class="form-row isEdit">
+                            @*<div class="form-row isEdit">
                                 <div class="@Helper.Input2">
                                     @Html.Label("IdFormaPagamento", "Código")
                                     @Html.TextBox("IdFormaPagamento", null, new { @class = "form-control", disabled = true })
@@ -106,7 +104,7 @@
                                     @Html.TextBox("dsCondPag", null, new { @class = "form-control", maxlength = "50", style = "text-transform:uppercase" })
                                     @Html.ValidationMessage("dsCondPag", null, new { @class = "text-danger" })
                                 </div>
-                            </div>
+                            </div>*@
 
                         </div>
                     </div>

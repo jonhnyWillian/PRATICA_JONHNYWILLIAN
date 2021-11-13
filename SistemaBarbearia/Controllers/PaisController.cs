@@ -35,11 +35,11 @@ namespace SistemaBarbearia.Controllers
         {
             if (string.IsNullOrWhiteSpace(pais.nmPais))
             {
-                ModelState.AddModelError("", "Nome do Pais Nao pode ser em braco");
+                ModelState.AddModelError("pais.nmPais", "Nome do Pais Nao pode ser em braco");
             }
             if (string.IsNullOrWhiteSpace(pais.dsSigla))
             {
-                ModelState.AddModelError("", "Sigla do Pais Nao pode ser em braco");
+                ModelState.AddModelError("pais.dsSigla", "Sigla do Pais Nao pode ser em braco");
             }
             try
             {
@@ -48,15 +48,16 @@ namespace SistemaBarbearia.Controllers
                     var paisDAO = new PaisDAO();
 
                     paisDAO.InsertPais(pais);
+                    this.AddFlashMessage("Registro salvo com sucesso!"); ;
                     return RedirectToAction("Index");
                 }
-
-                return View();
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                this.AddFlashMessage(ex.Message, FlashMessage.ERROR);
+                return View(pais);
             }
+            return View();
         }
 
         public ActionResult Edit(int id)
