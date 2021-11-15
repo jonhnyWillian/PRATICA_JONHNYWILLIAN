@@ -61,6 +61,7 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                         command.CommandText = "INSERT INTO ContasReceber  ( nrModelo, nrSerie, nrNota, IdCliente, IdFormaPagamento,  nrparcela, vlParcela, flSituacao, dtVencimento )" +
                                                                    "VALUES(@nrModelo, @nrSerie, @nrNota, @IdCliente, @IdFormaPagamento,  @nrparcela, @vlParcela, @flSituacao, @dtVencimento )";
 
+                        command.Parameters.Clear();
                         command.Parameters.AddWithValue("@nrModelo", venda.VendaServico.nrModelo);
                         command.Parameters.AddWithValue("@nrSerie", venda.VendaServico.nrSerie);
                         command.Parameters.AddWithValue("@nrNota", idvendaServico);
@@ -81,8 +82,9 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                 {
 
                     command.CommandText = "INSERT INTO Venda ( nrModelo, nrSerie,  flSituacao, IdCliente, IdCondPag, dtEmissao, dtCadastro,  dtUltAlteracao, vlTotal, IdAgenda)" +
-                                                      "VALUES(@nrModelo, @nrSerie, @flSituacao, @IdCliente,@IdCondPag, @dtEmissao, @dtCadastro, @dtUltAlteracao @vlTotal, @IdAgenda);SELECT CAST(SCOPE_IDENTITY() AS int)";
+                                                      "VALUES(@nrModelo, @nrSerie, @flSituacao, @IdCliente,@IdCondPag, @dtEmissao, @dtCadastro, @dtUltAlteracao, @vlTotal, @IdAgenda);SELECT CAST(SCOPE_IDENTITY() AS int)";
 
+                    command.Parameters.Clear();
                     command.Parameters.AddWithValue("@nrModelo", venda.VendaProduto.nrModelo);
                     command.Parameters.AddWithValue("@nrSerie", venda.VendaProduto.nrSerie);
                     command.Parameters.AddWithValue("@flSituacao", venda.flSituacao);
@@ -101,8 +103,8 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                     foreach (var item in venda.ProdutosCompra)
                     {
 
-                        command.CommandText = "INSERT INTO ProdutoVenda ( nrModelo, nrSerie, nrNota, IdProduto, nrQtd, vlCompra, vlVenda, txDesconto)" +
-                                                           " VALUES( @nrModelo, @nrSerie, @nrNota, @IdProduto, @nrQtd, @vlCompra, @vlVenda, @txDesconto)";
+                        command.CommandText = "INSERT INTO ProdutoVenda ( nrModelo, nrSerie, nrNota, IdProduto, nrQtd, vlVenda)" +
+                                                           " VALUES( @nrModelo, @nrSerie, @nrNota, @IdProduto, @nrQtd, @vlVenda)";
 
                         command.Parameters.Clear();
                         command.Parameters.AddWithValue("@nrModelo", venda.VendaProduto.nrModelo);
@@ -110,10 +112,8 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                         command.Parameters.AddWithValue("@nrNota", idvendaProduto);
                         command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
                         command.Parameters.AddWithValue("@nrQtd", item.nrQtd);
-                        command.Parameters.AddWithValue("@vlCompra", item.vlVenda);
-                        command.Parameters.AddWithValue("@vlTotal", item.vlTotal);
-
-
+                        command.Parameters.AddWithValue("@vlVenda", item.vlVenda);
+                        
                         i = command.ExecuteNonQuery();
                     }
 
@@ -124,7 +124,7 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                         command.Transaction = sqlTransaction;
                         command.CommandText = "INSERT INTO ContasReceber  ( nrModelo , nrSerie , nrNota , IdCliente , IdFormaPagamento ,  nrparcela , vlParcela , flSituacao , dtVencimento)" +
                                                              "VALUES(@nrModelo , @nrSerie , @nrNota , @IdCliente , @IdFormaPagamento ,  @nrparcela , @vlParcela , @flSituacao , @dtVencimento)";
-
+                        command.Parameters.Clear();
                         command.Parameters.AddWithValue("@nrModelo", venda.VendaProduto.nrModelo);
                         command.Parameters.AddWithValue("@nrSerie", venda.VendaProduto.nrSerie);
                         command.Parameters.AddWithValue("@nrNota", idvendaProduto);
@@ -140,6 +140,7 @@ namespace SistemaBarbearia.DAOs.VendaProdutos
                     }
 
                 }
+
                 sqlTransaction.Commit();
 
                 if (i >= 1)

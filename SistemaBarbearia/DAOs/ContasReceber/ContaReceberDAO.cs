@@ -62,9 +62,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
             {
                 Open();
                 SQL = new SqlCommand(@"SELECT* FROM ContasReceber 
-		                                            INNER JOIN Cliente ON ContasReceber.IdCliente = Cliente.IdCliente 
-		                                            INNER JOIN Venda ON Venda.IdCliente = Cliente.IdCliente                                                        
-                                                                                                                   ", sqlconnection);
+		                                            INNER JOIN Cliente ON ContasReceber.IdCliente = Cliente.IdCliente ", sqlconnection);
                 SQL.CommandType = CommandType.Text;
                 Dr = SQL.ExecuteReader();
                 // Criando uma lista vazia
@@ -86,7 +84,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
                         vlParcela = Convert.ToDecimal(Dr["vlParcela"]),
                         flSituacao = Convert.ToString(Dr["flSituacao"]),
                         dtVencimento = Dr["dtVencimento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtVencimento"]),
-                        dtEmissao = Dr["dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["dtEmissao"]),
+                       
 
                     };
                     lista.Add(c);
