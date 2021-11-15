@@ -73,7 +73,7 @@ namespace SistemaBarbearia.Controllers
                     var cidadeDAO = new CidadeDAO();
 
                     cidadeDAO.InsertCidade(cidade);
-
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -108,7 +108,7 @@ namespace SistemaBarbearia.Controllers
                     var cidadeDAO = new CidadeDAO();
 
                     cidadeDAO.UpdateCidade(cidade);
-
+                    this.AddFlashMessage("Alterado salvo com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -132,6 +132,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var cidadeDAO = new CidadeDAO();
                 cidadeDAO.DeleteCidade(id);
+                this.AddFlashMessage("Registro excluido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

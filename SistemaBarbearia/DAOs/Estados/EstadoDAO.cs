@@ -214,12 +214,12 @@ namespace SistemaBarbearia.DAOs.Estados
             return sqlSelectPais;
         }
 
-        public List<SelectEstadoVM> SelectEstado(int? id, string nmEstado)
+        public List<SelectEstadoVM> SelectEstado(int? IdEstado, string Text)
         {
             try
             {
 
-                var sqlSelectEstado = this.BuscarPais(id, nmEstado);
+                var sqlSelectEstado = this.BuscarPais(IdEstado, Text);
                 Open();
                 SQL = new SqlCommand(sqlSelectEstado, sqlconnection);
                 Dr = SQL.ExecuteReader();

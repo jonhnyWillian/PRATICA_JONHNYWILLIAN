@@ -44,6 +44,7 @@ namespace SistemaBarbearia.Controllers
                     var categoriaDAO = new CategoriaDAO();
 
                     categoriaDAO.InsertCategoria(categoria);
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -76,6 +77,7 @@ namespace SistemaBarbearia.Controllers
                     var categoriaDAO = new CategoriaDAO();
 
                     categoriaDAO.UpdateCategoria(categoria);
+                    this.AddFlashMessage("Alterado salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -100,7 +102,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var categoriaDAO = new CategoriaDAO();
                 categoriaDAO.DeleteCategoria(id);
-
+                this.AddFlashMessage("Registro excluido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

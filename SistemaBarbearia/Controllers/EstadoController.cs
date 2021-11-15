@@ -73,7 +73,7 @@ namespace SistemaBarbearia.Controllers
                     var estadoDAO = new EstadoDAO();
 
                     estadoDAO.InsertEstado(estado);
-
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -108,7 +108,7 @@ namespace SistemaBarbearia.Controllers
                     var estadoDAO = new EstadoDAO();
 
                     estadoDAO.UpdateEstado(estado);
-
+                    this.AddFlashMessage("Alterado salvo com sucesso!"); ;
                     return RedirectToAction("Index");
 
                 }
@@ -132,6 +132,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var estadoDAO = new EstadoDAO();
                 estadoDAO.DeleteEstado(id);
+                this.AddFlashMessage("Registro excluido com sucesso!"); ;
                 return RedirectToAction("Index");
             }
             catch

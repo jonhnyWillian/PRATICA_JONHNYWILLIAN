@@ -49,6 +49,7 @@ namespace SistemaBarbearia.Controllers
                     var servicoDAO = new ServicoDAO();
 
                     servicoDAO.InsertServico(servico);
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -84,6 +85,7 @@ namespace SistemaBarbearia.Controllers
                     var servicoDAO = new ServicoDAO();
 
                     servicoDAO.UpdateServico(servico);
+                    this.AddFlashMessage("Alterado salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -108,6 +110,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var servicoDAO = new ServicoDAO();
                 servicoDAO.DeleteServico(id);
+                this.AddFlashMessage("Registro excluido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

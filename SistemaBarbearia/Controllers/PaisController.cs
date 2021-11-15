@@ -48,7 +48,7 @@ namespace SistemaBarbearia.Controllers
                     var paisDAO = new PaisDAO();
 
                     paisDAO.InsertPais(pais);
-                    this.AddFlashMessage("Registro salvo com sucesso!"); ;
+                    this.AddFlashMessage("Registro salvo com sucesso!"); 
                     return RedirectToAction("Index");
                 }
             }
@@ -84,7 +84,7 @@ namespace SistemaBarbearia.Controllers
                     var paisDAO = new PaisDAO();
 
                     paisDAO.UpdatePais(pais);
-
+                    this.AddFlashMessage("Alterado salvo com sucesso!"); 
                     return RedirectToAction("Index");
 
                 }
@@ -109,6 +109,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var paisDAO = new PaisDAO();
                 paisDAO.DeletePais(id);
+                this.AddFlashMessage("Registro excluido com sucesso!"); 
                 return RedirectToAction("Index");
             }
             catch

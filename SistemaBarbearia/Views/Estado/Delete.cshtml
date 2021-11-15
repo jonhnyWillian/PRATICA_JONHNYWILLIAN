@@ -16,6 +16,8 @@
             <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
             <li class="active">Excluir Estado</li>
         </ul>
+        @Html.RenderFlashMessage()
+        @Html.CustomValidationSummary(true, true, SistemaBarbearia.Helper.AlertMessage.ERROR_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
         <div class="form-horizontal">
             @Html.Partial("Form", Model)
         </div>
