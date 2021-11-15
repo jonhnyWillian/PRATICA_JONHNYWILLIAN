@@ -218,6 +218,7 @@ Venda = function () {
                             return JSONDate(data.dtVencimento);
                         }
                     },
+                    { data: "IdFormaPagamento" },
                     { data: "dsFormaPagamento" },
                 ]
             },
@@ -225,15 +226,14 @@ Venda = function () {
         if (dtParcelas.length > 0) {           
             let vlServico = $("#Servico_vlServico").val();         
             let totalFormat = vlServico.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            $("#vlTotalServico").val(totalFormat);
-          
+            $("#vlTotalServico").val(totalFormat);          
         };
 
 
         self.calcTotalProdutoVenda();
         dtParcelaProduto = new tDataTable({
             table: {
-                jsItem: "jsParcelas",
+                jsItem: "jsParcelasProduto",
                 name: "tblParcelaProduto",
                 order: [[0, "asc"]],
                 columns: [
@@ -250,6 +250,7 @@ Venda = function () {
                             return JSONDate(data.dtVencimento);
                         }
                     },
+                    { data: "IdFormaPagamento" },
                     { data: "dsFormaPagamento" },
                 ]
             },
@@ -258,9 +259,6 @@ Venda = function () {
             let vlVendaProduto = $("#Produto_vlVenda").val();
             let totalVP = vlVendaProduto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
             $("#vlTotalProduto").val(totalVP);
-
-           
-
         }
     }
 
@@ -389,7 +387,7 @@ Venda = function () {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelas(data)
                     $("#btnSalvar").attr("disabled", false);
-                    $('input[name="dtAgendamento"]').prop('disabled', true)                
+                   /* $('input[name="dtAgendamento"]').prop('disabled', true)               */ 
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");
@@ -408,7 +406,7 @@ Venda = function () {
                 nrParcela: itens[i].nrParcela,
                 vlParcela: itens[i].vlParcela,
                 dtVencimento: itens[i].dtVencimento,
-                idFormaPagamento: itens[i].idFormaPagamento,
+                IdFormaPagamento: itens[i].IdFormaPagamento,
                 dsFormaPagamento: itens[i].dsFormaPagamento,
             }
             dtParcelas.addItem(item);
@@ -425,12 +423,12 @@ Venda = function () {
                 dataType: 'json',
                 type: 'GET',
                 url: Action.getparcelasProduto,
-                data: { idCondicaoPagamento: $("#CondicaoPagamento_Id").val(), vlTotal: Number.parseFloat($("#vlTotalProduto").val()), dtInicialParcala: date },
+                data: { idCondicaoPagamento: $("#CondicaoPagamento_IdCondPag").val(), vlTotal: Number.parseFloat($("#vlTotalProduto").val()), dtInicialParcala: date },
                 success: function (data) {
                     $.notify({ message: data.message, icon: 'fa fa-exclamation' }, { type: 'success', z_index: 2000 });
                     self.setParcelasProduto(data)
                     $("#btnSalvar").attr("disabled", false);
-                    $('input[name="dtAgendamento"]').prop('disabled', true)
+                  /*  $('input[name="dtAgendamento"]').prop('disabled', true)*/
                 },
                 error: function (request) {
                     alert("Erro ao buscar registro");
@@ -449,7 +447,7 @@ Venda = function () {
                 nrParcela: itens[i].nrParcela,
                 vlParcela: itens[i].vlParcela,
                 dtVencimento: itens[i].dtVencimento,
-                idFormaPagamento: itens[i].idFormaPagamento,
+                IdFormaPagamento: itens[i].IdFormaPagamento,
                 dsFormaPagamento: itens[i].dsFormaPagamento,
             }
             dtParcelaProduto.addItem(item);

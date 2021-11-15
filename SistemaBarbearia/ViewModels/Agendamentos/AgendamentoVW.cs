@@ -14,7 +14,7 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         public Agenda GetAgenda(Agenda agenda)
         {
             agenda.IdAgenda = this.idAgenda;
-            agenda.dtAgendamento = this.dtAgendamento;
+            agenda.dtAgendamento = (DateTime)this.dtAgendamento;
             agenda.flhoraAgendamento = this.flhoraAgendamento;
             agenda.flSituacao = this.flSituação;
             agenda.IdCliente = this.Cliente.IdCliente;
@@ -30,8 +30,8 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
         public int idAgenda { get; set; }
 
         [Display(Name = "Data - Agendamento")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime dtAgendamento { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? dtAgendamento { get; set; }
         public string dtAgendamentoAux { get; set; }
 
         [Display(Name = "Horário")]
@@ -115,7 +115,6 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
             [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
             public string nrModelo { get; set; }
 
-
             [Display(Name = "Nota")]
             [StringLength(50, MinimumLength = 3)]
             [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
@@ -125,6 +124,9 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
             [StringLength(50, MinimumLength = 3)]
             [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
             public string nrSerie { get; set; }
+
+            
+            public decimal? nrQtd { get; set; }
 
             [Display(Name = "Dt. Nota")]
             [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
@@ -196,12 +198,15 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
                 jsProdutos = JsonConvert.SerializeObject(value);
             }
         }
+
+
         public class ParcelasVM
         {
             public int? IdFormaPagamento { get; set; }
             public string dsFormaPagamento { get; set; }
             public DateTime? dtVencimento { get; set; }
             public decimal vlParcela { get; set; }
+            public string flSituacao { get; set; }
             public double? nrParcela { get; set; }
             public DateTime? dtPagamento { get; set; }
         }
@@ -213,6 +218,32 @@ namespace SistemaBarbearia.ViewModels.Agendamentos
                 if (string.IsNullOrEmpty(jsParcelas))
                     return new List<ParcelasVM>();
                 return JsonConvert.DeserializeObject<List<ParcelasVM>>(jsParcelas);
+            }
+            set
+            {
+                jsParcelas = JsonConvert.SerializeObject(value);
+            }
+        }
+
+        public class ParcelasProdutoVM
+        {
+            public int? IdFormaPagamento { get; set; }
+            public string dsFormaPagamento { get; set; }
+            public DateTime? dtVencimento { get; set; }
+            public decimal vlParcela { get; set; }
+            public double? nrParcela { get; set; }
+
+            public string flSituacao { get; set; }
+            public DateTime? dtPagamento { get; set; }
+        }
+        public string jsParcelasProduto { get; set; }
+        public List<ParcelasProdutoVM> ParcelasVendaProduto
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(jsParcelasProduto))
+                    return new List<ParcelasProdutoVM>();
+                return JsonConvert.DeserializeObject<List<ParcelasProdutoVM>>(jsParcelasProduto);
             }
             set
             {

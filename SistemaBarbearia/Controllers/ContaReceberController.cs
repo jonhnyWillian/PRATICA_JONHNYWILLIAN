@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SistemaBarbearia.DAOs.ContasReceber;
+using SistemaBarbearia.Models.ContaReceber;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,32 +10,50 @@ namespace SistemaBarbearia.Controllers
 {
     public class ContaReceberController : Controller
     {
-        // GET: ContaReceber
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: ContaReceber/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ContaReceber/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ContaReceber/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        #region MethodPrivate
+        private ActionResult GetView(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdCliente)
         {
             try
             {
-                // TODO: Add insert logic here
+                var Dao = new ContaReceberDAO();
+                var contaReceber = Dao.GetContaReceber(null, nrModelo, nrSerie, nrNota, nrParcela, IdCliente);
+                return View(contaReceber);
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+        }
+        #endregion
+        public ActionResult Index()
+        {
+            var Dao = new ContaReceberDAO();
+            ModelState.Clear();
+            return View(Dao.SelecionarContaReceber());
+        }
 
+        public ActionResult Details(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdCliente)
+        {
+            return this.GetView(nrModelo, nrSerie, nrNota, IdCliente, nrParcela);
+        }
+
+        public ActionResult Create(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdCliente)
+        {
+            return this.GetView(nrModelo, nrSerie, nrNota, IdCliente, nrParcela);
+        }
+
+        [HttpPost]
+        public ActionResult Create(ContaReceber contaReceber, string nrModelo, string nrSerie, int nrNota, int IdCliente, int nrParcela)
+        {
+            if (contaReceber.ContaBancaria.IdConta == null)
+            {
+                ModelState.AddModelError("ContaBancaria.IdConta", "Informe a Conta Bancaria");
+            }
+            try
+            {
+                var dao = new ContaReceberDAO();
+                dao.PagarContaReceber(contaReceber, nrModelo, nrSerie, nrNota, IdCliente, nrParcela);
                 return RedirectToAction("Index");
             }
             catch
@@ -41,14 +61,11 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
-
-        // GET: ContaReceber/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: ContaReceber/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -64,13 +81,11 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        // GET: ContaReceber/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ContaReceber/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

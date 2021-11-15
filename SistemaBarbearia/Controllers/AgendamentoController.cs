@@ -2,8 +2,10 @@
 using SistemaBarbearia.DAOs.Clientes;
 using SistemaBarbearia.DAOs.Funcionarios;
 using SistemaBarbearia.DAOs.Servicos;
+using SistemaBarbearia.DAOs.VendaProdutos;
 using SistemaBarbearia.DataTables;
 using SistemaBarbearia.Models.Agendamentos;
+using SistemaBarbearia.Models.Vendas;
 using SistemaBarbearia.ViewModels.Agendamentos;
 using System;
 using System.Collections.Generic;
@@ -161,17 +163,28 @@ namespace SistemaBarbearia.Controllers
         }
 
         public ActionResult FinalizarHorario(int id )
-        {
-            //return View();
+        {            
             return this.GetView(id);
         }
 
         [HttpPost]
         public ActionResult FinalizarHorario(int id, AgendamentoVW model)
         {
-            return View();
-        }
+            try
+            {
+                var vendaDAO = new VendaProdutoDAO();
 
+
+                vendaDAO.insertVenda(id,model);
+              
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         #region JSON
         public JsonResult JsVerificaHorario(string dtAgendamento, string hora, int idFuncionario)
@@ -198,29 +211,7 @@ namespace SistemaBarbearia.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult jsVerificarVenda(string nrModelo, string nrSerie, int nrNota, int idCliente)
-        {
-            var dao = new AgendamentosDAO();
-            var valid = dao.validNotaVenda(nrModelo, nrSerie, nrNota, idCliente);
-            var type = string.Empty;
-            var msg = string.Empty;
-            if (valid)
-            {
-                type = "success";
-                msg = "Nota Fiscal válida!";
-            }
-            else
-            {
-                type = "danger";
-                msg = "Já existe uma Nota Fiscal registrada com este número e cliente, verifique!";
-            }
-            var result = new
-            {
-                type = type,
-                message = msg,
-            };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
+      
         #endregion
     }
 }

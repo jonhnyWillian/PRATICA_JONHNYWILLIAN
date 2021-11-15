@@ -11,12 +11,29 @@ namespace SistemaBarbearia.ViewModels.ContasReceber
     {
         public ViewModels.FormaPagamentos.SelectFormaPagamentoVM FormaPag { get; set; }
         public ViewModels.Clientes.SelectClienteVM Cliente { get; set; }
+        public ViewModels.ContasBancos.SelectContaBancoVM ContaBancaria { get; set; }
 
+
+        [Display(Name = "Modelo")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
+        public string nrModelo { get; set; }
+
+        [Display(Name = "Nº Serie")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
+        public string nrSerie { get; set; }
+
+        [Display(Name = "Nº Nota")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
+        public int nrNota { get; set; }
 
         [Display(Name = "Nº Parcela")]
         [StringLength(50, MinimumLength = 3)]
         [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
         public int nrParcela { get; set; }
+
 
         [Display(Name = "Valor Parcelas")]
         [StringLength(50, MinimumLength = 3)]
