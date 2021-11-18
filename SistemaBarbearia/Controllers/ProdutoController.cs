@@ -104,7 +104,7 @@ namespace SistemaBarbearia.Controllers
                     var produtoDAO = new ProdutoDAO();
 
                     produtoDAO.InsertProduto(produto);
-
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -139,7 +139,7 @@ namespace SistemaBarbearia.Controllers
                     var produtoDAO = new ProdutoDAO();
 
                     produtoDAO.UpdateProduto(produto);
-
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -163,6 +163,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var produtoDAO = new ProdutoDAO();
                 produtoDAO.DeleteProduto(id);
+                this.AddFlashMessage("Registro removido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

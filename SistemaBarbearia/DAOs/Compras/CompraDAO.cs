@@ -64,18 +64,18 @@ namespace SistemaBarbearia.DAOs.Compras
 
                     i = command.ExecuteNonQuery();
                 }
-                
-                //command.CommandText = "UPDATE Produto SET nrQtd += nrQtd@, vlUltCompra += @vlUltCompra WHERE idProduto = @IdProduto";
-                //foreach (var item in compra.ProdutosCompra)
-                //{
-                //    command.Parameters.Clear();
-                //    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
-                //    command.Parameters.AddWithValue("@vlUltCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
-                //    command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
-                //    command.ExecuteNonQuery();
-                //}
 
-                
+                command.CommandText = "UPDATE Produto SET nrQtd += @nrQtd, vlUltCompra += @vlUltCompra WHERE idProduto = @IdProduto";
+                foreach (var item in compra.ProdutosCompra)
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@nrQtd", ((object)item.nrQtd) != DBNull.Value ? ((object)item.nrQtd) : 0);
+                    command.Parameters.AddWithValue("@vlUltCompra", ((object)item.vlCompra) != DBNull.Value ? ((object)item.vlCompra) : 0);
+                    command.Parameters.AddWithValue("@IdProduto", item.IdProduto);
+                    command.ExecuteNonQuery();
+                }
+
+
                 foreach (var item in compra.ParcelasCompra)
                 {
                     command = sqlconnection.CreateCommand();
@@ -128,6 +128,78 @@ namespace SistemaBarbearia.DAOs.Compras
         {
             return true;
         }
+
+        public bool cancelarCompra(Compra compra)
+        {
+            try
+            {
+                Open();
+                string updatecompra = @"UPDATE Compra SET  flSituacao = @flSituacao, dtUltAlteracao = @dtUltAlteracao 
+                                               WHERE nrNota =" + compra.nrNota + "AND nrModelo = " + compra.nrModelo + "AND nrSerie =" + compra.nrSerie;
+
+                SqlCommand sql = new SqlCommand(updatecompra, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@flSituacao", compra.flSituacao = "C");
+                sql.Parameters.AddWithValue("@dtUltAlteracao", compra.dtUltAlteracao = DateTime.Now);
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Agenda: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
+
+        public bool cancelarContasPagar(Compra compra)
+        {
+            try
+            {
+                Open();
+                string updatecontaPagar = @"UPDATE ContasPagar SET  flSituacao = @flSituacao
+                                               WHERE nrNota =" + compra.nrNota + 
+                                              "AND nrModelo = " + compra.nrModelo + 
+                                              "AND nrSerie =" + compra.nrSerie + 
+                                              "AND IdFornecedor =" + compra.IdFornecedor;
+
+                SqlCommand sql = new SqlCommand(updatecontaPagar, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@flSituacao", compra.flSituacao = "C");
+
+                int i = sql.ExecuteNonQuery();
+
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao Atualizar Agenda: " + e.Message);
+            }
+            finally
+            {
+                Close();
+            }
+        }
         #endregion
 
 
@@ -150,6 +222,7 @@ namespace SistemaBarbearia.DAOs.Compras
                             IdFornecedor = Convert.ToInt32(Dr["IdFornecedor"]),
                             nmNome = Convert.ToString(Dr["nmNome"]),
                         },
+                        flSituacao = Convert.ToString(Dr["flSituacao"]),
                         nrModelo = Convert.ToString(Dr["nrModelo"]),
                         nrSerie = Convert.ToString(Dr["nrSerie"]),
                         nrNota = Convert.ToInt32(Dr["nrNota"]),
@@ -195,7 +268,6 @@ namespace SistemaBarbearia.DAOs.Compras
                     compraVM.vlSeguro = Convert.ToDecimal(Dr["Compra_vlSeguro"]);
                     compraVM.vlFrete = Convert.ToDecimal(Dr["Compra_vlFrete"]);
                     compraVM.vlTotal = Convert.ToDecimal(Dr["Compra_vlTotal"]);
-
                     compraVM.dtEmissao = Dr["Compra_dtEmissao"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["Compra_dtEmissao"]);
                     compraVM.dtEntrega = Dr["Compra_dtentrega"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["Compra_dtentrega"]);
                                  
@@ -262,6 +334,7 @@ namespace SistemaBarbearia.DAOs.Compras
             }
         }
 
+
         protected string BuscarCompra(string filter, string nrModelo, string nrSerie, int? nrNota, int? IdFornecedor)
         {
             var sql = string.Empty;
@@ -305,7 +378,6 @@ namespace SistemaBarbearia.DAOs.Compras
 	                    Compra.dtEmissao AS Compra_dtEmissao,
 	                    Compra.dtentrega AS Compra_dtentrega,	    
 	                    Compra.dtCadastro AS Compra_dtCadastro,
-
 	                    Compra.vlFrete AS Compra_vlFrete,
 	                    Compra.vlSeguro AS Compra_vlSeguro,
 	                    Compra.vlDespesas AS Compra_vlDespesas,

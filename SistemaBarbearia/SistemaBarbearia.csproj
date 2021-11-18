@@ -805,6 +805,7 @@
     <Content Include="Views\ContaBanco\Details.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ContaBanco\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CondPagamento\SelectVendaProduto.cshtml" />
+    <Content Include="Views\Compra\Cancelar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

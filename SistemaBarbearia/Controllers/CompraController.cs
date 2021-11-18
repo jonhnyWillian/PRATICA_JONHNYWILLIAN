@@ -29,6 +29,9 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
+
+      
+
         #endregion
 
 
@@ -60,10 +63,9 @@ namespace SistemaBarbearia.Controllers
             model.Fornecedor.IdFornecedor = model.Fornecedor.IdFornecedor != null ? model.Fornecedor.IdFornecedor : model.Fornecedor.IdFornecedor;
             
             model.dtCadastro = DateTime.Now;
-
             model.flSituacao = "A";
-
-
+         
+            
             if (string.IsNullOrWhiteSpace(model.nrModelo))
             {
                 ModelState.AddModelError("modelo", "Informe o modelo");
@@ -140,6 +142,29 @@ namespace SistemaBarbearia.Controllers
         {
             try
             {              
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
+        public ActionResult Cancelar(string nrModelo, string nrSerie, int nrNota, int? IdFornecedor)
+        {
+            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor);
+        }
+
+        [HttpPost]
+        public ActionResult Cancelar(Compra model)
+        {
+            try
+            {
+                var dao = new CompraDAO();
+                dao.cancelarCompra(model);
+                this.AddFlashMessage("Registro Cancelado com sucesso!");
+                dao.cancelarContasPagar(model);
                 return RedirectToAction("Index");
             }
             catch
