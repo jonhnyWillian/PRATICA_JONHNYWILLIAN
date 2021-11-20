@@ -1,12 +1,11 @@
-﻿@model SistemaBarbearia.ViewModels.Compras.CompraVM
+﻿@model SistemaBarbearia.ViewModels.Vendas.VendaVM
 @using SistemaBarbearia.Helper;
 
 @{
     var action = Convert.ToString(ViewBag.Action);
-    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);   
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     ViewBag.action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
     ViewBag.readOnly = true;
-
 
 }
 <div class="container-fluid">
@@ -16,7 +15,7 @@
         <div class="container">
             <ul class="breadcrumb breadcrumb-arrow">
                 <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
-                <li class="active">Detalhes do Compra</li>
+                <li class="active">Detalhes do Venda</li>
             </ul>
             <div class="form-horizontal">
                 <h6 class="text-right">Campos obrigatório *</h6>
@@ -31,6 +30,6 @@
     }
 </div>
 @section Scripts {
-    @Scripts.Render("~/Scripts/Views/Compras/Details.js")
+    @Scripts.Render("~/Scripts/Views/Vendas/Details.js")
 
 }

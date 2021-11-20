@@ -166,6 +166,7 @@
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
     <Compile Include="Controllers\ServicoController.cs" />
+    <Compile Include="Controllers\VendaController.cs" />
     <Compile Include="DAOs\Agendamentos\AgendamentosDAO.cs" />
     <Compile Include="DAOs\Cargos\CargoDAO.cs" />
     <Compile Include="DAOs\Cidades\CidadeDAO.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="DataTable\Search.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="ViewModels\Compras\CompraVM.cs" />
+    <Compile Include="ViewModels\Vendas\VendaVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -661,6 +663,9 @@
     <Content Include="Scripts\Views\Produtos\Create.js" />
     <Content Include="Scripts\Views\Produtos\Produto.js" />
     <Content Include="Scripts\Views\Servicos\Servico.js" />
+    <Content Include="Scripts\Views\Vendas\Create.js" />
+    <Content Include="Scripts\Views\Vendas\Details.js" />
+    <Content Include="Scripts\Views\Vendas\Venda.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -806,6 +811,12 @@
     <Content Include="Views\Shared\EditorTemplates\ContaBanco\Select.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CondPagamento\SelectVendaProduto.cshtml" />
     <Content Include="Views\Compra\Cancelar.cshtml" />
+    <Content Include="Views\Venda\Create.cshtml" />
+    <Content Include="Views\Venda\Delete.cshtml" />
+    <Content Include="Views\Venda\Details.cshtml" />
+    <Content Include="Views\Venda\Cancelar.cshtml" />
+    <Content Include="Views\Venda\Form.cshtml" />
+    <Content Include="Views\Venda\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

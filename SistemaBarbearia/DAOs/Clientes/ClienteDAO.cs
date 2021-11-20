@@ -66,6 +66,7 @@ namespace SistemaBarbearia.DAOs.Clientes
             }
         }
 
+
         public bool UpdateCliente(Cliente cliente)
         {
             try

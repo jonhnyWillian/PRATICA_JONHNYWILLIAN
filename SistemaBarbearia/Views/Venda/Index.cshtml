@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SistemaBarbearia.Models.Vendas.Venda>
+@using SistemaBarbearia.Helper;
+@{
+    ViewBag.Title = "Vendas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+    var _controller = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString();
+}
+<div class="container">
+    <ul class="breadcrumb breadcrumb-arrow">
+        <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
+        <li class="active">Consultar Vendas</li>
+    </ul>
+    <a href="@Url.Action("Create", "Venda" )" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-plus"></i> Adicionar</a>
+    <table id="listaVenda" class="table table-striped table-bordered" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+
+                <th export="true" style="width:10%">Nota</th>
+                <th export="true" style="width:10%">Modelo</th>
+                <th export="true" style="width:10%">Dt.Emissão</th>
+                <th export="true" style="width:45%">Cliente</th>
+                <th export="true" style="width:5%">Situação</th>
+                <th export="true" style="width:20%">Opções</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.nrNota)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.nrModelo)
+                </td>
+                <td style="width:10%;">
+                    @Html.DisplayFor(modelItem => item.dtNota)
+                </td>
+                <td style="width:45%;">
+                    @Html.DisplayFor(modelItem => item.Cliente.nmCliente)
+                </td>
+                <td style="width:5%;">
+                    @Html.DisplayFor(modelItem => item.flSituacao)
+                </td>
+                <td>
+                    <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { nrModelo = item.nrModelo, nrSerie = item.nrSerie, nrNota = item.nrNota, IdCliente = item.Cliente.IdCliente}))"><i class="fa fa-eye"></i></a>
+                    @if (item.flSituacao == "A")
+                    {
+                        <a title="Cancelar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Cancelar", new { nrModelo = item.nrModelo, nrSerie = item.nrSerie, nrNota = item.nrNota, IdCliente = item.Cliente.IdCliente }))"><i class="fa fa-ban"></i></a>
+                    }
+                    else
+                    {
+                        <a class='btn btn-secondary btn-sm' style="height:30px; width:33px" title="Ação indisponível" data-trigger='hover'><i class="fa fa-info"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/Views/Vendas/Venda.js")
+
+}
+

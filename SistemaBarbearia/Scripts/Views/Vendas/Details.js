@@ -1,18 +1,19 @@
 ﻿$(function () {
 
-    var compra = new Compra();
-    compra.init();
+    var venda = new Venda();
+    venda.init();
 
     $("#divAddProduto").hide()
 });
 
 
-Compra = function () {
+Venda = function () {
     self = this;
     dtProdutos = null;
     dtParcelas = null;
 
     this.init = function () {
+
         dtProdutos = new tDataTable({
             table: {
                 jsItem: "jsProdutos",
@@ -22,7 +23,7 @@ Compra = function () {
                 order: [[1, "asc"]],
                 columns: [
                     { data: "IdProduto" },
-                    { data: "dsProduto" },
+                    { data: "nmProduto" },
                     {
                         data: null,
                         mRender: function (data) {
@@ -32,29 +33,14 @@ Compra = function () {
                     {
                         data: null,
                         mRender: function (data) {
-                            let vlCompra = data.vlCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            return vlCompra;
+                            return data.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                     {
                         data: null,
                         mRender: function (data) {
-                            let vlVenda = data.vlVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            return vlVenda;
-                        }
-                    },
-                    {
-                        data: null,
-                        mRender: function (data) {
-                            return data.txDesconto.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        }
-                    },
-                    {
-                        data: null,
-                        mRender: function (data) {
-                            let vlTotalCompra = (data.txDesconto * data.vlCompra) / 100;
-                            vlTotalCompra = (data.vlCompra - vlTotalCompra) * data.nrQtd;
-                            return vlTotalCompra.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            let vlTotalVenda = (data.vlVenda * data.nrQtd);
+                            return vlTotalVenda.toLocaleString('pt-br', { currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
                         }
                     },
                 ]

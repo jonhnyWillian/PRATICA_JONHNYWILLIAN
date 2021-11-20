@@ -44,7 +44,7 @@
         </td>
         <td>
             <a title="Visualizar" class="btn btn-success btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Details", new { nrModelo = item.nrModelo, nrSerie = item.nrSerie, nrNota = item.nrNota, IdFornecedor = item.Fornecedor.IdFornecedor}))"><i class="fa fa-eye"></i></a>
-            @if (item.flSituacao != "C")
+            @if (item.flSituacao == "A")
             {
                 <a title="Cancelar" class="btn btn-info btn-sm" href="@HttpUtility.UrlDecode(Url.Action("Cancelar", new { nrModelo = item.nrModelo, nrSerie = item.nrSerie, nrNota = item.nrNota, IdFornecedor = item.Fornecedor.IdFornecedor }))"><i class="fa fa-ban"></i></a>
             }

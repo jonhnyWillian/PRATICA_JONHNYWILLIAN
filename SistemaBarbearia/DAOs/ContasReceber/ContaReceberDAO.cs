@@ -14,14 +14,18 @@ namespace SistemaBarbearia.DAOs.ContasReceber
     {
         #region INSERT UPDATE DELETE 
 
-        public void PagarContaReceber(ContaReceber ContaReceber, string nrModelo, string nrSerie, int nrNota, int IdFornecedor, int nrParcela)
+        public void PagarContaReceber(ContaReceber ContaReceber, string nrModelo, string nrSerie, int nrNota, int IdCliente, int nrParcela )
         {
 
-            var swhere = " WHERE ContasReceber.nrModelo = '" + nrModelo + "' AND ContasReceber.nrSerie = '" + nrSerie + "' AND ContasReceber.nrNota = " + nrNota + " AND ContasReceber.IdFornecedor = " + IdFornecedor + " AND ContasReceber.nrParcela = " + nrParcela;
+            var swhere = " WHERE ContasReceber.nrModelo = '" + nrModelo + "' AND ContasReceber.nrSerie = '" + nrSerie + "' AND ContasReceber.nrNota = " + nrNota + " AND ContasReceber.IdCliente = " + IdCliente + " AND ContasReceber.nrParcela = " + nrParcela;
+
+            var swhereVenda = " WHERE Venda.nrModelo = '" + nrModelo + "' AND Venda.nrSerie = '" + nrSerie + "' AND Venda.nrNota = " + nrNota + " AND Venda.IdCliente = " + IdCliente ;
 
             var pagar = "UPDATE ContasReceber SET dtPagamento = " + this.FormatDate(DateTime.Now) + ", flSituacao = 'P', IdConta =" + ContaReceber.ContaBancaria.IdConta + swhere;
 
             var contaBanco = "UPDATE ContaBanco SET vlSaldo += " + this.FormatDecimal(ContaReceber.vlParcela) + "WHERE ContaBanco.idConta = " + ContaReceber.ContaBancaria.IdConta;
+
+            var venda = "UPDATE Venda SET flSituacao = 'P' " + swhereVenda;
 
 
             using (sqlconnection)
@@ -36,7 +40,11 @@ namespace SistemaBarbearia.DAOs.ContasReceber
                     command.CommandText = pagar;
                     command.ExecuteNonQuery();
 
+
                     command.CommandText = contaBanco;
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = venda;
                     command.ExecuteNonQuery();
 
                     sqlTransaction.Commit();
@@ -77,6 +85,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
                             nmCliente = Convert.ToString(Dr["nmCliente"]),
                         },
 
+
                         nrModelo = Convert.ToString(Dr["nrModelo"]),
                         nrSerie = Convert.ToString(Dr["nrSerie"]),
                         nrNota = Convert.ToInt32(Dr["nrNota"]),
@@ -107,7 +116,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
             {
                 Open();
                 var contaReceberVM = new ContaReceberVW();
-                var sql = this.BuscarContaRecever(filter, nmModelo, nrSerie, nrNota, IdCliente, nrParcela);
+                var sql = this.BuscarContaReceber(filter, nmModelo, nrSerie, nrNota, IdCliente, nrParcela);
 
                 SQL = new SqlCommand(sql, sqlconnection);
                 Dr = SQL.ExecuteReader();
@@ -120,9 +129,9 @@ namespace SistemaBarbearia.DAOs.ContasReceber
                     contaReceberVM.vlParcela = Convert.ToDecimal(Dr["ContasReceber_vlParcela"]);
                     contaReceberVM.nrParcela = Convert.ToInt32(Dr["ContasReceber_NrParcela"]);
                     contaReceberVM.flSituacao = Convert.ToString(Dr["ContasReceber_Situacao"]);
-                    contaReceberVM.dtVencimento = Dr["ContasReceber_DataVencimento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContaPagar_DataVencimento"]);
+                    contaReceberVM.dtVencimento = Dr["ContasReceber_DataVencimento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContasReceber_DataVencimento"]);
 
-                    contaReceberVM.dtPagamento = Dr["ContasReceber_DataPagamento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContaPagar_DataPagamento"]);
+                    contaReceberVM.dtPagamento = Dr["ContasReceber_DataPagamento"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(Dr["ContasReceber_DataPagamento"]);
 
                     contaReceberVM.Cliente = new ViewModels.Clientes.SelectClienteVM
                     {
@@ -148,7 +157,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
             }
         }
 
-        protected string BuscarContaRecever(string filter, string nrModelo, string nrSerie, int? nrNota, int? nrParcela, int? IdCliente)
+        protected string BuscarContaReceber(string filter, string nrModelo, string nrSerie, int? nrNota, int? nrParcela, int? IdCliente)
         {
             var sql = string.Empty;
             var swhere = string.Empty;
@@ -162,7 +171,7 @@ namespace SistemaBarbearia.DAOs.ContasReceber
             }
             if (nrParcela != null)
             {
-                swhere += " AND ContasReceber.nrNota = " + nrParcela;
+                swhere += " AND ContasReceber.nrParcela = " + nrParcela;
             }
             if (nrNota != null)
             {

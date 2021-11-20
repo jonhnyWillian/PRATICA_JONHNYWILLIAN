@@ -65,21 +65,21 @@
     <div class="col-sm-2">
         <div class="form-group">
             @Html.LabelFor(model => model.vlParcela, new { @class = "required" })
-            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right" })
+            @Html.TextBoxFor(model => model.vlParcela, new { @class = "form-control money", placeholder = "0,00", style = "text-align: right"})
             @Html.ValidationMessageFor(model => model.vlParcela, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-sm-4">
         <div class="form-group">
             @Html.LabelFor(model => model.dtVencimento, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.dtVencimento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            @Html.EditorFor(model => model.dtVencimento, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
             @Html.ValidationMessageFor(model => model.dtVencimento, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="@Helper.Input3">
         <div class="form-group">
             @Html.LabelFor(model => model.dtPagamento, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.dtPagamento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.dtPagamento, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.dtPagamento, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -88,25 +88,6 @@
     <div class="col-md-12">
         <div class="form-group">
             @Html.EditorFor(model => model.ContaBancaria, "ContaBanco/Select", new { @disabled = readOnly })
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        @Html.LabelFor(model => model.dtCadastro, htmlAttributes: new { @class = "control-label" })
-        <div class="input-group-append">
-            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtCadastro, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data - Cadastro", @disabled = "disabled" })
-            @Html.ValidationMessageFor(model => model.dtCadastro, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="col-md-6">
-        @Html.LabelFor(model => model.dtUltAlteracao, htmlAttributes: new { @class = "control-label" })
-        <div class="input-group-append">
-            <div class="input-group-addon input-group-text"><i class="fa fa-calendar"></i></div>
-            @Html.TextBoxFor(model => model.dtUltAlteracao, "{0:dd/MM/yyyy}", new { @class = "form-control col-md-6", @placeholder = "Data Ult. Alteração", @disabled = "disabled" })
-            @Html.ValidationMessageFor(model => model.dtUltAlteracao, "", new { @class = "text-danger" })
         </div>
     </div>
 </div>

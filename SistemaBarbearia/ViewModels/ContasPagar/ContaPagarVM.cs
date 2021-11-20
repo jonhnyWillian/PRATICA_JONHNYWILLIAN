@@ -54,14 +54,14 @@ namespace SistemaBarbearia.ViewModels.ContasPagar
         public decimal? vlParcela { get; set; }
 
         [Display(Name = "Dt. Vencimento")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtVencimento { get; set; }
 
 
         [Display(Name = "Dt. Pagamento")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtPagamento { get; set; }
 
 

@@ -91,16 +91,24 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" @Html.ActionLink("Compra", "Index", "Compra")</a>
+                        <a class="dropdown-item" @Html.ActionLink("Venda", "Index", "Venda")</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Contas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" @Html.ActionLink("Contas a Pagar", "Index", "ContaPagar")</a>
                         <a class="dropdown-item" @Html.ActionLink("Contas a Receber", "Index", "ContaReceber")</a>
-                         <a class="dropdown-item" @Html.ActionLink("Contas Bancários ", "Index", "ContaBanco")</a>
+                        <a class="dropdown-item" @Html.ActionLink("Contas Bancários ", "Index", "ContaBanco")</a>
                     </div>
-                    
+
                 </li>
 
                 @*<li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>*@
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>*@
             </ul>
         </div>
     </nav>

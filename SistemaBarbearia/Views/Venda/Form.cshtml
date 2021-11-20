@@ -1,0 +1,111 @@
+﻿@model SistemaBarbearia.ViewModels.Vendas.VendaVM
+@using SistemaBarbearia.Helper;
+@{
+    var action = Convert.ToString(ViewBag.Action);
+    bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
+    bool isEdit = action.ToLower() == "edit";
+    var tam = action == "Create" ? 7 : 6;
+    ViewBag.Title = "Venda";
+
+}
+@using (Html.BeginForm())
+{
+    <div class="container">
+            <div class="form-row">
+                @if (action != "create")
+                {
+                    <div class="col-sm-2">
+                            @Html.LabelFor(model => model.nrNota, htmlAttributes: new { @class = "control-label required" })
+                            @Html.TextBoxFor(model => model.nrNota, new { @class = "form-control number", maxlength = "2", readOnly = "readonly" })
+                            @Html.ValidationMessageFor(model => model.nrNota, "", new { @class = "text-danger" })
+                        </div>
+                }
+
+                <div class="col-sm-2">
+                    @Html.LabelFor(model => model.nrModelo, htmlAttributes: new { @class = "control-label required" })
+                    @Html.TextBoxFor(model => model.nrModelo, new { @class = "form-control number", maxlength = "2" })
+                    @Html.ValidationMessageFor(model => model.nrModelo, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.LabelFor(model => model.nrSerie, htmlAttributes: new { @class = "control-label required" })
+                    @Html.TextBoxFor(model => model.nrSerie, new { @class = "form-control number", maxlength = "1" })
+                    @Html.ValidationMessageFor(model => model.nrSerie, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.LabelFor(model => model.dtNota, new { @class = "required" })
+                    <div class="input-group-append">
+                        <span class="fa fa-calendar input-group-text" style="font-size:23px"></span>
+                        @Html.TextBoxFor(model => model.dtNota, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker date", })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.dtNota, null, new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-10">
+                    @Html.EditorFor(model => model.Cliente, "Clientes/Select", new { disabled = true })
+                </div>
+            </div>
+            <div class="bs-callout bs-callout-primary">
+                <div id="divAddProduto">
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.Produto, "Produtos/SelectVenda", new { Disabled = false, Required = true, flValor = "S", flQuantidade = "S" })
+                    </div>
+                    <div class="form-row">
+                        <button id="addProduto" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar</button>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.jsProdutos)
+                <table id="tblProduto" class="table table-striped table-bordered" style="width:100%">
+                    <thead class="table-dark">
+                        <tr>
+                            @if (action != "Create")
+                            {
+                                <th width="5%"></th>
+
+                            }
+                            @if (action == "Details")
+                            {
+                                <th width="5%"></th>
+
+                            }
+                            <th width="10%">Id</th>
+                            <th width="50%">Produto</th>
+                            <th width="10%">Quant.</th>
+                            <th width="10%">Vl.Venda</th>
+                            <th width="10%">Total</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td id="ftp" colspan="@tam" style="text-align:right"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="bs-callout bs-callout-primary">
+                <div class="form-row">
+                    <div class="col-sm-4">
+                        @Html.Label("Valor Total Venda", new { @class = "required" })
+                        @Html.TextBoxFor(model => model.vlTotalProduto, new { @class = "form-control", placeholder = "0,00", style = "text-align: right" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.EditorFor(model => model.CondicaoPagamento, "CondPagamento/Select", new { Required = true, Disabled = false, flParcela = "S" })
+                    </div>
+                </div>
+                <div class="separador"></div>
+                @Html.HiddenFor(model => model.jsParcelas)
+                <table id="tblParcela" class="table table-striped table-bordered" style="width:100%">
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="15%">Nº parcela</th>
+                            <th width="15%">Valor Parcela</th>
+                            <th width="10%">Vencimento</th>
+                            <th width="5%">ID</th>
+                            <th width="50%">Forma de pagamento</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        
+    </div>
+}

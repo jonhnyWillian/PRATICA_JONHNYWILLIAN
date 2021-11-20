@@ -5,21 +5,32 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace SistemaBarbearia.Models.Vendas
+namespace SistemaBarbearia.ViewModels.Vendas
 {
-    public class Venda
+    public class VendaVM
     {
-
+        [Display(Name = "Modelo")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Modelo não Pode ser em Branco!")]
         public string nrModelo { get; set; }
+
+        [Display(Name = "Nº Nota")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Apelido não Pode ser em Branco!")]
         public int nrNota { get; set; }
+
+        [Display(Name = "Serie")]
+        [StringLength(50, MinimumLength = 3)]
+        [Required(ErrorMessage = "Campo Serie não Pode ser em Branco!")]
         public string nrSerie { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+
+        [Display(Name = "Dt. Nota")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dtNota { get; set; }
         public decimal? vlTotalProduto { get; set; }
 
-        public int IdAgenda { get; set; }
-        public string flSituacao { get; set; }
 
         public ViewModels.Clientes.SelectClienteVM Cliente { get; set; }
         public int IdCliente { get; set; }
@@ -61,7 +72,6 @@ namespace SistemaBarbearia.Models.Vendas
             public DateTime? dtVencimento { get; set; }
             public decimal vlParcela { get; set; }
             public double? nrParcela { get; set; }
-            public string flSituacao { get; set; }
             public DateTime? dtPagamento { get; set; }
         }
         public string jsParcelas { get; set; }
@@ -78,8 +88,5 @@ namespace SistemaBarbearia.Models.Vendas
                 jsParcelas = JsonConvert.SerializeObject(value);
             }
         }
-
-        public DateTime? dtCadastro { get; set; }
-        public DateTime? dtUltAlteracao { get; set; }
     }
 }

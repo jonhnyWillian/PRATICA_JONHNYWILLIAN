@@ -48,9 +48,9 @@
                         </ul>
                     </div>
 
-                    <div style="text-align:left">
+                    @*<div style="text-align:left">
                         <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateContaBancaria()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
-                    </div>
+                    </div>*@
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
@@ -139,7 +139,7 @@
                     dataType: 'json',
                     type: 'GET',
                     url: '@Url.Action("JsDetails", "ContaBanco")',
-                    data: { 'Id': Id },
+                    data: { 'IdConta': Id },
                     success: function (data) {
                         if (!data) {
                              $.notify({ message: 'Nenhum registro encontrado para o código informado', icon: 'fa fa-exclamation' }, { type: 'danger' });                            
@@ -275,13 +275,13 @@
                         return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
                     }
                 },
-                {
-                    sortable: false,
-                    data: null,
-                    mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditContaBancaria(' + data.IdConta + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                    }
-                },
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEditContaBancaria(' + data.IdConta + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                //    }
+                //},
             ],
         });
 
@@ -312,7 +312,7 @@
                                 <th export="true" style="width:10%">Código</th>
                                 <th export="true" style="width:70%">Conta</th>
                                 <th export="true" style="width:10%">Selecionar</th>
-                                <th export="true" style="width:10%">Alterar</th>
+
                             </tr>
                         </thead>
                    </table>`;
@@ -354,7 +354,7 @@
             dataType: 'json',
             type: 'GET',
             url: '@Url.Action("JsDetails", "ContaBanco")',
-            data: { 'Id': Id },
+            data: { 'IdConta': Id },
             success: function (data) {
                 self.clearContaBancaria();
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalCreate", Prefix)").modal("show");

@@ -202,7 +202,6 @@ namespace SistemaBarbearia.DAOs.Compras
         }
         #endregion
 
-
         public List<Compra> SelecionarCompra()
         {
             try

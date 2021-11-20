@@ -25,6 +25,21 @@ namespace SistemaBarbearia.Controllers
                 return View();
             }
         }
+
+        private ActionResult GetViewDetails(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdFornecedor)
+        {
+            try
+            {
+                var Dao = new ContaPagarDAO();
+                var contaPagar = Dao.GetContaDetais(null, nrModelo, nrSerie, nrNota, nrParcela, IdFornecedor);
+                return View(contaPagar);
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+        }
+
         #endregion
 
         public ActionResult Index()
@@ -36,7 +51,7 @@ namespace SistemaBarbearia.Controllers
     
         public ActionResult Details(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdFornecedor)
         {
-            return this.GetView(nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
+            return this.GetViewDetails(nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
         }
       
         public ActionResult Create(string nrModelo, string nrSerie, int nrNota, int? nrParcela, int? IdFornecedor)

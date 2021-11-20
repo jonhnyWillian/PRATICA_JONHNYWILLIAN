@@ -1,11 +1,11 @@
 ﻿@model SistemaBarbearia.ViewModels.Compras.CompraVM
 @using SistemaBarbearia.Helper;
 @{
-  
+
     var action = Convert.ToString(ViewBag.Action);
     bool readOnly = Convert.ToBoolean(ViewBag.ReadOnly);
     bool isEdit = action.ToLower() == "edit";
-    var tam = action == "create" ? 8 : 9;
+    var tam = action == "create" ? 8 : 7;
 }
 @Html.HiddenFor(k => k.dtEmissaoAux)
 @Html.HiddenFor(k => k.dtEntregaAux)
@@ -73,6 +73,11 @@
     <table id="tblProduto" class="table table-striped table-bordered" style="width:100%">
         <thead class="table-dark">
             <tr>
+                @if (action == "Create")
+                {
+                    <th width="5%"></th>
+
+                }
                 @if (action == "Create")
                 {
                     <th width="5%"></th>

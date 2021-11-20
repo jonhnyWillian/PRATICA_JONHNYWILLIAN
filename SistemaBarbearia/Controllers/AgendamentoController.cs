@@ -173,12 +173,10 @@ namespace SistemaBarbearia.Controllers
             try
             {
                 var vendaDAO = new VendaProdutoDAO();
-
-
                 vendaDAO.insertVenda(id,model);
-              
-
+                vendaDAO.updateAgenda(id);
                 return RedirectToAction("Index");
+                
             }
             catch
             {
