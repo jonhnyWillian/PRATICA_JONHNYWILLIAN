@@ -94,8 +94,8 @@ namespace SistemaBarbearia.Controllers
 
                     dao.InsertFuncionario(bean);
 
-
-                    return RedirectToAction("index");
+                this.AddFlashMessage("Registro Salvo com sucesso!");
+                return RedirectToAction("index");
                 }
                 catch
                 {
@@ -126,7 +126,8 @@ namespace SistemaBarbearia.Controllers
                     bean.dtUltAlteracao = DateTime.Now;
 
                     dao.UpdateFuncionario(bean);
-                    return RedirectToAction("index");
+                this.AddFlashMessage("Registro Alterado com sucesso!");
+                return RedirectToAction("index");
                 }
                 catch
                 {
@@ -149,7 +150,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var funcionarioDAO = new FuncionarioDAO();
                 funcionarioDAO.DeleteFuncionario(id);
-
+                this.AddFlashMessage("Registro Removido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

@@ -4,9 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-     <ul class="breadcrumb breadcrumb-arrow">
+    <ul class="breadcrumb breadcrumb-arrow">
         <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>
         <li class="active">Consultar Formas de Pagamentos</li>
+        @Html.RenderFlashMessage()
     </ul>
     <a href="@Url.Action("Create", "FormaPagamento" )" class="btn btn-primary" role="button" aria-pressed="true"> <i class="fa fa-plus"></i> Adicionar</a>
 
@@ -42,8 +43,5 @@
 
 @section Scripts {
     @Scripts.Render("~/Scripts/Views/FormaPagamentos/FormaPagamento.js")
-    @*@Scripts.Render("~/Scripts/jquery.dataTables.min.js")
-    @Styles.Render("~/Content/bootstrap.min.css")
-    @Styles.Render("~/Content/dataTables.bootstrap4.min.css")
-    @Styles.Render("~/Content/bootstrap.css")*@
+
 }

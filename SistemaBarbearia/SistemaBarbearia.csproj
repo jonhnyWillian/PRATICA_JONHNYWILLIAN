@@ -488,8 +488,7 @@
     <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
     <Content Include="Content\bootstrap-datepicker3.css.map" />
     <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
-    <Content Include="Documentacao\Dicionário de Dados.docx" />
-    <Content Include="Documentacao\Documentacao.docx" />
+    <Content Include="Documentacao\Documentacao Pratica Profissional Jonhny Willian.docx" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <None Include="Scripts\jquery-3.6.0-vsdoc.js" />

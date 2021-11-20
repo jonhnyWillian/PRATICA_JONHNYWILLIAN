@@ -44,6 +44,7 @@ namespace SistemaBarbearia.Controllers
                     var formaPagamentoDAO = new FormaPagamentoDAO();
 
                     formaPagamentoDAO.InsertFormaPagamento(formaPagamento);
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -75,7 +76,7 @@ namespace SistemaBarbearia.Controllers
                     var formaPagamentoDAO = new FormaPagamentoDAO();
 
                     formaPagamentoDAO.UpdateFormaPagamento(formaPagamento);
-
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -100,6 +101,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var formaPagamentoDAO = new FormaPagamentoDAO();
                 formaPagamentoDAO.DeleteFormaPagamento(id);
+                this.AddFlashMessage("Registro removido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

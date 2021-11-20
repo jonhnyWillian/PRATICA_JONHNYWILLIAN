@@ -49,6 +49,7 @@ namespace SistemaBarbearia.Controllers
                     var dao = new ContaBancoDAO();
 
                     dao.InsertContaBanco(contaBanco);
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -84,6 +85,7 @@ namespace SistemaBarbearia.Controllers
                     var dao = new ContaBancoDAO();
 
                     dao.UpdateContaBanco(contaBanco);
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("Index");
                 }
 
@@ -112,6 +114,7 @@ namespace SistemaBarbearia.Controllers
                     var dao = new ContaBancoDAO();
 
                     dao.DeleteContaBanco(id);
+                    this.AddFlashMessage("Registro Removido com sucesso!");
                     return RedirectToAction("Index");
                 }
 

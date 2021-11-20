@@ -45,9 +45,9 @@
                         </ul>
                     </div>
 
-                    <div style="text-align:left">
+                    @*<div style="text-align:left">
                         <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateFornecedor()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
-                    </div>
+                    </div>*@
 
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
@@ -254,13 +254,13 @@
                         return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
                     }
                 },
-                {
-                    sortable: false,
-                    data: null,
-                    mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditFornecedor(' + data.IdFornecedor + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                    }
-                },
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEditFornecedor(' + data.IdFornecedor + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                //    }
+                //},
             ],
         });
 
@@ -290,8 +290,7 @@
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
                                 <th export="true" style="width:70%">Fornecedor</th>
-                                <th export="true" style="width:10%">Selecionar</th>
-                                <th export="true" style="width:10%">Alterar</th>
+                                <th export="true" style="width:10%"></th>
                             </tr>
                         </thead>
                    </table>`;

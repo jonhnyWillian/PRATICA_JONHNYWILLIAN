@@ -199,13 +199,13 @@ namespace SistemaBarbearia.Controllers
 
         #endregion
 
-        private IQueryable<dynamic> Find(int? Id, string text)
+        private IQueryable<dynamic> Find(int? IdPais, string text)
         {
             var paisDAO = new PaisDAO();
-            var list = paisDAO.SelectPais(Id, text);
+            var list = paisDAO.SelectPais(IdPais, text);
             var select = list.Select(u => new
             {
-                IdPais = u.IdPais,
+                idPais = u.IdPais,
                 Text = u.Text,
                 dsSigla = u.dsSigla
              

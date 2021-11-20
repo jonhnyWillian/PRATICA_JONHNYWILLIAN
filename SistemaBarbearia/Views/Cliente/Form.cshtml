@@ -125,7 +125,7 @@
         </div>
         <div class="col-md-4">
             @Html.LabelFor(model => model.Fisica.nrRG, htmlAttributes: new { @class = "control-label required" })
-            @Html.TextBoxFor(model => model.Fisica.nrRG, new { id = "rg" , @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "RG" })
+            @Html.TextBoxFor(model => model.Fisica.nrRG, new {  @class = "form-control  col-md-10", @autofocus = "autofocus", @placeholder = "RG", maxlength = "9" })
             @Html.ValidationMessageFor(model => model.Fisica.nrRG, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-4">

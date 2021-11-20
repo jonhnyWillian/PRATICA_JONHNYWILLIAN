@@ -45,9 +45,9 @@
                             <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Cliente </b></a></li>
                         </ul>
                     </div>
-                    <div style="text-align:right">
+                    @*<div style="text-align:right">
                         <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreateCliente()" type="button" class="btn btn-success"><i class="fa fa-plus"></i>  Adicionar</button>
-                    </div>
+                    </div>*@
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TableCliente"></div>
@@ -248,13 +248,13 @@
                         return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
                     }
                 },
-                {
-                    sortable: false,
-                    data: null,
-                    mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditProduto(' + data.IdCliente + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                    }
-                },
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEditProduto(' + data.IdCliente + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                //    }
+                //},
             ],
         });
 
@@ -283,9 +283,8 @@
                         <thead class="table-dark">
                             <tr>
                                 <th export="true" style="width:10%">Código</th>
-                                <th export="true" style="width:50%">Cliente</th>                               
-                                <th export="true" style="width:10%">Selecionar</th>
-                                <th export="true" style="width:10%">Alterar</th>
+                                <th export="true" style="width:50%">Cliente</th>                                                               
+                                <th export="true" style="width:10%"></th>
                             </tr>
                         </thead>
                    </table>`;

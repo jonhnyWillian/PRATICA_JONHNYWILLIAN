@@ -110,7 +110,7 @@ namespace SistemaBarbearia.Controllers
                    
                     dao.InsertFornecedor(bean);
 
-                    
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 
@@ -144,7 +144,7 @@ namespace SistemaBarbearia.Controllers
                     bean.dtUltAlteracao = DateTime.Now;
                     dao.UpdateFornecedor(bean);
 
-                  
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 
@@ -168,7 +168,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var fornecedorDAO = new FornecedorDAO();
                 fornecedorDAO.DeleteFornecedor(id);
-
+                this.AddFlashMessage("Registro Removido  com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

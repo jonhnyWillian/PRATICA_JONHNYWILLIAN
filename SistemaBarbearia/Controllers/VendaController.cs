@@ -68,6 +68,7 @@ namespace SistemaBarbearia.Controllers
                 var dao = new VendaProdutoDAO();
                 model.flSituacao = "A";
                 dao.InsertVendaProduto(model);
+                this.AddFlashMessage("Venda Realizada com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

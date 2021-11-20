@@ -103,7 +103,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var dao = new CompraDAO();
                 dao.InsertCompra(model);
-
+                this.AddFlashMessage("Compra Realizada com sucesso!");
                 return RedirectToAction("Index");
             }
             catch
@@ -163,7 +163,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var dao = new CompraDAO();
                 dao.cancelarCompra(model);
-                this.AddFlashMessage("Registro Cancelado com sucesso!");
+                this.AddFlashMessage("Compra Cancelada com sucesso!");
                 dao.cancelarContasPagar(model);
                 return RedirectToAction("Index");
             }

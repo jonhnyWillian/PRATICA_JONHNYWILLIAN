@@ -31,8 +31,8 @@ namespace SistemaBarbearia.DAOs.Produtos
                 SQL.Parameters.AddWithValue("@nrQtd", ((object)produto.nrQtd) != DBNull.Value);            
                 SQL.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 SQL.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
-                SQL.Parameters.AddWithValue("@vlCusto", ((object)produto.vlCusto) != DBNull.Value);           
-                SQL.Parameters.AddWithValue("@vlVenda", ((object)produto.vlVenda) != DBNull.Value);
+                SQL.Parameters.AddWithValue("@vlCusto", ((object)produto.vlCusto) != DBNull.Value);
+                SQL.Parameters.AddWithValue("@vlVenda", produto.vlVenda) ;
                 SQL.Parameters.AddWithValue("@vlUltCompra", ((object)produto.vlCompra) != DBNull.Value);
                 SQL.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
                 SQL.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.IdFornecedor);
@@ -80,7 +80,7 @@ namespace SistemaBarbearia.DAOs.Produtos
                 sql.Parameters.AddWithValue("@codBarra", produto.codBarra);
                 sql.Parameters.AddWithValue("@vlCompra", produto.vlCompra);
                 sql.Parameters.AddWithValue("@vlCusto", ((object)produto.vlCusto) != DBNull.Value);
-                sql.Parameters.AddWithValue("@vlVenda", ((object)produto.vlVenda) != DBNull.Value);
+                sql.Parameters.AddWithValue("@vlVenda", produto.vlVenda) ;
                 sql.Parameters.AddWithValue("@IdCategoria", produto.categoria.Id);
                 sql.Parameters.AddWithValue("@idFornecedor", produto.fornecedor.IdFornecedor);
 

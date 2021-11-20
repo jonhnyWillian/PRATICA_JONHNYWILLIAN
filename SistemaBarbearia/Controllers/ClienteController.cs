@@ -90,7 +90,7 @@ namespace SistemaBarbearia.Controllers
 
                     dao.InsertCliente(bean);
 
-                  
+                    this.AddFlashMessage("Registro salvo com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 
@@ -122,6 +122,7 @@ namespace SistemaBarbearia.Controllers
                     bean.dtUltAlteracao = DateTime.Now;
 
                     dao.UpdateCliente(bean);
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 
@@ -150,7 +151,7 @@ namespace SistemaBarbearia.Controllers
                     var daoCliente = new ClienteDAO();
                     daoCliente.DeleteCliente(id);
 
-                   
+                    this.AddFlashMessage("Registro Removido com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 

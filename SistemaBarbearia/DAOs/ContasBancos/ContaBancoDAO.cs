@@ -56,7 +56,7 @@ namespace SistemaBarbearia.DAOs.ContasBancos
             try
             {
                 Open();
-                string updateContaBanco = @"UPDATE ContaBanco SET dsConta = @dsConta, dsClassificacao = @dsClassificacao, vlSaldo = @vlSaldo, flSituacao = @flSituacao, , dtUltAlteracao = @dtUltAlteracao  WHERE IdConta = " + contaBanco.IdConta;
+                string updateContaBanco = @"UPDATE ContaBanco SET dsConta = @dsConta, dsClassificacao = @dsClassificacao, vlSaldo = @vlSaldo, flSituacao = @flSituacao,  dtUltAlteracao = @dtUltAlteracao  WHERE IdConta = " + contaBanco.IdConta;
                 SQL = new SqlCommand(updateContaBanco, sqlconnection);
                 SQL.CommandType = CommandType.Text;
 

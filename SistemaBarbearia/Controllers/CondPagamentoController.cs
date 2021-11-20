@@ -65,7 +65,7 @@ namespace SistemaBarbearia.Controllers
 
                     dao.InsertCondPagamento(bean);
 
-
+                    this.AddFlashMessage("Registro Salvo com sucesso!");
                     return RedirectToAction("index");
                 }
                 catch 
@@ -91,7 +91,7 @@ namespace SistemaBarbearia.Controllers
             }
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     var dao = new CondPagamentoDAO();
                     var obj = dao.GetCondPagamento(id);
@@ -100,7 +100,7 @@ namespace SistemaBarbearia.Controllers
                     
                     bean.dtUltAlteracao = DateTime.Now;
                     dao.UpdateCondPagamento(bean);
-
+                    this.AddFlashMessage("Registro Alterado com sucesso!");
                     return RedirectToAction("Index");
 
                 }
@@ -127,7 +127,7 @@ namespace SistemaBarbearia.Controllers
                 var dao = new CondPagamentoDAO();
                 dao.DeleteCondPagamento(condPagamento.IdModelPai);
 
-
+                this.AddFlashMessage("Registro Removido com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

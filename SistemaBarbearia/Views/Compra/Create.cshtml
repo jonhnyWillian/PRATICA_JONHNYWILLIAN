@@ -8,6 +8,8 @@
 }
 @using (Html.BeginForm())
 {
+    @Html.RenderFlashMessage()
+    @Html.CustomValidationSummary(true, true, SistemaBarbearia.Helper.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
     <div class="container-fluid">
 
         @using (Html.BeginForm())
@@ -18,8 +20,6 @@
                     <li class="active">Cadastro de Compras</li>
                 </ul>
                 <div class="form-horizontal">
-                    @Html.RenderFlashMessage()
-                    @Html.CustomValidationSummary(true, true, SistemaBarbearia.Helper.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
                     <h6 class="text-right">Campos obrigatório *</h6>
                     @Html.Partial("Form", Model)
                 </div>

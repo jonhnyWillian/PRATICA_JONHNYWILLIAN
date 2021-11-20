@@ -78,6 +78,7 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
           
             try
             {
+                int i = 0;
                 Open();               
                 string deleteParcelas = "DELETE FROM CondPagamentoParcela WHERE CondPag_id = @CondPag_id";
                 SqlCommand sql = new SqlCommand(deleteParcelas, sqlconnection);
@@ -96,18 +97,22 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
 
                 foreach (var item in condPagamento.CondicaoForma)
                 {
-                    
+                    sql.CommandType = CommandType.Text;
+                    sql.CommandText = "UPDATE CondPagamentoParcela Set  " +
+                        "              CondPag_id = @CondPag_id, FormaPagamento_id=@FormaPagamento_id, nrParcela = @nrParcela, qtdDias = @qtdDias, txPercentual= @txPercentual WHERE CondPag_id = " + condPagamento.IdCondPag 
+                                                               ;
+
+                    sql.Parameters.Clear();
                     sql.Parameters.AddWithValue("@CondPag_id", condPagamento.IdCondPag);
                     sql.Parameters.AddWithValue("@FormaPagamento_id", item.IdFormaPagamento);
                     sql.Parameters.AddWithValue("@nrParcela", ((object)item.nrParcela) != DBNull.Value ? ((object)item.nrParcela) : 0);
                     sql.Parameters.AddWithValue("@qtdDias", ((object)item.qtdDias) != DBNull.Value ? ((object)item.qtdDias) : 0);
                     sql.Parameters.AddWithValue("@txPercentual", ((object)item.txPercentual) != DBNull.Value ? ((object)item.txPercentual) : 0);
-                    sql.CommandType = CommandType.Text;
-                    sql.ExecuteNonQuery();
+                    i = sql.ExecuteNonQuery();
 
                 }
 
-                int i = sql.ExecuteNonQuery();
+                i = sql.ExecuteNonQuery();
 
                 if (i >= 1)
                 {
@@ -133,13 +138,26 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
             try
             {
                 Open();
-                string deleteCondPagamento = "DELETE FROM CondPagamento WHERE IdCondPag = @IdCondPag";
+                string deleteCondPagamento = "DELETE FROM CondPagamentoParcela WHERE CondPag_id = @CondPag_id";
+               
+
                 SqlCommand sql = new SqlCommand(deleteCondPagamento, sqlconnection);
+                sql.CommandType = CommandType.Text;
+
+                sql.Parameters.AddWithValue("@CondPag_id", Id);
+
+                int i = sql.ExecuteNonQuery();
+
+                sql.Parameters.Clear();
+
+                string deleteCond= "DELETE FROM CondPagamento WHERE IdCondPag = @IdCondPag";
+
+                sql = new SqlCommand(deleteCond, sqlconnection);
                 sql.CommandType = CommandType.Text;
 
                 sql.Parameters.AddWithValue("@IdCondPag", Id);
 
-                int i = sql.ExecuteNonQuery();
+                 i = sql.ExecuteNonQuery();
 
                 if (i >= 1)
                 {
@@ -159,6 +177,8 @@ namespace SistemaBarbearia.DAOs.CondPagamentos
                 Close();
             }
         }
+
+
 
         #endregion
 

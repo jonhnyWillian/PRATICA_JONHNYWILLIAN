@@ -44,9 +44,9 @@
                             <li class="active"><a data-event="true" style="margin-top:1px;color: black;" data-toggle="tab"><b><i class="fa fa-list-alt" aria-hidden="true"></i> Estado </b></a></li>
                         </ul>
                     </div>
-                    <div style="text-align:left">
+                    @*<div style="text-align:left">
                         <button id="@SistemaBarbearia.Helper.SelectFunctions.getInputId("Create", Prefix)" onclick="OpenModalCreate()" type="button" class="btn btn-primary"><i class="fa fa-plus"></i>Adicionar</button>
-                    </div>
+                    </div>*@
                     <div id="body" class="modal-body" style="padding: 33px 0px 0px 0px;">
                         <div class="container-fluid">
                             <div id="TableEstado"></div>
@@ -161,8 +161,8 @@
 
     this.getFormEstado = function () {
         var form = {
-                idEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)'),
-                nmEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)'),
+                IdEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)'),
+                nmEstado: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)'),
                 dsUF: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUF", Prefix)'),
                 IdPais: $('#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdPais", Prefix)'),
             }
@@ -171,7 +171,7 @@
 
     this.clearEstado = function () {
         var form = self.getFormEstado();
-        form.idEstado.val("");
+        form.IdEstado.val("");
         form.nmEstado.val("");
         form.dsUF.val("");
         form.IdPais.val("");
@@ -197,7 +197,7 @@
 
     getModelEstado = function (form) {
         var model = {
-            idEstado: form.idEstado.val(),
+            IdEstado: form.IdEstado.val(),
             nmEstado: form.nmEstado.val(),
             dsUF: form.dsUF.val(),
 
@@ -278,7 +278,7 @@
             },
             columns: [
                 { data: "IdEstado" },
-                { data: "nmEstado" },
+                { data: "Text" },
                    {
                     sortable: false,
                     data: null,
@@ -287,13 +287,13 @@
                         return '<a class="btn btn-primary btn-sm" data-evet="item" title="Selecionar registro"><i class="fa fa-check"></i> </a>';
                     }
                 },
-                {
-                    sortable: false,
-                    data: null,
-                    mRender: function (data) {
-                        return '<a class="btn btn-warning btn-sm" onclick="OpenEditEstado(' + data.IdEstado + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
-                    }
-                },
+                //{
+                //    sortable: false,
+                //    data: null,
+                //    mRender: function (data) {
+                //        return '<a class="btn btn-warning btn-sm" onclick="OpenEditEstado(' + data.IdEstado + ')" title="Alterar registro"><i class="fa fa-edit"></i> </a>';
+                //    }
+                //},
             ],
         });
 
@@ -324,7 +324,7 @@
                                 <th export="true" style="width:20%">Código</th>
                                 <th export="true" style="width:80%">Estado</th>
                                 <th></th>
-                                <th></th>
+                             
                             </tr>
                         </thead>
                    </table>`;
@@ -374,11 +374,11 @@
                 if ($("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("isEdit", Prefix)").val() == "S") {
                     $(".isEdit").show();
                 }
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("idEstado", Prefix)").val(data.IdEstado);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("nmEstado", Prefix)").val(data.nmEstado);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("IdEstado", Prefix)").val(data.IdEstado);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Text", Prefix)").val(data.Text);
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("dsUf", Prefix)").val(data.dsUF);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_IdPais", Prefix)").val(data.IdPais);
-                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_Pais_Text", Prefix)").val(data.Text);
+                @*$("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_IdPais", Prefix)").val(data.IdPais);
+                $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("Pais_Pais_Text", Prefix)").val(data.Text);*@
                 $("#@SistemaBarbearia.Helper.SelectFunctions.getInputId("ModalLista", Prefix)").css("overflow", "auto");
             },
             error: function (request) {

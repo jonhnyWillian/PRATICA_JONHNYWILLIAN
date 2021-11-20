@@ -68,7 +68,7 @@ namespace SistemaBarbearia.Controllers
             }
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     var cidadeDAO = new CidadeDAO();
 
@@ -103,7 +103,7 @@ namespace SistemaBarbearia.Controllers
             }
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     var cidadeDAO = new CidadeDAO();
 

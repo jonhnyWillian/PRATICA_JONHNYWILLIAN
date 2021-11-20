@@ -223,21 +223,21 @@ namespace SistemaBarbearia.Controllers
             }
         }
 
-        private IQueryable<dynamic> Find(int? IdEstado, string nmEstado)
+        private IQueryable<dynamic> Find(int? IdEstado, string Text)
         {
             var estadoDAO = new EstadoDAO();
-            var list = estadoDAO.SelectEstado(IdEstado, nmEstado);
+            var list = estadoDAO.SelectEstado(IdEstado, Text);
             var select = list.Select(u => new
             {
                 IdEstado = u.IdEstado,
-                nmEstado = u.Text,
+                Text = u.Text,
                 dsUF = u.dsUF,
                 IdPais = u.IdPais,
                 nmPais = u.nmPais, 
                 dtCadastro = u.dtCadastro,
                 dtUltAlteracao = u.dtUltAlteracao
 
-            }).OrderBy(u => u.nmEstado).ToList();
+            }).OrderBy(u => u.Text).ToList();
             return select.AsQueryable();
         }
 

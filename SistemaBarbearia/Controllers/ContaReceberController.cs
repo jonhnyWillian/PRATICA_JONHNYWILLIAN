@@ -54,6 +54,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var dao = new ContaReceberDAO();
                 dao.PagarContaReceber(contaReceber, nrModelo, nrSerie, nrNota, IdCliente, nrParcela);
+                this.AddFlashMessage("Conta Recebida com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

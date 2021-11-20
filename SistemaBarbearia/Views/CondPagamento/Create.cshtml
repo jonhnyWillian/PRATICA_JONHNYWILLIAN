@@ -10,6 +10,8 @@
 
     @using (Html.BeginForm())
     {
+        @Html.RenderFlashMessage()
+        @Html.CustomValidationSummary(true, true, SistemaBarbearia.Helper.AlertMessage.VALIDATION_MESSAGE, new { @class = "alert alert-danger", role = "alert" })
         <div class="container">
             <ul class="breadcrumb breadcrumb-arrow">
                 <li><a href="@Url.Action("Index")"><i class="fa fa-home"></i></a></li>

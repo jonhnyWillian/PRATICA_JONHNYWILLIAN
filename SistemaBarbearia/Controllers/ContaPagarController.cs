@@ -70,6 +70,7 @@ namespace SistemaBarbearia.Controllers
             {
                 var dao = new ContaPagarDAO();
                 dao.PagarCompra(contaPagar, nrModelo, nrSerie, nrNota, IdFornecedor, nrParcela);
+                this.AddFlashMessage("Conta Paga com sucesso!");
                 return RedirectToAction("Index");
             }
             catch

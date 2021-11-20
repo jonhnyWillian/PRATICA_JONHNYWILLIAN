@@ -72,7 +72,7 @@
         @Html.LabelFor(model => model.vlVenda, htmlAttributes: new { @class = "control-label required" })
         <div class="input-group-append">
             <span class="input-group-text">$</span>
-            @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control money", placeholder = "0,00", disabled = true })
+            @Html.TextBoxFor(model => model.vlVenda, new { @class = "form-control money", placeholder = "0,00" })
             @Html.ValidationMessageFor(model => model.vlVenda, "", new { @class = "text-danger" })
         </div>
     </div>
